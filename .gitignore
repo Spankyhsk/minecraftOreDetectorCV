@@ -1,0 +1,67 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Byte-compiled / optimized / DLL files
+*.pyo
+*.pyd
+
+# =========================
+# Virtual Environments
+# =========================
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Output / Results (generated files)
+# =========================
+results/
+output/
+*.mp4
+*.avi
+*.png
+*.jpg
+
+# Optional: if you want to keep screenshots tracked, remove this line:
+# data/screenshots/
+
+# =========================
+# Testing / Cache
+# =========================
+.pytest_cache/
+.mypy_cache/
+.coverage
+
+# =========================
+# Build / Distribution
+# =========================
+build/
+dist/
+*.egg-info/
