@@ -6,7 +6,7 @@ Automatische Erz-Erkennung in Minecraft mittels klassischer Bildverarbeitung.
 
 ## Projektbeschreibung
 
-VoxelVision ist ein Computer-Vision-Projekt zur Erkennung von Minecraft-Erzen in Screenshots und Videos.
+Minecraft Ore Detector CV ist ein Computer-Vision-Projekt zur Erkennung von Minecraft-Erzen in Screenshots und Videos.
 
 Das Projekt verzichtet bewusst auf Machine Learning und basiert ausschließlich auf klassischen Bildverarbeitungstechniken.
 
