@@ -46,8 +46,6 @@ results/
 output/
 *.mp4
 *.avi
-*.png
-*.jpg
 
 # Optional: if you want to keep screenshots tracked, remove this line:
 # data/screenshots/
