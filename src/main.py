@@ -5,7 +5,7 @@ from morphology import *
 from detection import *
 from visualization import *
 
-img = load_image("data/screenshots/test.png")
+img = load_image("data/screenshots/test1.png")
 
 img = apply_clahe(img)
 img = blur(img)
