@@ -2,64 +2,46 @@
 import cv2
 
 
-def draw_detections(img, detections, label="ore"):
-    """
-    Zeichnet Bounding Boxes um erkannte Erze.
+def draw(img, detections):
+    # Kopie erstellen, damit Originalbild unverändert bleibt
+    out = img.copy()
 
-    Parameters
-    ----------
-    img : numpy.ndarray
-        Originalbild.
+    for d in detections:
+        x, y, w, h = d["box"]
 
-    detections : list
-        Liste erkannter Regionen.
-
-    label : str
-        Bezeichnung des Erzes.
-
-    Returns
-    -------
-    numpy.ndarray
-        Annotiertes Bild.
-    """
-
-    output = img.copy()
-
-    for (x, y, w, h) in detections:
-
-        # Rechteck zeichnen
+        # Rechteck um erkanntes Objekt
         cv2.rectangle(
-            output,
+            out,
             (x, y),
-            (x + w, y + h),
+            (x+w, y+h),
             (0, 255, 0),
             2
         )
 
-        # Beschriftung hinzufügen
+        # Text mit Label + Confidence Score
+        text = f'{d["label"]}: {d["score"]:.2f}'
+
         cv2.putText(
-            output,
-            label,
-            (x, y - 5),
+            out,
+            text,
+            (x, y-5),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.5,
             (0, 255, 0),
             1
         )
 
-    return output
+    return out
 
 
 def show(img):
-    """
-    Zeigt ein Bild in einem OpenCV-Fenster an.
-
-    Das Fenster bleibt offen,
-    bis eine Taste gedrückt wird.
-    """
+    # OpenCV GUI-Funktion
+    # zeigt Bild in Fenster
 
     cv2.imshow("VoxelVision", img)
 
+    # wartet bis Taste gedrückt wird
     cv2.waitKey(0)
 
+    # schließt Fenster
     cv2.destroyAllWindows()

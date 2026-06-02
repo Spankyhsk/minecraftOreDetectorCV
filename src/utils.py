@@ -1,5 +1,6 @@
 #Helferfunktionen
 import cv2
+import time
 
 
 def resize(img, scale=1.0):
@@ -42,3 +43,14 @@ def save_image(path, img):
     """
 
     cv2.imwrite(path, img)
+
+def log(msg):
+    print(f"[INFO] {msg}")
+
+
+def log_debug(msg):
+    print(f"[DEBUG] {msg}")
+
+
+def log_warning(msg):
+    print(f"[WARN] {msg}")

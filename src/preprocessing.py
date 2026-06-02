@@ -1,103 +1,51 @@
 #Bild verbessern
 import cv2
-import numpy as np
 
 
 def load_image(path):
-    """
-    Lädt ein Bild von der Festplatte.
+    # cv2.imread lädt ein Bild von der Festplatte
+    # Standardmäßig im BGR-Format (nicht RGB!)
+    img = cv2.imread(path)
 
-    Parameters
-    ----------
-    path : str
-        Pfad zum Bild.
+    # Sicherheitscheck: wenn Datei nicht existiert → Fehler
+    if img is None:
+        raise FileNotFoundError(path)
 
-    Returns
-    -------
-    numpy.ndarray
-        Geladenes Bild im BGR-Farbraum.
-    """
-    return cv2.imread(path)
-
-
-def to_hsv(img):
-    """
-    Konvertiert ein Bild von BGR nach HSV.
-
-    HSV eignet sich besser für Farberkennung als RGB/BGR,
-    da Farbton (Hue) von Helligkeit getrennt wird.
-
-    Parameters
-    ----------
-    img : numpy.ndarray
-        Eingabebild.
-
-    Returns
-    -------
-    numpy.ndarray
-        Bild im HSV-Farbraum.
-    """
-    return cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    return img
 
 
 def apply_clahe(img):
-    """
-    Verbessert den lokalen Kontrast mithilfe von CLAHE.
+    # CLAHE = Contrast Limited Adaptive Histogram Equalization
+    # verbessert lokalen Kontrast (wichtig für dunkle Minecraft-Höhlen)
 
-    Besonders hilfreich für dunkle Minecraft-Höhlen,
-    da Details sichtbar werden ohne das Bild zu überbelichten.
-
-    Parameters
-    ----------
-    img : numpy.ndarray
-        Eingabebild.
-
-    Returns
-    -------
-    numpy.ndarray
-        Kontrastverbessertes Bild.
-    """
-
-    # Umwandlung in LAB-Farbraum
+    # Umwandlung in LAB-Farbraum:
+    # L = Helligkeit, A/B = Farbkanäle
     lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
 
-    # Helligkeitskanal von Farbkanälen trennen
+    # Kanäle trennen
     l, a, b = cv2.split(lab)
 
-    # CLAHE-Objekt erstellen
-    clahe = cv2.createCLAHE(
-        clipLimit=2.0,
-        tileGridSize=(8, 8)
-    )
-
-    # Kontrastverbesserung auf Helligkeitskanal anwenden
+    # CLAHE nur auf Helligkeit anwenden (verhindert Farbverfälschung)
+    clahe = cv2.createCLAHE(2.0, (8, 8))
     l = clahe.apply(l)
 
-    # Kanäle wieder zusammensetzen
+    # Kanäle wieder zusammenführen
     lab = cv2.merge((l, a, b))
 
-    # Zurück nach BGR konvertieren
+    # zurück in BGR (OpenCV Standardformat)
     return cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
 
 
-def blur(img, ksize=3):
-    """
-    Führt einen Gaussian Blur durch.
+def blur(img):
+    # GaussianBlur glättet das Bild
+    # reduziert Rauschen und kleine Details
+    # → wichtig damit später weniger False Positives entstehen
 
-    Reduziert Bildrauschen und kleine Artefakte,
-    die später bei der Segmentierung stören könnten.
+    return cv2.GaussianBlur(img, (3, 3), 0)
 
-    Parameters
-    ----------
-    img : numpy.ndarray
-        Eingabebild.
 
-    ksize : int
-        Größe des Faltungsfensters.
+def to_hsv(img):
+    # Konvertiert Bild in HSV-Farbraum
+    # HSV trennt Farbe (Hue) von Helligkeit → besser für Segmentierung
 
-    Returns
-    -------
-    numpy.ndarray
-        Geglättetes Bild.
-    """
-    return cv2.GaussianBlur(img, (ksize, ksize), 0)
+    return cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
