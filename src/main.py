@@ -7,6 +7,9 @@ from visualization import *
 from utils import log
 
 
+DEBUG = True  # <<< NEU
+
+
 # =========================
 # ROOT VERZEICHNIS FIX
 # =========================
@@ -64,7 +67,6 @@ def main():
     candidates = find_candidates(mask)
     log(f"Kandidaten gefunden: {len(candidates)}")
 
-    # Debug: wenn nichts gefunden wurde
     if len(candidates) == 0:
         log("WARNUNG: Keine Kandidaten gefunden!")
 
@@ -83,16 +85,32 @@ def main():
 
     log(f"Diamanten erkannt: {len(detections)}")
 
-    # Debug: wenn nichts erkannt wurde
     if len(detections) == 0:
         log("WARNUNG: Keine Matches gefunden (Threshold evtl. zu hoch)")
 
-    # 8. Visualisierung
-    log("Erzeuge Output Bild")
-    out = draw(img, detections)
+    # =========================
+    # DEBUG OVERLAY (NEU)
+    # =========================
+    if DEBUG:
 
-    log("Zeige Ergebnis")
-    show(out)
+        log("DEBUG MODE: Zeichne Kandidaten + Treffer")
+
+        debug_img = draw_debug(
+            img,
+            candidates,
+            detections
+        )
+
+        show(debug_img)
+
+    else:
+
+        # normaler Output
+        log("Erzeuge Output Bild")
+        out = draw(img, detections)
+
+        log("Zeige Ergebnis")
+        show(out)
 
     log("Fertig")
 

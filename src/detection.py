@@ -60,6 +60,50 @@ def match_template(roi, template):
     # höchster Ähnlichkeitswert
     return float(np.max(result))
 
+import cv2
+import numpy as np
+
+
+def match_template_multiscale(roi, template, scales=None):
+
+    # Standard-Skalen (kannst du später erweitern)
+    if scales is None:
+        scales = [0.6, 0.75, 1.0, 1.25, 1.5]
+
+    roi_gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+
+    best_score = 0.0
+
+    for scale in scales:
+
+        # Template skalieren
+        resized_template = cv2.resize(
+            template,
+            None,
+            fx=scale,
+            fy=scale,
+            interpolation=cv2.INTER_AREA
+        )
+
+        th, tw = resized_template.shape
+
+        # ROI muss größer sein als Template
+        if roi_gray.shape[0] < th or roi_gray.shape[1] < tw:
+            continue
+
+        result = cv2.matchTemplate(
+            roi_gray,
+            resized_template,
+            cv2.TM_CCOEFF_NORMED
+        )
+
+        score = np.max(result)
+
+        if score > best_score:
+            best_score = score
+
+    return best_score
+
 
 def detect_diamond(img, candidates, template, threshold=0.65):
     detections = []
@@ -69,7 +113,7 @@ def detect_diamond(img, candidates, template, threshold=0.65):
         # ROI aus Originalbild ausschneiden
         roi = img[y:y+h, x:x+w]
 
-        score = match_template(roi, template)
+        score = match_template_multiscale(roi, template)
 
         # nur akzeptieren, wenn Ähnlichkeit hoch genug ist
         if score >= threshold:
