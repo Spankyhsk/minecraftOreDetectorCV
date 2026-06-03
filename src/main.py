@@ -5,6 +5,7 @@ from morphology import *
 from detection import *
 from visualization import *
 from utils import log
+from utils import log_debug
 
 
 DEBUG = True  # <<< NEU
@@ -25,11 +26,36 @@ IMAGE_PATH = os.path.join(
     "test1.png"
 )
 
-TEMPLATE_PATH = os.path.join(
-    DATA_DIR,
-    "templates",
-    "diamond_ore.png"
-)
+TEMPLATES_DIR = os.path.join(DATA_DIR, "templates")
+
+ORE_MATCH_THRESHOLD = {
+    "coal": 0.50,
+    "copper": 0.60,
+    "diamond": 0.71,
+    "emerald": 0.67,
+    "gold": 0.82,
+    "iron": 0.76,
+    "lapis": 0.58,
+    "redstone": 0.72,
+}
+
+
+def _ore_label(ore_key):
+    return ore_key.capitalize()
+
+
+def _load_template_bank_for_ore(ore_key):
+    bank = {}
+    for name in os.listdir(TEMPLATES_DIR):
+        if not name.endswith(".png"):
+            continue
+        if not name.startswith(f"{ore_key}_"):
+            continue
+
+        path = os.path.join(TEMPLATES_DIR, name)
+        variant = name[:-4]
+        bank[variant] = load_template(path)
+    return bank
 
 
 def main():
@@ -50,40 +76,48 @@ def main():
     # 3. HSV + Kanten
     log("Erzeuge HSV + Edge Masken")
     hsv = to_hsv(img)
-
-    color = color_mask(hsv, "diamond")
     edges = edge_mask(img)
 
-    mask = hybrid_mask(color, edges)
-    log("Hybrid-Maske erstellt")
+    # 4-7. Pro Erztyp segmentieren + Kandidaten + Template Matching
+    all_raw_detections = []
+    all_candidates = []
 
-    # 4. Maske bereinigen
-    log("Bereinige Maske (Morphologie)")
-    mask = clean_mask(mask)
-    log("Maske bereinigt")
+    for ore in supported_ores():
+        log(f"--- Erztyp: {ore} ---")
 
-    # 5. Kandidaten finden
-    log("Suche Kandidaten...")
-    candidates = find_candidates(mask)
-    log(f"Kandidaten gefunden: {len(candidates)}")
+        color = color_mask(hsv, ore)
+        mask = hybrid_mask(color, edges) if use_edges_for_ore(ore) else color
+        mask = refine_mask_for_ore(ore, mask)
+        mask = clean_mask(mask)
 
-    if len(candidates) == 0:
-        log("WARNUNG: Keine Kandidaten gefunden!")
+        candidates = find_candidates(mask, color)
+        all_candidates.extend(candidates)
+        log(f"Kandidaten ({ore}): {len(candidates)}")
 
-    # 6. Template laden
-    log("Lade Template...")
-    template = load_template(TEMPLATE_PATH)
-    log("Template geladen")
+        if len(candidates) == 0:
+            continue
 
-    # 7. Detection
-    log("Starte Template Matching...")
-    detections = detect_diamond(
-        img,
-        candidates,
-        template
-    )
+        template_bank = _load_template_bank_for_ore(ore)
+        if len(template_bank) == 0:
+            log(f"WARNUNG: Keine Templates für {ore} gefunden")
+            continue
 
-    log(f"Diamanten erkannt: {len(detections)}")
+        for name, tpl in template_bank.items():
+            log_debug(f"Template {name} shape: {tpl.shape}")
+
+        raw = detect_with_template_bank(
+            img,
+            candidates,
+            template_bank,
+            label=_ore_label(ore),
+            threshold=ORE_MATCH_THRESHOLD.get(ore, 0.8),
+            brightness_split=95.0,
+        )
+        log(f"Rohtreffer ({ore}): {len(raw)}")
+        all_raw_detections.extend(raw)
+
+    detections = non_max_suppression(all_raw_detections, iou_threshold=0.25)
+    log(f"Rohtreffer gesamt: {len(all_raw_detections)} | nach NMS: {len(detections)}")
 
     if len(detections) == 0:
         log("WARNUNG: Keine Matches gefunden (Threshold evtl. zu hoch)")
@@ -97,7 +131,7 @@ def main():
 
         debug_img = draw_debug(
             img,
-            candidates,
+            all_candidates,
             detections
         )
 

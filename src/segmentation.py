@@ -3,14 +3,39 @@ import cv2
 import numpy as np
 
 
-# feste Farbbereiche für Diamant-Erz in HSV
-# cv2.inRange nutzt diese Werte zur Pixel-Selektion
+# HSV-Bereiche je Erz (Hue 0-179 in OpenCV).
+# Die Bereiche sind bewusst etwas breit gewählt und werden
+# anschließend durch Template-Matching validiert.
 ORE_CONFIG = {
-    "diamond": {
-        "lower": [80, 50, 50],
-        "upper": [105, 255, 255]
-    }
+    "coal": [([0, 0, 0], [179, 70, 135])],
+    "copper": [([5, 55, 40], [23, 255, 255])],
+    "diamond": [([75, 28, 30], [112, 255, 255])],
+    "emerald": [([45, 35, 30], [85, 255, 255])],
+    "gold": [([15, 40, 40], [42, 255, 255])],
+    "iron": [([8, 12, 45], [28, 140, 255])],
+    "lapis": [([95, 45, 30], [135, 255, 255])],
+    # Rot hat einen Hue-Wraparound (nahe 0 und 179)
+    "redstone": [([0, 55, 35], [10, 255, 255]), ([165, 55, 35], [179, 255, 255])],
 }
+
+
+def supported_ores():
+    return list(ORE_CONFIG.keys())
+
+
+def use_edges_for_ore(ore):
+    # Coal ist sehr dunkel und wird durch OR mit Kanten zu breit;
+    # hier hilft die reine Farbsegmentierung besser.
+    return ore != "coal"
+
+
+def refine_mask_for_ore(ore, mask):
+    if ore == "coal":
+        kernel = np.ones((5, 5), np.uint8)
+        mask = cv2.dilate(mask, kernel, iterations=1)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    return mask
 
 
 def color_mask(hsv, ore="diamond"):
@@ -18,12 +43,15 @@ def color_mask(hsv, ore="diamond"):
     # Pixel im Bereich → 255 (weiß)
     # andere → 0 (schwarz)
 
-    cfg = ORE_CONFIG[ore]
+    ranges = ORE_CONFIG[ore]
 
-    lower = np.array(cfg["lower"])
-    upper = np.array(cfg["upper"])
+    out = np.zeros(hsv.shape[:2], dtype=np.uint8)
+    for lower, upper in ranges:
+        lo = np.array(lower, dtype=np.uint8)
+        hi = np.array(upper, dtype=np.uint8)
+        out = cv2.bitwise_or(out, cv2.inRange(hsv, lo, hi))
 
-    return cv2.inRange(hsv, lower, upper)
+    return out
 
 
 def edge_mask(img):
@@ -37,7 +65,7 @@ def edge_mask(img):
 
 
 def hybrid_mask(color, edges):
-    # bitwise_or kombiniert zwei Masken
-    # Pixel werden markiert, wenn sie in einer der beiden Masken aktiv sind
-
+    # Standard: kombiniere Farb-Maske und Kanten-Maske.
+    # Wir verwenden bitwise_or, die später durch Kandidaten-Filterung
+    # (z.B. Anteil an Farb-Pixeln) weiter bereinigt wird.
     return cv2.bitwise_or(color, edges)

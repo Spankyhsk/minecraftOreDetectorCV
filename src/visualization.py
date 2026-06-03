@@ -53,7 +53,7 @@ def draw_debug(img, candidates, detections):
             (x, y - 5),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.5,
-            (0, 255, 0),
+            (0, 0, 255),
             1
         )
 
