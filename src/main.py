@@ -47,7 +47,7 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 IMAGE_PATH = os.path.join(
     DATA_DIR,
     "screenshots",
-    "test1.png"
+    "test17.png"
 )
 
 # Ordner mit den Erz-Templates
