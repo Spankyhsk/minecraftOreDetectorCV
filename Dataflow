@@ -1,0 +1,72 @@
+1. Bild Laden
+
+2. CLAHE auf Bild anwenden
+
+2.1 Bild in LAB Farbraum umwandeln, damit nur der L-Kanal bearbeitet werden kann (Helligkeit)
+2.2 L aus dem LAB Farbraum extrahieren
+2.3 CLAHE erstellen mit Kontrast limitierung von 2.0 und einem 8x8 Gitter
+2.4 CLAHE auf L anwenden
+2.5 LAB Farbraum wieder zusammenfügen (merge)
+2.6 LAB zurück in BGR Farbraum umwandeln und returnen
+(Das Bild ist jetzt kontrastverstärkt, siehe Output dir)
+
+3.1 CLAHE Bild wird mit einem 3x3 Gaußschen Weichzeichner minimal unscharf gemacht und returned.
+(Das Bild ist jetzt unscharf gemacht, siehe Output dir)
+
+4.1 Gauß Bild von BGR zu HSV umwandeln und returnen.
+(Das Bild ist jetzt HSV (nicht wundern wenn die Farben jetzt Kurios aussehen), siehe Output dir)
+
+5.1 Bild wird von HSV zu Gray Farbraum umgewandelt und mit Canny Kanten erkannt. Das Kanten Bild wird zurückgegeben.
+(Das Bild ist jetzt Gray Farbraum, siehe Output dir)
+
+6 alle Erze durchloopen
+
+6.1 color_mask
+6.1.1 mit dem HSV Farbraum (ohne Kantenerkennung) und dem jeweiligen Erz aufrufen
+6.1.2 Erz Config laden
+6.1.3 Farbbereiche (plural, da so besser die bereiche abgedeckt werden können) mit bitwise_or prüfen ob diese im gegebenen Pixel liegen.
+6.1.4 Hat der aktuell betrachtete Pixel den Farbwert innerhalb des Farbbereichs wird dieser im out auf 255 (weiß) gesetzt ansonsten auf 0 (schwarz)
+6.1.5 Es entsteht ein Schwarz-Weiss Bild, das hell an den stellen ist, die im Farbbereich gemacht wurden. Siehe Output dir (Coal funktioniert grade besonders schlecht)
+
+6.2 hybrid_mask
+6.2.1 color_mask und erkannte Kannten werden bitwise_or zusammengefügt und das Ergebnis zurückgegeben. Siehe Output dir
+
+6.3 refine_mask_for_ore wird nur für Coal genutzt, bringt allerdings noch nichts, da Coal in den Masken davor schon nicht gut performt
+
+6.4 clean_mask
+6.4.1 Bereinigt eine binäre Segmentierungsmaske von Bildrauschen. Siehe Output dir
+
+7 Kandidaten ermitteln
+
+7.1 Kandidaten finden
+7.1.1 Konturen im clean_mask Bild finden
+7.1.2 Bildgrößen definieren basieren auf der Bildauflösung
+
+7.2.1 über die Konturen iterieren.
+7.2.2 Position der aktuellen Kontur ermitteln
+7.2.3 Abbrechen, wenn die Kontur größer oder kleiner der definierten Bildgrößen ist
+
+7.3.1 Maske auf den Konturbereich beschränken
+7.3.2 Bestimmen wie hoch der Weißanteil der Maske in diesem Bereich ist. Und wie hoch die density ist (hohe density sind viele Weiße pixel)
+7.3.3 Die Kontur wird zu den Kandidaten hinzugefügt, wenn es mindestens 28 weiße px gibt oder die density über 3% beträgt.
+7.3.4 Wenn alle Konturen bearbeitet wurden, wird geprüft ob diese sich überlappen oder sehr nahe an einander liegen. In dem Fall werden sie vereinigt und als neue Liste zurück gegeben
+7.3.5 Zum schluss wird erneut geprüft ob die größe der Konturbereiche Sinn ergibt.
+
+8.1 Template Bilder laden (_load_template_bank_for_ore)
+8.2.1 Template Matching (detect_with_template_bank)
+8.2.2 Über alle Kandidaten pro Erz iterieren
+8.2.3 RoI (Region of Interest) ist gleich der aktuelle Kandidatenbereich - wird in Gray Farbbereich konvertiert und der durchschnittliche Grauwert ermittelt
+8.2.4 Basierend auf dem durchschnittlichen Grauwert wird entschieden ob das (die) Template(s) für Stone oder Deepslate gebraucht wird (werden, sollte es mehrere pro typ geben)
+8.2.5 Bestimmen, welches Template am besten passt (sollte es mehrere pro typ geben).
+* Siehe weiter unten für weitere Informationen, da dies bei uns aktuell nicht notwendig ist, da wir nur ein Template pro Typ haben.
+8.2.6 Template Erz bestimmen (Bisschen schlecht gecoded - unübersichtlich verwirrend)
+8.2.7 Für die RoI wird ein Score erstellt, wie gut die Farben in dem bereich zu der Erz farbe passen.
+Dafür wird bestimmt, wie weit die Farben in der RoI von dem mittleren Farbwert entfernt sind. Je näher, desto besser der Score.
+Zusätzlich wird geprüft ob die Saturation und Value in einem Sinnvollen bereich liegen.
+8.2.8 Die Detection wird akzeptiert, wenn der Score oberhalb eines gewissen Threasholds liegt und die Farbe eine mindest Kompatibilität aufweist.
+
+9.1 non_max_suppression aller Detections. Also alle Detectionen, die zu einem gewissen Wert überlappen, werden zu einer einzigen Detection reduziert. (Die erste Detection wird beibehalten, alle anderen werden verworfen)
+
+
+
+
