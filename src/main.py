@@ -102,105 +102,95 @@ def _load_template_bank_for_ore(ore_key: str) -> Dict[str, np.ndarray]:
     return bank
 
 
-def main() -> None:
-    """Hauptmethode zum Ausführen der kompletten Computer-Vision-Pipeline."""
-    log("Minecraft Ore Detector CV gestartet")
+def run_pipeline(img):
+    """
+    Führt die komplette Ore-Detection auf einem bereits geladenen Bild aus.
 
-    # ==========================================
-    # 1. Bild laden
-    # ==========================================
-    log(f"Lade Bild aus '{IMAGE_PATH}'...")
-    img = load_image(IMAGE_PATH)
-    log("Bild erfolgreich geladen.")
+    Parameters
+    ----------
+    img : np.ndarray
 
-    # ==========================================
-    # 2. Vorverarbeitung (Preprocessing)
-    # ==========================================
-    log("Starte Vorverarbeitung (CLAHE-Kontrastausgleich + Gauß-Glättung)...")
+    Returns
+    -------
+    np.ndarray
+        Fertiges Ausgabebild mit Bounding Boxes
+    """
+
     img_preprocessed = apply_clahe(img)
     img_preprocessed = blur(img_preprocessed)
-    log("Vorverarbeitung abgeschlossen.")
 
-    # ==========================================
-    # 3. Maskenerzeugung (HSV + Kanten)
-    # ==========================================
-    log("Erzeuge HSV-Farbbilder und Kantenmasken...")
     hsv = to_hsv(img_preprocessed)
     edges = edge_mask(img_preprocessed)
 
     all_raw_detections = []
     all_candidates = []
 
-    # ==========================================
-    # 4. Iteration über alle unterstützten Erztypen
-    # ==========================================
     for ore in supported_ores():
-        log(f"--- Verarbeite Erztyp: {ore} ---")
 
-        # 4.1 Segmentierung & Kombination
-        # Farbmaske im HSV-Farbraum erzeugen
         color = color_mask(hsv, ore)
-        # Hybride Maske mit Canny-Kanten erstellen (außer bei Kohle)
-        mask = hybrid_mask(color, edges) if use_edges_for_ore(ore) else color
-        # Erzspezifische Anpassungen vornehmen
+
+        mask = (
+            hybrid_mask(color, edges)
+            if use_edges_for_ore(ore)
+            else color
+        )
+
         mask = refine_mask_for_ore(ore, mask)
-        # Morphologische Rauschunterdrückung (Opening/Closing)
         mask = clean_mask(mask)
 
-        # 4.2 Kandidatengewinnung (Konturanalyse)
         candidates = find_candidates(mask, color)
+
         all_candidates.extend(candidates)
-        log(f"Kandidaten gefunden für '{ore}': {len(candidates)}")
 
         if len(candidates) == 0:
             continue
 
-        # 4.3 Templates laden
         template_bank = _load_template_bank_for_ore(ore)
+
         if len(template_bank) == 0:
-            log(f"WARNUNG: Keine Templates für '{ore}' in '{TEMPLATES_DIR}' gefunden.")
             continue
 
-        for name, tpl in template_bank.items():
-            log_debug(f"Template '{name}' geladen (Shape: {tpl.shape})")
-
-        # 4.4 Template-Matching auf den Kandidaten-ROIs ausführen
         raw = detect_with_template_bank(
             img,
             candidates,
             template_bank,
             label=_ore_label(ore),
             threshold=ORE_MATCH_THRESHOLD.get(ore, 0.8),
-            brightness_split=95.0,  # Steuert die Aufteilung in Stone vs. Deepslate
+            brightness_split=95.0
         )
-        log(f"Rohe Treffer für '{ore}': {len(raw)}")
+
         all_raw_detections.extend(raw)
 
-    # ==========================================
-    # 5. Non-Maximum Suppression (NMS)
-    # ==========================================
-    # Bereinigt überlappende Bounding Boxes, um Doppel-Detektionen zu vermeiden
-    detections = non_max_suppression(all_raw_detections, iou_threshold=0.25)
-    log(f"Pipeline beendet. Rohtreffer gesamt: {len(all_raw_detections)} | Nach NMS gefiltert: {len(detections)}")
+    detections = non_max_suppression(
+        all_raw_detections,
+        iou_threshold=0.25
+    )
 
-    if len(detections) == 0:
-        log("WARNUNG: Keine Erze im Bild gefunden (Eventuell Thresholds anpassen).")
-
-    # ==========================================
-    # 6. Visualisierung & GUI-Ausgabe
-    # ==========================================
     if DEBUG:
-        log("Debug-Modus aktiv: Zeichne Bounding Boxes der Roh-Kandidaten (Blau) + Treffer (Grün)")
-        debug_img = draw_debug(
+        return draw_debug(
             img,
             all_candidates,
             detections
         )
-        show(debug_img)
-    else:
-        log("Erzeuge Standard-Ausgabebild (nur final erkannte Erze)...")
-        out = draw(img, detections)
-        show(out)
+
+    return draw(
+        img,
+        detections
+    )
+
+def main():
+
+    log("Minecraft Ore Detector CV gestartet")
+
+    log(f"Lade Bild aus '{IMAGE_PATH}'...")
+
+    img = load_image(IMAGE_PATH)
+
+    log("Bild erfolgreich geladen.")
+
+    output = run_pipeline(img)
+
+    show(output)
 
     log("Programm beendet.")
 
