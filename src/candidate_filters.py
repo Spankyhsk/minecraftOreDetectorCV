@@ -173,6 +173,7 @@ class CoalDetector:
             dark_ratio = float(np.mean(roi_gray < 145))
             low_sat_ratio = float(np.mean(roi_hsv[:, :, 1] < 120))
             texture_strength = float(np.std(roi_gray))
+            edge_density = self._edge_density(roi_gray)
             colored_ratio = self._colored_ore_ratio_for_coal_reject(roi_bgr)
 
             if colored_ratio > 0.080:
@@ -184,6 +185,8 @@ class CoalDetector:
             if very_dark_ratio < 0.006 and dark_ratio < 0.070:
                 continue
             if texture_strength < 5.5:
+                continue
+            if edge_density < 0.045:
                 continue
 
             candidates.append((new_x, new_y, new_w, new_h))
@@ -215,12 +218,15 @@ class CoalDetector:
             very_dark_ratio = float(np.mean(roi_gray < 85))
             dark_ratio = float(np.mean(roi_gray < 145))
             texture_strength = float(np.std(roi_gray))
+            edge_density = self._edge_density(roi_gray)
 
             if low_sat_ratio < 0.70:
                 continue
             if very_dark_ratio < 0.006 and dark_ratio < 0.070:
                 continue
             if texture_strength < 5.5:
+                continue
+            if edge_density < 0.045:
                 continue
 
             score = (
@@ -239,6 +245,13 @@ class CoalDetector:
             })
 
         return detections
+
+    def _edge_density(self, roi_gray: np.ndarray) -> float:
+        if roi_gray.size == 0:
+            return 0.0
+
+        edges = cv2.Canny(roi_gray, 50, 150)
+        return float(np.mean(edges > 0))
 
     def _colored_ore_ratio_for_coal_reject(self, roi_bgr: np.ndarray) -> float:
         if roi_bgr.size == 0:
@@ -303,4 +316,3 @@ class CoalDetector:
             return 0.0
 
         return inter_area / float(union)
-

@@ -151,7 +151,7 @@ class OreDetector:
             all_raw_detections,
             iou_threshold=self.config.nms_iou_threshold
         )
-        detections = self._filter_low_confidence_outputs(detections)
+        detections = self._filter_low_confidence_outputs(detections, img)
 
         return OreDetectionResult(
             image=img,
@@ -162,7 +162,7 @@ class OreDetector:
     def _ore_label(self, ore_key: str) -> str:
         return ore_key.capitalize()
 
-    def _filter_low_confidence_outputs(self, detections: List[Dict]) -> List[Dict]:
+    def _filter_low_confidence_outputs(self, detections: List[Dict], img: np.ndarray) -> List[Dict]:
         """
         Entfernt erzspezifische Low-Confidence-Ausgaben nach NMS.
 
@@ -178,7 +178,45 @@ class OreDetector:
 
             if detection.get("score", 0.0) < min_score:
                 continue
+            if not self._passes_roi_plausibility(detection, img):
+                continue
 
             filtered.append(detection)
 
         return filtered
+
+    def _passes_roi_plausibility(self, detection: Dict, img: np.ndarray) -> bool:
+        """
+        Prueft einfache klassische ROI-Merkmale fuer bekannte FP-Muster.
+        """
+
+        label = detection["label"].lower()
+        x, y, w, h = detection["box"]
+        roi = img[y:y + h, x:x + w]
+
+        if roi.size == 0:
+            return False
+
+        hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+        gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray, 50, 150)
+
+        s_mean = float(hsv[:, :, 1].mean())
+        v_mean = float(hsv[:, :, 2].mean())
+        texture_strength = float(gray.std())
+        edge_density = float(np.mean(edges > 0))
+        aspect_ratio = max(w / float(h), h / float(w))
+
+        if label == "copper":
+            return edge_density >= 0.12 and v_mean >= 75.0 and s_mean <= 85.0
+
+        if label == "diamond":
+            return edge_density >= 0.08 and v_mean >= 80.0 and texture_strength >= 16.0
+
+        if label == "iron":
+            return edge_density >= 0.10 and v_mean >= 80.0 and s_mean <= 80.0
+
+        if label == "lapis":
+            return edge_density >= 0.08 and v_mean >= 80.0 and aspect_ratio <= 1.50
+
+        return True
