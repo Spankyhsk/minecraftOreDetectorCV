@@ -85,6 +85,18 @@
         "original_kind": "tp",
         "score": 0.6387432680804276
       },
+      "diamond:797,425,130,129": {
+        "box": [
+          797,
+          425,
+          130,
+          129
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6664465895193618
+      },
       "diamond:819,444,85,88": {
         "box": [
           819,
@@ -1575,6 +1587,18 @@
   },
   "test18.png": {
     "detections": {
+      "diamond:969,741,179,200": {
+        "box": [
+          969,
+          741,
+          179,
+          200
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.9004183732435463
+      },
       "diamond:990,761,136,124": {
         "box": [
           990,
@@ -1806,6 +1830,18 @@
         "label": "copper",
         "original_kind": "tp",
         "score": 0.616488024788758
+      },
+      "diamond:743,365,130,131": {
+        "box": [
+          743,
+          365,
+          130,
+          131
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.702892636573028
       },
       "diamond:759,383,92,91": {
         "box": [
@@ -2149,6 +2185,18 @@
         "original_kind": "fp",
         "score": 0.6918431125375247
       },
+      "diamond:524,338,230,223": {
+        "box": [
+          524,
+          338,
+          230,
+          223
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6918431125375247
+      },
       "diamond:849,228,323,368": {
         "box": [
           849,
@@ -2226,7 +2274,7 @@
           224,
           123
         ],
-        "decision": "missed",
+        "decision": "acceptable",
         "label": "diamond"
       }
     }

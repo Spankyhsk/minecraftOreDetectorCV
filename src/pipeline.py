@@ -159,6 +159,7 @@ class OreDetector:
         )
         detections = self._filter_low_confidence_outputs(detections, img)
         detections = self._merge_close_diamond_detections(detections)
+        detections = self._expand_small_diamond_cluster_boxes(detections, img)
 
         return OreDetectionResult(
             image=img,
@@ -315,3 +316,71 @@ class OreDetector:
         merged["box"] = (x1, y1, x2 - x1, y2 - y1)
         merged["score"] = max(det_a.get("score", 0.0), det_b.get("score", 0.0))
         return merged
+
+    def _expand_small_diamond_cluster_boxes(self, detections: List[Dict], img: np.ndarray) -> List[Dict]:
+        expanded = []
+
+        for detection in detections:
+            if detection["label"].lower() != "diamond":
+                expanded.append(detection)
+                continue
+
+            x, y, w, h = detection["box"]
+            if max(w, h) > 140:
+                expanded.append(detection)
+                continue
+
+            new_box = self._diamond_color_cluster_box((x, y, w, h), img)
+            if new_box is None:
+                expanded.append(detection)
+                continue
+
+            updated = dict(detection)
+            updated["box"] = new_box
+            expanded.append(updated)
+
+        return expanded
+
+    def _diamond_color_cluster_box(self, box: Box, img: np.ndarray) -> Optional[Box]:
+        x, y, w, h = box
+        img_h, img_w = img.shape[:2]
+        pad = 140
+
+        x0 = max(0, x - pad)
+        y0 = max(0, y - pad)
+        x1 = min(img_w, x + w + pad)
+        y1 = min(img_h, y + h + pad)
+
+        local_img = img[y0:y1, x0:x1]
+        if local_img.size == 0:
+            return None
+
+        local_color = _color_support_mask("diamond", local_img)
+        if cv2.countNonZero(local_color) < 80:
+            return None
+
+        grouped = cv2.dilate(local_color, np.ones((25, 25), np.uint8), iterations=2)
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(grouped, connectivity=8)
+
+        center_x = x + w / 2.0 - x0
+        center_y = y + h / 2.0 - y0
+
+        for i in range(1, num_labels):
+            lx = int(stats[i, cv2.CC_STAT_LEFT])
+            ly = int(stats[i, cv2.CC_STAT_TOP])
+            lw = int(stats[i, cv2.CC_STAT_WIDTH])
+            lh = int(stats[i, cv2.CC_STAT_HEIGHT])
+
+            if not (lx <= center_x <= lx + lw and ly <= center_y <= ly + lh):
+                continue
+
+            if lw < w or lh < h:
+                return None
+            if lw > 320 or lh > 260:
+                return None
+            if max(lw / float(max(lh, 1)), lh / float(max(lw, 1))) > 1.80:
+                return None
+
+            return x0 + lx, y0 + ly, lw, lh
+
+        return None
