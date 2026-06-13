@@ -346,7 +346,7 @@
           97,
           94
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "diamond"
       },
       "lapis:1015,436,102,101": {
@@ -356,7 +356,7 @@
           102,
           101
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "lapis"
       }
     }
@@ -420,7 +420,7 @@
           91,
           102
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:866,324,58,117": {
@@ -430,7 +430,7 @@
           58,
           117
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:920,314,54,112": {
@@ -440,7 +440,7 @@
           54,
           112
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "copper:778,216,90,150": {
@@ -450,7 +450,7 @@
           90,
           150
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "copper"
       }
     }
@@ -646,7 +646,17 @@
           210,
           204
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1436,441,197,82": {
+        "box": [
+          1436,
+          441,
+          197,
+          82
+        ],
+        "decision": "missed",
         "label": "coal"
       },
       "coal:1610,242,305,168": {
@@ -656,7 +666,17 @@
           305,
           168
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1639,384,270,130": {
+        "box": [
+          1639,
+          384,
+          270,
+          130
+        ],
+        "decision": "missed",
         "label": "coal"
       },
       "copper:1222,190,155,174": {
@@ -666,7 +686,17 @@
           155,
           174
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "copper"
+      },
+      "copper:1245,328,149,101": {
+        "box": [
+          1245,
+          328,
+          149,
+          101
+        ],
+        "decision": "missed",
         "label": "copper"
       }
     }
@@ -766,7 +796,17 @@
           281,
           224
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1710,331,202,143": {
+        "box": [
+          1710,
+          331,
+          202,
+          143
+        ],
+        "decision": "missed",
         "label": "coal"
       },
       "copper:1418,52,208,242": {
@@ -776,7 +816,17 @@
           208,
           242
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "copper"
+      },
+      "copper:1460,207,217,149": {
+        "box": [
+          1460,
+          207,
+          217,
+          149
+        ],
+        "decision": "missed",
         "label": "copper"
       }
     }
@@ -864,7 +914,7 @@
           156,
           248
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:1214,272,190,224": {
@@ -874,7 +924,7 @@
           190,
           224
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:1326,505,254,198": {
@@ -884,7 +934,7 @@
           254,
           198
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       }
     }
@@ -960,7 +1010,7 @@
           181,
           268
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:1198,272,216,229": {
@@ -970,7 +1020,7 @@
           216,
           229
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:1324,508,262,189": {
@@ -980,7 +1030,7 @@
           262,
           189
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       }
     }
@@ -1037,6 +1087,16 @@
       }
     },
     "misses": {
+      "copper:100,583,382,72": {
+        "box": [
+          100,
+          583,
+          382,
+          72
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
       "copper:122,658,397,249": {
         "box": [
           122,
@@ -1044,7 +1104,7 @@
           397,
           249
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "copper"
       }
     }
@@ -1084,7 +1144,7 @@
           148,
           134
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:642,394,123,111": {
@@ -1094,7 +1154,7 @@
           123,
           111
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:764,519,104,87": {
@@ -1104,7 +1164,7 @@
           104,
           87
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:876,403,116,110": {
@@ -1114,7 +1174,7 @@
           116,
           110
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       }
     }
@@ -1478,7 +1538,37 @@
           130,
           131
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:852,421,117,32": {
+        "box": [
+          852,
+          421,
+          117,
+          32
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:964,454,122,74": {
+        "box": [
+          964,
+          454,
+          122,
+          74
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:970,325,114,102": {
+        "box": [
+          970,
+          325,
+          114,
+          102
+        ],
+        "decision": "missed",
         "label": "coal"
       }
     }
@@ -1518,7 +1608,17 @@
           87,
           82
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:798,276,85,31": {
+        "box": [
+          798,
+          276,
+          85,
+          31
+        ],
+        "decision": "missed",
         "label": "coal"
       },
       "copper:978,152,97,89": {
@@ -1528,8 +1628,28 @@
           97,
           89
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "copper"
+      },
+      "copper:978,247,94,32": {
+        "box": [
+          978,
+          247,
+          94,
+          32
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "diamond:1000,762,134,26": {
+        "box": [
+          1000,
+          762,
+          134,
+          26
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
       },
       "diamond:1004,795,136,136": {
         "box": [
@@ -1548,8 +1668,28 @@
           120,
           112
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "emerald"
+      },
+      "emerald:768,736,103,36": {
+        "box": [
+          768,
+          736,
+          103,
+          36
+        ],
+        "decision": "missed",
+        "label": "emerald"
+      },
+      "gold:1105,537,31,119": {
+        "box": [
+          1105,
+          537,
+          31,
+          119
+        ],
+        "decision": "missed",
+        "label": "gold"
       },
       "gold:1136,528,132,128": {
         "box": [
@@ -1558,7 +1698,7 @@
           132,
           128
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "gold"
       },
       "iron:793,451,86,89": {
@@ -1568,7 +1708,7 @@
           86,
           89
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "lapis:880,370,89,77": {
@@ -1578,7 +1718,7 @@
           89,
           77
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "lapis"
       },
       "redstone:976,441,102,88": {
@@ -1588,7 +1728,7 @@
           102,
           88
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "redstone"
       }
     }
@@ -1928,7 +2068,7 @@
           102,
           102
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "diamond"
       },
       "lapis:962,379,101,99": {
@@ -2004,7 +2144,7 @@
           105,
           105
         ],
-        "decision": "ignore",
+        "decision": "invalid",
         "label": "diamond",
         "original_kind": "fp",
         "score": 0.6918431125375247
@@ -2066,7 +2206,7 @@
           301,
           202
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "diamond"
       },
       "diamond:867,374,288,226": {
@@ -2086,7 +2226,7 @@
           224,
           123
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "diamond"
       }
     }
@@ -2104,6 +2244,18 @@
         "label": "coal",
         "original_kind": "fp",
         "score": 0.9603011252488171
+      }
+    },
+    "misses": {
+      "diamond:825,502,125,28": {
+        "box": [
+          825,
+          502,
+          125,
+          28
+        ],
+        "decision": "missed",
+        "label": "diamond"
       }
     }
   },
@@ -2219,6 +2371,46 @@
       }
     },
     "misses": {
+      "gold:621,620,101,34": {
+        "box": [
+          621,
+          620,
+          101,
+          34
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:626,654,125,48": {
+        "box": [
+          626,
+          654,
+          125,
+          48
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:724,603,98,43": {
+        "box": [
+          724,
+          603,
+          98,
+          43
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:751,637,102,50": {
+        "box": [
+          751,
+          637,
+          102,
+          50
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
       "iron:1117,298,200,238": {
         "box": [
           1117,
@@ -2226,7 +2418,7 @@
           200,
           238
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:1125,559,180,306": {
@@ -2236,7 +2428,7 @@
           180,
           306
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:1128,58,246,225": {
@@ -2246,7 +2438,37 @@
           246,
           225
         ],
-        "decision": "acceptable",
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1321,585,348,348": {
+        "box": [
+          1321,
+          585,
+          348,
+          348
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1406,255,342,322": {
+        "box": [
+          1406,
+          255,
+          342,
+          322
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1761,247,126,315": {
+        "box": [
+          1761,
+          247,
+          126,
+          315
+        ],
+        "decision": "missed",
         "label": "iron"
       },
       "iron:938,547,160,311": {
@@ -2256,7 +2478,7 @@
           160,
           311
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:972,492,288,100": {
@@ -2266,7 +2488,7 @@
           288,
           100
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       }
     }
@@ -2287,6 +2509,46 @@
       }
     },
     "misses": {
+      "gold:451,649,174,83": {
+        "box": [
+          451,
+          649,
+          174,
+          83
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:469,607,156,54": {
+        "box": [
+          469,
+          607,
+          156,
+          54
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:627,631,73,60": {
+        "box": [
+          627,
+          631,
+          73,
+          60
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:631,567,103,65": {
+        "box": [
+          631,
+          567,
+          103,
+          65
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
       "iron:1356,40,514,938": {
         "box": [
           1356,
@@ -2294,7 +2556,7 @@
           514,
           938
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       },
       "iron:751,154,488,786": {
@@ -2304,7 +2566,7 @@
           488,
           786
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "iron"
       }
     }
@@ -2356,7 +2618,7 @@
           151,
           148
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:324,522,165,169": {
@@ -2366,7 +2628,7 @@
           165,
           169
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:426,212,154,156": {
@@ -2376,7 +2638,7 @@
           154,
           156
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:460,355,160,144": {
@@ -2386,7 +2648,7 @@
           160,
           144
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:486,489,165,163": {
@@ -2396,7 +2658,7 @@
           165,
           163
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       },
       "coal:597,360,126,110": {
@@ -2406,7 +2668,7 @@
           126,
           110
         ],
-        "decision": "acceptable",
+        "decision": "missed",
         "label": "coal"
       }
     }
