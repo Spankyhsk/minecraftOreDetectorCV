@@ -86,6 +86,67 @@ Für eine reine Konsolen-Auswertung ohne GUI:
 python3 src/eval_debug.py
 ```
 
+### Ground Truth / Regression Tests
+
+Manuelle Boxen werden in `data/annotations/ground_truth.json` gespeichert.
+Zum Eintragen gibt es ein kleines Zeichenwerkzeug:
+
+```bash
+python3 src/annotate.py --image test1.png
+```
+
+Bedienung im Fenster:
+
+- `1` bis `8`: Erzlabel wählen (`1=Coal`, `2=Copper`, `3=Diamond`, `4=Emerald`, `5=Gold`, `6=Iron`, `7=Lapis`, `8=Redstone`)
+- Linke Maustaste ziehen: Box zeichnen
+- Rechte Maustaste: vorhandene Box auswählen
+- `z`: letzte Box entfernen
+- `h`: ausgewählte Box als schwierig markieren; ohne Auswahl gilt `h` für neu gezeichnete Boxen
+- `i`: ausgewählte Box ignorieren
+- `s`: speichern
+- `q` oder `ESC`: speichern und schließen
+
+Die automatische Genauigkeitsmessung läuft danach mit:
+
+```bash
+python3 src/evaluate.py
+```
+
+Falls du die automatischen Treffer/Misses manuell gegenpruefen willst:
+
+```bash
+python3 src/review_detections.py
+```
+
+Das Review-Fenster zeigt nacheinander `TP`, `FP` und `FN`-Faelle:
+
+- `y`: Fall als gut/korrekt markieren
+- `n`: Fall als schlecht/falsch markieren
+- `i`: Detektion ignorieren bzw. verpassten Fall als akzeptabel markieren
+- `s`: manuelle Entscheidung loeschen/ueberspringen
+- `a` / `d`: vorheriger / naechster Fall
+- `q` oder `ESC`: speichern und schliessen
+
+Die Entscheidungen landen in `data/annotations/manual_review.json`.
+Die Evaluation nutzt sie mit:
+
+```bash
+python3 src/evaluate.py --review data/annotations/manual_review.json
+```
+
+Standardmäßig werden `difficulty: "hard"` und `ignore: true` nicht streng bewertet.
+Hard-Boxen können optional mit niedrigerer IoU in die Metrik aufgenommen werden:
+
+```bash
+python3 src/evaluate.py --include-hard --hard-iou 0.20
+```
+
+Optional kann ein Mindestwert für Regression-Checks gesetzt werden:
+
+```bash
+python3 src/evaluate.py --min-f1 0.65
+```
+
 Start der normalen Pipeline mit Visualisierung:
 
 ```bash
