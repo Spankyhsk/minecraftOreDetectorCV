@@ -15,7 +15,7 @@ from config import OreDetectorConfig
 from detection import detect_with_template_bank, find_candidates, non_max_suppression
 from mask_filters import MaskRegionFilter
 from morphology import clean_mask
-from preprocessing import apply_clahe, blur, to_hsv
+from preprocessing import match_scene_brightness, to_hsv
 from segmentation import (
     color_mask,
     edge_mask,
@@ -92,7 +92,7 @@ class OreDetector:
         Fuehrt die Pipeline aus und gibt strukturierte Zwischenergebnisse zurueck.
         """
 
-        img_preprocessed = blur(apply_clahe(img))
+        img_preprocessed = match_scene_brightness(img)
         hsv = to_hsv(img_preprocessed)
 
         edges = edge_mask(img_preprocessed)
