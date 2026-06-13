@@ -53,13 +53,24 @@ Input Bild
 ### Aktueller Ablauf im Code
 
 1. `src/main.py` laden und starten.
-2. Screenshot wird mit CLAHE + Blur vorverarbeitet.
-3. Für jede Overworld-Erzfamilie wird eine HSV-Maske mit Kantenmaske kombiniert.
-4. Kandidaten werden gefunden, gefiltert und nahe Boxen werden gemerged.
-5. Für jeden Erztyp wird die passende Template-Bank aus `data/templates/` geladen
+2. `OreDetector` aus `src/pipeline.py` steuert die komplette Pipeline.
+3. Screenshot wird mit CLAHE + Blur vorverarbeitet.
+4. Für jede Overworld-Erzfamilie wird eine HSV-Maske mit Kantenmaske kombiniert.
+5. Kandidaten werden gefunden, gefiltert und nahe Boxen werden gemerged.
+6. Für jeden Erztyp wird die passende Template-Bank aus `data/templates/` geladen
    (z. B. `diamond_ore.png` und `diamond_deepslate_ore.png`).
-6. Für jeden Kandidaten wird Multi-Scale-Template-Matching ausgeführt.
-7. Überlappende Doppel-Treffer werden per NMS entfernt.
+7. Für jeden Kandidaten wird Multi-Scale-Template-Matching ausgeführt.
+8. Überlappende Doppel-Treffer werden per NMS entfernt.
+
+### Code-Struktur
+
+- `src/main.py`: schlanker Einstiegspunkt und kompatibler `run_pipeline`-Wrapper.
+- `src/pipeline.py`: zentrale `OreDetector`-Klasse.
+- `src/config.py`: Pfade, Debug-Schalter und Matching-Thresholds.
+- `src/mask_filters.py`: HUD-, Wasser- und Großflächenfilter.
+- `src/candidate_filters.py`: Sonderfälle für Coal und Diamond-Kandidaten.
+- `src/template_repository.py`: Laden und Caching der Template-Banks.
+- `src/segmentation.py`, `src/morphology.py`, `src/detection.py`: klassische Bildverarbeitungsbausteine.
 
 ### Hinweis zu Templates
 
