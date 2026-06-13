@@ -1483,6 +1483,104 @@
       }
     }
   },
+  "test18.png": {
+    "detections": {
+      "redstone:340,556,170,136": {
+        "box": [
+          340,
+          556,
+          170,
+          136
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6806940311772933
+      }
+    },
+    "misses": {
+      "coal:795,190,87,82": {
+        "box": [
+          795,
+          190,
+          87,
+          82
+        ],
+        "decision": "acceptable",
+        "label": "coal"
+      },
+      "copper:978,152,97,89": {
+        "box": [
+          978,
+          152,
+          97,
+          89
+        ],
+        "decision": "acceptable",
+        "label": "copper"
+      },
+      "diamond:1004,795,136,136": {
+        "box": [
+          1004,
+          795,
+          136,
+          136
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
+      },
+      "emerald:754,774,120,112": {
+        "box": [
+          754,
+          774,
+          120,
+          112
+        ],
+        "decision": "acceptable",
+        "label": "emerald"
+      },
+      "gold:1136,528,132,128": {
+        "box": [
+          1136,
+          528,
+          132,
+          128
+        ],
+        "decision": "acceptable",
+        "label": "gold"
+      },
+      "iron:793,451,86,89": {
+        "box": [
+          793,
+          451,
+          86,
+          89
+        ],
+        "decision": "acceptable",
+        "label": "iron"
+      },
+      "lapis:880,370,89,77": {
+        "box": [
+          880,
+          370,
+          89,
+          77
+        ],
+        "decision": "acceptable",
+        "label": "lapis"
+      },
+      "redstone:976,441,102,88": {
+        "box": [
+          976,
+          441,
+          102,
+          88
+        ],
+        "decision": "acceptable",
+        "label": "redstone"
+      }
+    }
+  },
   "test2.png": {
     "detections": {
       "coal:565,776,102,102": {
@@ -2261,16 +2359,6 @@
           489,
           165,
           163
-        ],
-        "decision": "acceptable",
-        "label": "coal"
-      },
-      "coal:597,360,126,110": {
-        "box": [
-          597,
-          360,
-          126,
-          110
         ],
         "decision": "acceptable",
         "label": "coal"
