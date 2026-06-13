@@ -14,55 +14,8 @@ import cv2
 import numpy as np
 from typing import List, Dict, Tuple, Optional
 
+from ore_rules import get_ore_rule
 from utils import log_debug
-
-
-# ==========================================
-# HSV-Farbbereiche für Plausibilitätsprüfung
-# ==========================================
-
-# NEU HINZUGEFÜGT:
-# Diese HSV-Bereiche werden in detection.py nur für die nachgelagerte Prüfung benutzt.
-# Die eigentliche Segmentierung passiert weiterhin in segmentation.py.
-#
-# Ziel:
-# Ein Kandidat soll nicht nur vom Template her passen, sondern auch farblich
-# plausibel zum jeweiligen Erz sein.
-ORE_HSV_RANGES = {
-    "coal": [
-        ([0, 0, 0], [179, 75, 105])
-    ],
-    "copper": [
-        ([5, 65, 35], [25, 255, 255]),
-        # NEU HINZUGEFÜGT:
-        # Copper-Templates enthalten neben Orange/Braun oft auch oxidierte
-        # grün-türkise Pixel. Diese werden nur in der Plausibilitätsprüfung
-        # benutzt, damit die echten Copper-Blöcke in Zeile 3 wieder erkannt werden.
-        ([70, 25, 25], [98, 255, 255])
-    ],
-    # GEÄNDERT:
-    # Diamond/Emerald minimal toleranter für dunkle Deepslate-Varianten.
-    # Die eigentliche Fehlalarmkontrolle passiert danach über Template + Copper-Veto.
-    "diamond": [
-        ([75, 24, 18], [112, 255, 255])
-    ],
-    "emerald": [
-        ([45, 28, 18], [85, 255, 255])
-    ],
-    "gold": [
-        ([15, 55, 40], [42, 255, 255])
-    ],
-    "iron": [
-        ([8, 25, 45], [30, 165, 255])
-    ],
-    "lapis": [
-        ([95, 50, 30], [135, 255, 255])
-    ],
-    "redstone": [
-        ([0, 65, 35], [10, 255, 255]),
-        ([165, 65, 35], [179, 255, 255])
-    ],
-}
 
 
 # NEU HINZUGEFÜGT:
@@ -128,7 +81,7 @@ def _color_support_mask(ore: str, roi_bgr: np.ndarray) -> np.ndarray:
 
     out = np.zeros(hsv.shape[:2], dtype=np.uint8)
 
-    for lower, upper in ORE_HSV_RANGES.get(ore, []):
+    for lower, upper in get_ore_rule(ore).plausibility_ranges:
         lo = np.array(lower, dtype=np.uint8)
         hi = np.array(upper, dtype=np.uint8)
 
@@ -250,18 +203,7 @@ def _min_color_support(ore: str) -> float:
         Mindest-Farbsupport.
     """
 
-    return {
-        "coal": 0.10,
-        "copper": 0.018,
-        # GEÄNDERT:
-        # Minimal niedriger, damit dunkle Deepslate-Diamond/Emerald-Pixel nicht herausfallen.
-        "diamond": 0.003,
-        "emerald": 0.003,
-        "gold": 0.006,
-        "iron": 0.014,
-        "lapis": 0.004,
-        "redstone": 0.004,
-    }.get(ore.lower(), 0.0)
+    return get_ore_rule(ore).min_color_support
 
 
 def _good_color_support(ore: str) -> float:
@@ -273,18 +215,7 @@ def _good_color_support(ore: str) -> float:
     etwas niedriger sein darf, wenn die Farbe sehr eindeutig ist.
     """
 
-    return {
-        "coal": 0.16,
-        "copper": 0.050,
-        # GEÄNDERT:
-        # Für dunkle Varianten genügt etwas weniger Farbsupport.
-        "diamond": 0.014,
-        "emerald": 0.014,
-        "gold": 0.025,
-        "iron": 0.045,
-        "lapis": 0.020,
-        "redstone": 0.020,
-    }.get(ore.lower(), 0.025)
+    return get_ore_rule(ore).good_color_support
 
 
 def _min_compatibility(ore: str) -> float:
@@ -306,16 +237,7 @@ def _min_compatibility(ore: str) -> float:
         Minimale Kompatibilität.
     """
 
-    return {
-        "coal": 0.75,
-        "copper": 0.32,
-        "diamond": 0.10,
-        "emerald": 0.10,
-        "gold": 0.14,
-        "iron": 0.26,
-        "lapis": 0.10,
-        "redstone": 0.10,
-    }.get(ore.lower(), 0.0)
+    return get_ore_rule(ore).min_compatibility
 
 
 def _color_compatibility(ore: str, roi_bgr: np.ndarray) -> float:

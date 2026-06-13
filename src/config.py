@@ -7,6 +7,8 @@ import os
 from dataclasses import dataclass, field
 from typing import Dict
 
+from ore_rules import min_detection_scores, ore_match_thresholds
+
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA_DIR = os.path.join(ROOT_DIR, "data")
@@ -25,17 +27,5 @@ class OreDetectorConfig:
     debug: bool = False
     save_debug_masks: bool = True
     nms_iou_threshold: float = 0.25
-    min_detection_scores: Dict[str, float] = field(default_factory=lambda: {
-        "gold": 0.82,
-        "redstone": 0.68,
-    })
-    ore_match_thresholds: Dict[str, float] = field(default_factory=lambda: {
-        "coal": 0.30,
-        "copper": 0.56,
-        "diamond": 0.55,
-        "emerald": 0.55,
-        "gold": 0.58,
-        "iron": 0.61,
-        "lapis": 0.50,
-        "redstone": 0.53,
-    })
+    min_detection_scores: Dict[str, float] = field(default_factory=min_detection_scores)
+    ore_match_thresholds: Dict[str, float] = field(default_factory=ore_match_thresholds)

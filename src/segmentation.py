@@ -9,33 +9,7 @@ import cv2
 import numpy as np
 from typing import List
 
-
-# HSV-Konfigurationsgrenzen für jedes Erz (OpenCV nutzt Hue: 0-179, Saturation: 0-255, Value: 0-255).
-# GEÄNDERT / ZURÜCKGESETZT:
-# Diese Werte entsprechen wieder dem stabileren Zustand vor der zu offenen letzten Version.
-# Besonders wichtig:
-# - Copper hat keinen zusätzlichen Grün/Türkis-Bereich mehr.
-# - Diamond/Emerald sind nicht mehr extrem breit gesetzt.
-# Dadurch entstehen deutlich weniger falsche Diamond-/Emerald-Treffer an Wand und Decke.
-ORE_CONFIG = {
-    "coal": [([0, 0, 0], [179, 85, 155])],
-    "copper": [
-        ([5, 45, 30], [30, 255, 255]),
-        ([70, 25, 25], [98, 255, 255])
-    ],
-    # GEÄNDERT:
-    # Minimal toleranter für dunkle Stone-/Deepslate-Varianten, aber nicht so breit
-    # wie die fehlerhafte Version mit vielen falschen Diamond-Treffern.
-    "diamond": [
-    ([75, 18, 14], [112, 255, 255]),   # normaler / heller Diamond
-    ([68, 10, 8], [118, 255, 125]),    # dunkler Diamond
-    ],
-    "emerald": [([45, 25, 18], [85, 255, 255])],
-    "gold": [([15, 40, 40], [42, 255, 255])],
-    "iron": [([8, 12, 45], [28, 140, 255])],
-    "lapis": [([95, 45, 30], [135, 255, 255])],
-    "redstone": [([0, 55, 35], [10, 255, 255]), ([165, 55, 35], [179, 255, 255])],
-}
+from ore_rules import get_ore_rule, supported_ores as _supported_ores
 
 
 def supported_ores() -> List[str]:
@@ -47,7 +21,7 @@ def supported_ores() -> List[str]:
     List[str]
         Die Liste der Erz-IDs (z.B. ["coal", "copper", "diamond", ...]).
     """
-    return list(ORE_CONFIG.keys())
+    return _supported_ores()
 
 
 def use_edges_for_ore(ore: str) -> bool:
@@ -69,7 +43,7 @@ def use_edges_for_ore(ore: str) -> bool:
     bool
         True, wenn eine hybride Maske (Farbe + Kanten) verwendet werden soll, sonst False.
     """
-    return ore != "coal"
+    return get_ore_rule(ore).use_edges
 
 
 def refine_mask_for_ore(ore: str, mask: np.ndarray) -> np.ndarray:
@@ -93,7 +67,7 @@ def refine_mask_for_ore(ore: str, mask: np.ndarray) -> np.ndarray:
     # GEÄNDERT:
     # Nur Diamond wird leicht verbunden.
     # Emerald bleibt unverändert, weil Emerald aktuell gut funktioniert.
-    elif ore == "diamond":
+    elif get_ore_rule(ore).connect_fragments:
         kernel = np.ones((3, 3), np.uint8)
 
         # Kleine Diamond-Farbinseln im dunklen Block verbinden
@@ -122,10 +96,7 @@ def color_mask(hsv: np.ndarray, ore: str = "diamond") -> np.ndarray:
     np.ndarray
         Die binäre Farbmaske (Wert 255 für passende Pixel, sonst 0).
     """
-    if ore not in ORE_CONFIG:
-        raise ValueError(f"Unbekanntes Erz '{ore}'. Unterstützt werden: {supported_ores()}")
-
-    ranges = ORE_CONFIG[ore]
+    ranges = get_ore_rule(ore).segmentation_ranges
 
     # Leere Ausgabemaske in der gleichen Breite und Höhe wie das Eingabebild anlegen
     out = np.zeros(hsv.shape[:2], dtype=np.uint8)
@@ -185,4 +156,3 @@ def hybrid_mask(color: np.ndarray, edges: np.ndarray) -> np.ndarray:
 
     # Farbmaske + relevante Kanten kombinieren
     return cv2.bitwise_or(color, edges_near_color)
-
