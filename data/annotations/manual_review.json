@@ -1485,6 +1485,18 @@
   },
   "test18.png": {
     "detections": {
+      "diamond:990,761,136,124": {
+        "box": [
+          990,
+          761,
+          136,
+          124
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.9004183732435463
+      },
       "redstone:340,556,170,136": {
         "box": [
           340,
@@ -1985,6 +1997,30 @@
   },
   "test4.png": {
     "detections": {
+      "diamond:509,428,105,105": {
+        "box": [
+          509,
+          428,
+          105,
+          105
+        ],
+        "decision": "ignore",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6918431125375247
+      },
+      "diamond:849,228,323,368": {
+        "box": [
+          849,
+          228,
+          323,
+          368
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.7019278042821556
+      },
       "gold:1000,377,39,21": {
         "box": [
           1000,
@@ -2359,6 +2395,16 @@
           489,
           165,
           163
+        ],
+        "decision": "acceptable",
+        "label": "coal"
+      },
+      "coal:597,360,126,110": {
+        "box": [
+          597,
+          360,
+          126,
+          110
         ],
         "decision": "acceptable",
         "label": "coal"

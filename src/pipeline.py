@@ -13,6 +13,7 @@ import numpy as np
 from candidate_filters import CoalDetector, DiamondCandidateExpander
 from config import OreDetectorConfig
 from detection import (
+    _color_support_mask,
     _color_support_ratio,
     detect_with_template_bank,
     find_candidates,
@@ -237,6 +238,18 @@ class OreDetector:
 
         if label == "lapis":
             return edge_density >= 0.08 and v_mean >= 80.0 and aspect_ratio <= 1.50
+
+        if label == "redstone":
+            color_mask = _color_support_mask("redstone", roi)
+            selected = hsv[color_mask > 0]
+
+            if selected.size == 0:
+                return False
+
+            red_s_mean = float(selected[:, 1].mean())
+            red_v_mean = float(selected[:, 2].mean())
+
+            return red_s_mean >= 135.0 and red_v_mean >= 75.0
 
         return True
 
