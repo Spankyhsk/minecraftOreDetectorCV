@@ -11,14 +11,26 @@ from typing import List
 
 
 # HSV-Konfigurationsgrenzen für jedes Erz (OpenCV nutzt Hue: 0-179, Saturation: 0-255, Value: 0-255).
-# Diese Bereiche sind bewusst etwas weiter gefasst, um verschiedene Lichtverhältnisse (Fackellicht, Schatten)
-# abzudecken. Später filtert und validiert das Template-Matching Fehlalarme heraus.
-# Hinweis zu Redstone: Da rot im HSV-Farbraum sowohl bei 0 als auch bei 179 liegt, hat Redstone zwei Bereiche.
+# GEÄNDERT / ZURÜCKGESETZT:
+# Diese Werte entsprechen wieder dem stabileren Zustand vor der zu offenen letzten Version.
+# Besonders wichtig:
+# - Copper hat keinen zusätzlichen Grün/Türkis-Bereich mehr.
+# - Diamond/Emerald sind nicht mehr extrem breit gesetzt.
+# Dadurch entstehen deutlich weniger falsche Diamond-/Emerald-Treffer an Wand und Decke.
 ORE_CONFIG = {
-    "coal": [([0, 0, 0], [179, 70, 135])],
-    "copper": [([5, 55, 40], [23, 255, 255])],
-    "diamond": [([75, 28, 30], [112, 255, 255])],
-    "emerald": [([45, 35, 30], [85, 255, 255])],
+    "coal": [([0, 0, 0], [179, 85, 155])],
+    "copper": [
+        ([5, 45, 30], [30, 255, 255]),
+        ([70, 25, 25], [98, 255, 255])
+    ],
+    # GEÄNDERT:
+    # Minimal toleranter für dunkle Stone-/Deepslate-Varianten, aber nicht so breit
+    # wie die fehlerhafte Version mit vielen falschen Diamond-Treffern.
+    "diamond": [
+    ([75, 18, 14], [112, 255, 255]),   # normaler / heller Diamond
+    ([68, 10, 8], [118, 255, 125]),    # dunkler Diamond
+    ],
+    "emerald": [([45, 25, 18], [85, 255, 255])],
     "gold": [([15, 40, 40], [42, 255, 255])],
     "iron": [([8, 12, 45], [28, 140, 255])],
     "lapis": [([95, 45, 30], [135, 255, 255])],
@@ -62,30 +74,32 @@ def use_edges_for_ore(ore: str) -> bool:
 
 def refine_mask_for_ore(ore: str, mask: np.ndarray) -> np.ndarray:
     """
-    Erlaubt erzwurzel-spezifische, morphologische Feinjustierungen der Segmentierungsmaske.
+    Erlaubt erz-spezifische, morphologische Feinjustierungen der Segmentierungsmaske.
 
     Für Kohle (coal) wird beispielsweise eine stärkere Dilatation durchgeführt und kleine
     Löcher geschlossen, da Kohle-Texturen oft sehr unzusammenhängende dunkle Flecken erzeugen.
-
-    Parameters
-    ----------
-    ore : str
-        Die Erz-ID.
-    mask : np.ndarray
-        Die binäre Segmentierungsmaske (2D numpy.ndarray mit Werten 0 oder 255).
-
-    Returns
-    -------
-    np.ndarray
-        Die verfeinerte binäre Maske.
     """
     if ore == "coal":
         # Stärkere Dilatation und morphologische Operationen, um vereinzelte schwarze Punkte
         # der Kohle zu einer zusammenhängenden Region zu verbinden.
-        kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.dilate(mask, kernel, iterations=1)
+        kernel = np.ones((3, 3), np.uint8)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        mask = cv2.dilate(mask, kernel, iterations=1)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+    # NEU HINZUGEFÜGT:
+    # Sehr leichte Verbindung kleiner Diamond-/Emerald-Farbinseln.
+    # Absichtlich nur 3x3 und nur einmal, damit keine riesigen Wandbereiche entstehen.
+    # GEÄNDERT:
+    # Nur Diamond wird leicht verbunden.
+    # Emerald bleibt unverändert, weil Emerald aktuell gut funktioniert.
+    elif ore == "diamond":
+        kernel = np.ones((3, 3), np.uint8)
+
+        # Kleine Diamond-Farbinseln im dunklen Block verbinden
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+        mask = cv2.dilate(mask, kernel, iterations=1)
+
     return mask
 
 
@@ -108,6 +122,9 @@ def color_mask(hsv: np.ndarray, ore: str = "diamond") -> np.ndarray:
     np.ndarray
         Die binäre Farbmaske (Wert 255 für passende Pixel, sonst 0).
     """
+    if ore not in ORE_CONFIG:
+        raise ValueError(f"Unbekanntes Erz '{ore}'. Unterstützt werden: {supported_ores()}")
+
     ranges = ORE_CONFIG[ore]
 
     # Leere Ausgabemaske in der gleichen Breite und Höhe wie das Eingabebild anlegen
@@ -144,29 +161,28 @@ def edge_mask(img: np.ndarray) -> np.ndarray:
     # Canny arbeitet am besten auf Graustufenbildern
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Die Thresholds 50 (unterer Schwellenwert) und 150 (oberer Schwellenwert)
-    # filtern schwächere Gradienten und erfassen starke Kontrastübergänge.
+    # GEÄNDERT:
+    # Leichte Glättung reduziert Texturrauschen, ohne die Blockkanten komplett zu verlieren.
+    gray = cv2.GaussianBlur(gray, (3, 3), 0)
+
+    # Bewusst nicht zu streng, weil sonst dunkle Erzstrukturen verloren gehen.
     return cv2.Canny(gray, 50, 150)
 
 
 def hybrid_mask(color: np.ndarray, edges: np.ndarray) -> np.ndarray:
     """
-    Kombiniert eine Farbmaske und eine Kantenmaske durch eine logische ODER-Verknüpfung.
-
-    Dadurch wird sichergestellt, dass Kanten, die innerhalb eines Erzkandidaten oder an
-    dessen Rändern liegen, die Segmentierung robuster machen (selbst wenn die Farbe
-    durch Schatten oder Lichtreflexe leicht verfälscht ist).
-
-    Parameters
-    ----------
-    color : np.ndarray
-        Die binäre Farbmaske.
-    edges : np.ndarray
-        Die binäre Kantenmaske.
-
-    Returns
-    -------
-    np.ndarray
-        Die kombinierte binäre Maske.
+    Kombiniert Farbmaske und Kantenmaske, aber nur in der Nähe farbiger Erzpixel.
+    Dadurch werden Kanten aus Holz, HUD, Steintexturen usw. nicht überall als Kandidaten benutzt.
     """
-    return cv2.bitwise_or(color, edges)
+
+    kernel = np.ones((5, 5), np.uint8)
+
+    # Bereich um die Farbmaske leicht vergrößern
+    color_zone = cv2.dilate(color, kernel, iterations=2)
+
+    # Nur Kanten behalten, die in der Nähe der Farbmaske liegen
+    edges_near_color = cv2.bitwise_and(edges, color_zone)
+
+    # Farbmaske + relevante Kanten kombinieren
+    return cv2.bitwise_or(color, edges_near_color)
+
