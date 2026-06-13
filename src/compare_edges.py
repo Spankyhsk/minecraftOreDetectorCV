@@ -12,6 +12,7 @@ import cv2
 
 # Importieren der Pipeline-Funktionen
 from preprocessing import load_image, apply_clahe, blur, to_hsv
+from segmentation import edge_mask
 from visualization import show
 from utils import log, log_warning
 
@@ -77,23 +78,24 @@ def main():
 
     log("Wende CLAHE-Kontrastausgleich an...")
     clahe_img = apply_clahe(orig)
-    blur_img = blur(clahe_img)
-    hsv = to_hsv(blur_img)
+    #blur_img = blur(clahe_img)
+    hsv = to_hsv(clahe_img)
+    edges_img = edge_mask(hsv)
     # Kopien für die Visualisierung erstellen, um die Originalbilder nicht zu verändern
     orig_vis = orig.copy()
-    blur_vis = blur_img.copy()
     hsv_vis = hsv.copy()
+    edges_vis = edges_img.copy()
     
     # Labels hinzufügen
     draw_label(orig_vis, "Original")
-    draw_label(blur_vis, "CLAHE + Blur (Vorverarbeitung)")
     draw_label(hsv_vis, "HSV-Farbbild (Masken)")
-    
+    draw_label(edges_vis, "Kantenmaske (Canny)")
+
     # Bilder horizontal nebeneinander zusammenfügen
-    comparison = np.hstack((blur_vis, hsv_vis))
+    comparison = edges_vis
     
     # Speicherpfad für den Vergleich
-    out_path = os.path.join(output_dir, "hsv_comparison.png")
+    out_path = os.path.join(output_dir, "edgesWithOutBlur.png")
     cv2.imwrite(out_path, comparison)
     log(f"Vergleichsbild erfolgreich gespeichert unter: {out_path}")
     

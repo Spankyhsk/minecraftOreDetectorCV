@@ -63,3 +63,5 @@ output/
 build/
 dist/
 *.egg-info/
+/data/debug_masks/
+/data/cutOut_ores/
