@@ -151,6 +151,7 @@ class OreDetector:
             all_raw_detections,
             iou_threshold=self.config.nms_iou_threshold
         )
+        detections = self._filter_low_confidence_outputs(detections)
 
         return OreDetectionResult(
             image=img,
@@ -160,3 +161,24 @@ class OreDetector:
 
     def _ore_label(self, ore_key: str) -> str:
         return ore_key.capitalize()
+
+    def _filter_low_confidence_outputs(self, detections: List[Dict]) -> List[Dict]:
+        """
+        Entfernt erzspezifische Low-Confidence-Ausgaben nach NMS.
+
+        Diese Schwellen sind bewusst nur fuer die aktuell review-basiert
+        auffaelligen False-Positive-Treiber gesetzt.
+        """
+
+        filtered = []
+
+        for detection in detections:
+            label = detection["label"].lower()
+            min_score = self.config.min_detection_scores.get(label, 0.0)
+
+            if detection.get("score", 0.0) < min_score:
+                continue
+
+            filtered.append(detection)
+
+        return filtered

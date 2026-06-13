@@ -134,6 +134,21 @@ Die Evaluation nutzt sie mit:
 python3 src/evaluate.py --review data/annotations/manual_review.json
 ```
 
+Fuer visuelles Pipeline-Debugging kann ein Debug-Board pro Bild erzeugt werden:
+
+```bash
+python3 src/debug_visual.py --image test17.png
+```
+
+Das Board landet unter `data/debug_visual/` und zeigt Original, Vorverarbeitung,
+Kanten, finale Treffer, Ground Truth, Review-Overlay sowie Farb-/Clean-Masken
+inklusive Kandidaten pro Erz. Einzelne Erze koennen isoliert werden:
+
+```bash
+python3 src/debug_visual.py --image test17.png --ore gold
+python3 src/debug_visual.py --image test17.png --ore redstone
+```
+
 Standardmäßig werden `difficulty: "hard"` und `ignore: true` nicht streng bewertet.
 Hard-Boxen können optional mit niedrigerer IoU in die Metrik aufgenommen werden:
 

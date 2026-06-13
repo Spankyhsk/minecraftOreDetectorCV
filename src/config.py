@@ -25,6 +25,10 @@ class OreDetectorConfig:
     debug: bool = False
     save_debug_masks: bool = True
     nms_iou_threshold: float = 0.25
+    min_detection_scores: Dict[str, float] = field(default_factory=lambda: {
+        "gold": 0.82,
+        "redstone": 0.68,
+    })
     ore_match_thresholds: Dict[str, float] = field(default_factory=lambda: {
         "coal": 0.30,
         "copper": 0.56,
@@ -35,4 +39,3 @@ class OreDetectorConfig:
         "lapis": 0.50,
         "redstone": 0.53,
     })
-

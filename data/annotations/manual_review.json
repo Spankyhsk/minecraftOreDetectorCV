@@ -13,6 +13,18 @@
         "original_kind": "tp",
         "score": 0.9899999999999999
       },
+      "coal:812,837,102,102": {
+        "box": [
+          812,
+          837,
+          102,
+          102
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9899999999999999
+      },
       "copper:1020,648,92,79": {
         "box": [
           1020,
@@ -25,12 +37,36 @@
         "original_kind": "tp",
         "score": 0.6536606551682348
       },
+      "copper:1021,648,90,79": {
+        "box": [
+          1021,
+          648,
+          90,
+          79
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6536586315905445
+      },
       "copper:1223,649,92,79": {
         "box": [
           1223,
           649,
           92,
           79
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6520789783907995
+      },
+      "copper:1224,650,91,77": {
+        "box": [
+          1224,
+          650,
+          91,
+          77
         ],
         "decision": "valid",
         "label": "copper",
@@ -48,6 +84,18 @@
         "label": "diamond",
         "original_kind": "tp",
         "score": 0.6387432680804276
+      },
+      "diamond:819,444,85,88": {
+        "box": [
+          819,
+          444,
+          85,
+          88
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6664465895193618
       },
       "diamond:819,447,86,85": {
         "box": [
@@ -73,6 +121,30 @@
         "original_kind": "tp",
         "score": 0.7369308404981827
       },
+      "emerald:1019,253,88,80": {
+        "box": [
+          1019,
+          253,
+          88,
+          80
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7355300720393395
+      },
+      "emerald:1212,245,93,87": {
+        "box": [
+          1212,
+          245,
+          93,
+          87
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7506643492137027
+      },
       "emerald:1212,246,94,87": {
         "box": [
           1212,
@@ -84,6 +156,18 @@
         "label": "emerald",
         "original_kind": "tp",
         "score": 0.7506643492137027
+      },
+      "gold:618,648,91,84": {
+        "box": [
+          618,
+          648,
+          91,
+          84
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8457645097559323
       },
       "gold:618,648,91,85": {
         "box": [
@@ -109,6 +193,18 @@
         "original_kind": "tp",
         "score": 0.8550617500284908
       },
+      "gold:820,649,88,83": {
+        "box": [
+          820,
+          649,
+          88,
+          83
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8530165325740574
+      },
       "iron:1014,830,105,105": {
         "box": [
           1014,
@@ -121,6 +217,18 @@
         "original_kind": "tp",
         "score": 0.7211316402206615
       },
+      "iron:1014,831,104,104": {
+        "box": [
+          1014,
+          831,
+          104,
+          104
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7211644598650582
+      },
       "iron:1219,831,105,105": {
         "box": [
           1219,
@@ -132,6 +240,18 @@
         "label": "iron",
         "original_kind": "tp",
         "score": 0.771023170120829
+      },
+      "iron:1220,832,103,103": {
+        "box": [
+          1220,
+          832,
+          103,
+          103
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7641051060733428
       },
       "lapis:1020,448,90,83": {
         "box": [
@@ -157,6 +277,30 @@
         "original_kind": "tp",
         "score": 0.6810019724090672
       },
+      "lapis:1221,449,90,81": {
+        "box": [
+          1221,
+          449,
+          90,
+          81
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6810045634229756
+      },
+      "redstone:621,255,92,79": {
+        "box": [
+          621,
+          255,
+          92,
+          79
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.6920522749766582
+      },
       "redstone:621,256,93,78": {
         "box": [
           621,
@@ -168,6 +312,18 @@
         "label": "redstone",
         "original_kind": "tp",
         "score": 0.6920554292544598
+      },
+      "redstone:822,259,87,74": {
+        "box": [
+          822,
+          259,
+          87,
+          74
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7138754205699017
       },
       "redstone:822,259,88,73": {
         "box": [
@@ -181,10 +337,68 @@
         "original_kind": "tp",
         "score": 0.7138714026207975
       }
+    },
+    "misses": {
+      "diamond:619,440,97,94": {
+        "box": [
+          619,
+          440,
+          97,
+          94
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
+      },
+      "lapis:1015,436,102,101": {
+        "box": [
+          1015,
+          436,
+          102,
+          101
+        ],
+        "decision": "acceptable",
+        "label": "lapis"
+      }
     }
   },
   "test10.png": {
     "detections": {
+      "coal:579,436,102,102": {
+        "box": [
+          579,
+          436,
+          102,
+          102
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8450529893276634
+      },
+      "coal:929,462,86,86": {
+        "box": [
+          929,
+          462,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9899999999999999
+      },
+      "coal:964,291,86,86": {
+        "box": [
+          964,
+          291,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8390706090960947
+      },
       "copper:489,434,172,82": {
         "box": [
           489,
@@ -243,6 +457,54 @@
   },
   "test11.png": {
     "detections": {
+      "coal:1724,245,86,86": {
+        "box": [
+          1724,
+          245,
+          86,
+          86
+        ],
+        "decision": "ignore",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8456869692126064
+      },
+      "coal:1865,315,55,86": {
+        "box": [
+          1865,
+          315,
+          55,
+          86
+        ],
+        "decision": "ignore",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8460625155538284
+      },
+      "coal:878,470,86,86": {
+        "box": [
+          878,
+          470,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9899999999999999
+      },
+      "coal:939,470,102,102": {
+        "box": [
+          939,
+          470,
+          102,
+          102
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9899999999999999
+      },
       "copper:845,471,80,40": {
         "box": [
           845,
@@ -255,6 +517,18 @@
         "original_kind": "fp",
         "score": 0.6116231099227663
       },
+      "gold:1168,572,84,93": {
+        "box": [
+          1168,
+          572,
+          84,
+          93
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.5958263158352354
+      },
       "gold:1192,184,119,64": {
         "box": [
           1192,
@@ -266,6 +540,18 @@
         "label": "gold",
         "original_kind": "fp",
         "score": 0.7878764375112562
+      },
+      "gold:1298,663,84,125": {
+        "box": [
+          1298,
+          663,
+          84,
+          125
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7214600591735323
       },
       "gold:1573,261,96,48": {
         "box": [
@@ -338,6 +624,18 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.5265509044057827
+      },
+      "redstone:1248,363,106,50": {
+        "box": [
+          1248,
+          363,
+          106,
+          50
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6195273879547512
       }
     },
     "misses": {
@@ -399,6 +697,18 @@
         "original_kind": "fp",
         "score": 0.759780991273112
       },
+      "gold:1436,502,57,52": {
+        "box": [
+          1436,
+          502,
+          57,
+          52
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6783287408296621
+      },
       "gold:1611,0,214,89": {
         "box": [
           1611,
@@ -434,6 +744,18 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.6822397994471228
+      },
+      "redstone:1449,264,149,68": {
+        "box": [
+          1449,
+          264,
+          149,
+          68
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6669092130959737
       }
     },
     "misses": {
@@ -446,11 +768,33 @@
         ],
         "decision": "acceptable",
         "label": "coal"
+      },
+      "copper:1418,52,208,242": {
+        "box": [
+          1418,
+          52,
+          208,
+          242
+        ],
+        "decision": "acceptable",
+        "label": "copper"
       }
     }
   },
   "test13.png": {
     "detections": {
+      "redstone:0,718,77,100": {
+        "box": [
+          0,
+          718,
+          77,
+          100
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6374394773771944
+      },
       "redstone:0,719,73,97": {
         "box": [
           0,
@@ -474,6 +818,30 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.6574954104616227
+      },
+      "redstone:486,769,41,58": {
+        "box": [
+          486,
+          769,
+          41,
+          58
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6231583879705418
+      },
+      "redstone:644,711,77,116": {
+        "box": [
+          644,
+          711,
+          77,
+          116
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6733746678167928
       },
       "redstone:652,730,62,86": {
         "box": [
@@ -523,6 +891,18 @@
   },
   "test14.png": {
     "detections": {
+      "redstone:0,723,73,99": {
+        "box": [
+          0,
+          723,
+          73,
+          99
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6306618097219184
+      },
       "redstone:0,726,59,93": {
         "box": [
           0,
@@ -546,6 +926,30 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.6525916783122409
+      },
+      "redstone:485,770,40,57": {
+        "box": [
+          485,
+          770,
+          40,
+          57
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6391766456961343
+      },
+      "redstone:643,713,77,114": {
+        "box": [
+          643,
+          713,
+          77,
+          114
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6511190704937881
       }
     },
     "misses": {
@@ -618,6 +1022,18 @@
         "label": "gold",
         "original_kind": "fp",
         "score": 0.7747754798110492
+      },
+      "gold:694,401,33,38": {
+        "box": [
+          694,
+          401,
+          33,
+          38
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6401440429229295
       }
     },
     "misses": {
@@ -635,6 +1051,18 @@
   },
   "test16.png": {
     "detections": {
+      "diamond:1578,460,105,105": {
+        "box": [
+          1578,
+          460,
+          105,
+          105
+        ],
+        "decision": "invalid",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6324286055564882
+      },
       "gold:291,362,138,107": {
         "box": [
           291,
@@ -741,6 +1169,18 @@
         "original_kind": "fp",
         "score": 0.8641703365381971
       },
+      "coal:725,286,86,86": {
+        "box": [
+          725,
+          286,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8550792601102786
+      },
       "coal:861,182,86,86": {
         "box": [
           861,
@@ -764,6 +1204,18 @@
         "label": "copper",
         "original_kind": "fp",
         "score": 0.6962827428380256
+      },
+      "copper:1607,458,75,96": {
+        "box": [
+          1607,
+          458,
+          75,
+          96
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6962170436485621
       },
       "copper:1833,512,87,42": {
         "box": [
@@ -789,6 +1241,18 @@
         "original_kind": "fp",
         "score": 0.7055252600688856
       },
+      "gold:1843,19,49,69": {
+        "box": [
+          1843,
+          19,
+          49,
+          69
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.8001765513420104
+      },
       "gold:1847,23,42,66": {
         "box": [
           1847,
@@ -813,6 +1277,30 @@
         "original_kind": "fp",
         "score": 0.7827565520565976
       },
+      "gold:265,195,54,24": {
+        "box": [
+          265,
+          195,
+          54,
+          24
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6600922596461701
+      },
+      "gold:293,0,163,59": {
+        "box": [
+          293,
+          0,
+          163,
+          59
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6638270759174038
+      },
       "gold:313,0,146,57": {
         "box": [
           313,
@@ -824,6 +1312,18 @@
         "label": "gold",
         "original_kind": "fp",
         "score": 0.6639487642108918
+      },
+      "gold:438,133,126,78": {
+        "box": [
+          438,
+          133,
+          126,
+          78
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.748761768309268
       },
       "gold:580,357,36,86": {
         "box": [
@@ -837,6 +1337,54 @@
         "original_kind": "fp",
         "score": 0.6820817351923962
       },
+      "gold:581,357,33,86": {
+        "box": [
+          581,
+          357,
+          33,
+          86
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6819465261247746
+      },
+      "gold:585,161,40,33": {
+        "box": [
+          585,
+          161,
+          40,
+          33
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6985403870412281
+      },
+      "gold:802,755,102,57": {
+        "box": [
+          802,
+          755,
+          102,
+          57
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6745791690370772
+      },
+      "iron:1298,154,71,68": {
+        "box": [
+          1298,
+          154,
+          71,
+          68
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6714024833627016
+      },
       "redstone:1296,0,78,96": {
         "box": [
           1296,
@@ -848,6 +1396,18 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.6094248076581009
+      },
+      "redstone:1301,0,71,105": {
+        "box": [
+          1301,
+          0,
+          71,
+          105
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6034705264139336
       },
       "redstone:1390,240,57,43": {
         "box": [
@@ -884,6 +1444,30 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.6082947280728843
+      },
+      "redstone:345,506,109,43": {
+        "box": [
+          345,
+          506,
+          109,
+          43
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6382272617962348
+      },
+      "redstone:469,459,124,84": {
+        "box": [
+          469,
+          459,
+          124,
+          84
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.651898390523861
       }
     },
     "misses": {
@@ -937,6 +1521,18 @@
         "original_kind": "tp",
         "score": 0.6256006983385947
       },
+      "copper:1168,590,88,75": {
+        "box": [
+          1168,
+          590,
+          88,
+          75
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6255974689589406
+      },
       "copper:967,589,90,77": {
         "box": [
           967,
@@ -948,6 +1544,18 @@
         "label": "copper",
         "original_kind": "tp",
         "score": 0.6164880227025954
+      },
+      "copper:968,589,88,76": {
+        "box": [
+          968,
+          589,
+          88,
+          76
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.616488024788758
       },
       "diamond:759,383,92,91": {
         "box": [
@@ -961,6 +1569,18 @@
         "original_kind": "tp",
         "score": 0.702890838300895
       },
+      "diamond:765,384,85,89": {
+        "box": [
+          765,
+          384,
+          85,
+          89
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.702892636573028
+      },
       "emerald:1165,177,97,92": {
         "box": [
           1165,
@@ -973,6 +1593,30 @@
         "original_kind": "tp",
         "score": 0.7525895137255305
       },
+      "emerald:1165,178,96,90": {
+        "box": [
+          1165,
+          178,
+          96,
+          90
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7525895137255305
+      },
+      "emerald:967,184,90,85": {
+        "box": [
+          967,
+          184,
+          90,
+          85
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7401922052501922
+      },
       "emerald:967,184,91,86": {
         "box": [
           967,
@@ -984,6 +1628,18 @@
         "label": "emerald",
         "original_kind": "tp",
         "score": 0.7401913791298157
+      },
+      "gold:570,589,88,82": {
+        "box": [
+          570,
+          589,
+          88,
+          82
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8428495043201726
       },
       "gold:571,583,88,89": {
         "box": [
@@ -1009,6 +1665,18 @@
         "original_kind": "tp",
         "score": 0.85210440706748
       },
+      "gold:769,590,87,81": {
+        "box": [
+          769,
+          590,
+          87,
+          81
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8500572745158099
+      },
       "iron:1165,781,90,88": {
         "box": [
           1165,
@@ -1020,6 +1688,18 @@
         "label": "iron",
         "original_kind": "tp",
         "score": 0.7662669318484028
+      },
+      "iron:1166,782,88,86": {
+        "box": [
+          1166,
+          782,
+          88,
+          86
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7662650146650035
       },
       "iron:967,781,89,88": {
         "box": [
@@ -1033,6 +1713,18 @@
         "original_kind": "tp",
         "score": 0.7210095109451328
       },
+      "iron:967,782,88,86": {
+        "box": [
+          967,
+          782,
+          88,
+          86
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7210103036869083
+      },
       "lapis:1169,388,90,84": {
         "box": [
           1169,
@@ -1044,6 +1736,42 @@
         "label": "lapis",
         "original_kind": "tp",
         "score": 0.6987423987015489
+      },
+      "lapis:1170,388,89,83": {
+        "box": [
+          1170,
+          388,
+          89,
+          83
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6987423945292236
+      },
+      "lapis:967,389,89,82": {
+        "box": [
+          967,
+          389,
+          89,
+          82
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6877337522238297
+      },
+      "redstone:558,186,95,84": {
+        "box": [
+          558,
+          186,
+          95,
+          84
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7060349922296539
       },
       "redstone:558,186,96,84": {
         "box": [
@@ -1063,6 +1791,18 @@
           191,
           91,
           77
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7734337063450883
+      },
+      "redstone:765,191,91,78": {
+        "box": [
+          765,
+          191,
+          91,
+          78
         ],
         "decision": "valid",
         "label": "redstone",
@@ -1106,6 +1846,30 @@
         "label": "gold",
         "original_kind": "fp",
         "score": 0.7192811312015303
+      },
+      "iron:1615,508,98,98": {
+        "box": [
+          1615,
+          508,
+          98,
+          98
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6991330140482794
+      },
+      "iron:982,527,131,131": {
+        "box": [
+          982,
+          527,
+          131,
+          131
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6888106176994007
       }
     },
     "misses": {
@@ -1193,6 +1957,22 @@
       }
     }
   },
+  "test5.png": {
+    "detections": {
+      "coal:915,517,86,86": {
+        "box": [
+          915,
+          517,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9603011252488171
+      }
+    }
+  },
   "test6.png": {
     "detections": {
       "copper:1526,67,75,48": {
@@ -1206,6 +1986,18 @@
         "label": "copper",
         "original_kind": "fp",
         "score": 0.6588898714794539
+      },
+      "diamond:308,538,105,105": {
+        "box": [
+          308,
+          538,
+          105,
+          105
+        ],
+        "decision": "invalid",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6339629694953366
       },
       "diamond:309,539,105,105": {
         "box": [
@@ -1230,6 +2022,54 @@
         "label": "gold",
         "original_kind": "fp",
         "score": 0.6861789223755067
+      },
+      "gold:1610,70,42,31": {
+        "box": [
+          1610,
+          70,
+          42,
+          31
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6753986158835082
+      },
+      "gold:1710,0,210,65": {
+        "box": [
+          1710,
+          0,
+          210,
+          65
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7706960126973802
+      },
+      "gold:1856,79,64,117": {
+        "box": [
+          1856,
+          79,
+          64,
+          117
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6924539262465068
+      },
+      "gold:1858,291,41,38": {
+        "box": [
+          1858,
+          291,
+          41,
+          38
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7314044767240054
       },
       "gold:860,659,72,67": {
         "box": [
@@ -1298,6 +2138,20 @@
     }
   },
   "test7.png": {
+    "detections": {
+      "gold:708,0,129,126": {
+        "box": [
+          708,
+          0,
+          129,
+          126
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6561510241023506
+      }
+    },
     "misses": {
       "iron:1356,40,514,938": {
         "box": [
@@ -1346,6 +2200,18 @@
         "label": "lapis",
         "original_kind": "fp",
         "score": 0.6036256745549876
+      },
+      "lapis:508,353,109,50": {
+        "box": [
+          508,
+          353,
+          109,
+          50
+        ],
+        "decision": "invalid",
+        "label": "lapis",
+        "original_kind": "fp",
+        "score": 0.6742851519974743
       }
     },
     "misses": {
@@ -1410,5 +2276,8 @@
         "label": "coal"
       }
     }
+  },
+  "test9.png": {
+    "detections": {}
   }
 }

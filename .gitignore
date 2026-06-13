@@ -64,4 +64,5 @@ build/
 dist/
 *.egg-info/
 /data/debug_masks/
+/data/debug_visual/
 /data/cutOut_ores/
