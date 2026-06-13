@@ -107,7 +107,7 @@ ORE_RULES: Dict[str, OreRule] = {
         min_color_support=0.004,
         good_color_support=0.020,
         min_compatibility=0.10,
-        min_detection_score=0.68,
+        min_detection_score=0.67,
     ),
 }
 

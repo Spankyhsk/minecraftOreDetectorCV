@@ -1622,6 +1622,18 @@
         "label": "redstone",
         "original_kind": "fp",
         "score": 0.6806940311772933
+      },
+      "redstone:971,449,102,82": {
+        "box": [
+          971,
+          449,
+          102,
+          82
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.6781652338698893
       }
     },
     "misses": {
