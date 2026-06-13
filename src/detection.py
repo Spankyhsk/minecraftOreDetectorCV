@@ -1335,7 +1335,13 @@ def detect_with_template_bank(
                 )
             )
 
-            if copper_like_region:
+            own_color_dominates = (
+                label_key == "diamond"
+                and color_support >= 0.020
+                and compat_label >= copper_compat + 0.025
+            )
+
+            if copper_like_region and not own_color_dominates:
                 continue
 
         has_basic_template = best_score >= threshold

@@ -12,7 +12,12 @@ import numpy as np
 
 from candidate_filters import CoalDetector, DiamondCandidateExpander
 from config import OreDetectorConfig
-from detection import detect_with_template_bank, find_candidates, non_max_suppression
+from detection import (
+    _color_support_ratio,
+    detect_with_template_bank,
+    find_candidates,
+    non_max_suppression,
+)
 from mask_filters import MaskRegionFilter
 from morphology import clean_mask
 from preprocessing import match_scene_brightness, to_hsv
@@ -152,6 +157,7 @@ class OreDetector:
             iou_threshold=self.config.nms_iou_threshold
         )
         detections = self._filter_low_confidence_outputs(detections, img)
+        detections = self._merge_close_diamond_detections(detections)
 
         return OreDetectionResult(
             image=img,
@@ -211,7 +217,20 @@ class OreDetector:
             return edge_density >= 0.12 and v_mean >= 75.0 and s_mean <= 85.0
 
         if label == "diamond":
-            return edge_density >= 0.08 and v_mean >= 80.0 and texture_strength >= 16.0
+            bright_textured_case = (
+                edge_density >= 0.08
+                and v_mean >= 80.0
+                and texture_strength >= 16.0
+            )
+            dark_cave_case = (
+                s_mean >= 100.0
+                and v_mean >= 35.0
+                and texture_strength >= 10.0
+                and edge_density >= 0.020
+                and _color_support_ratio("diamond", roi) >= 0.025
+            )
+
+            return bright_textured_case or dark_cave_case
 
         if label == "iron":
             return edge_density >= 0.10 and v_mean >= 80.0 and s_mean <= 80.0
@@ -220,3 +239,66 @@ class OreDetector:
             return edge_density >= 0.08 and v_mean >= 80.0 and aspect_ratio <= 1.50
 
         return True
+
+    def _merge_close_diamond_detections(self, detections: List[Dict]) -> List[Dict]:
+        diamonds = [d for d in detections if d["label"].lower() == "diamond"]
+        others = [d for d in detections if d["label"].lower() != "diamond"]
+
+        if len(diamonds) <= 1:
+            return detections
+
+        work = [dict(d) for d in diamonds]
+        changed = True
+
+        while changed:
+            changed = False
+            merged = []
+            used = [False] * len(work)
+
+            for i, det in enumerate(work):
+                if used[i]:
+                    continue
+
+                current = dict(det)
+                used[i] = True
+
+                for j in range(i + 1, len(work)):
+                    if used[j]:
+                        continue
+
+                    if self._boxes_close(current["box"], work[j]["box"], gap=45):
+                        current = self._merge_detection_pair(current, work[j])
+                        used[j] = True
+                        changed = True
+
+                merged.append(current)
+
+            work = merged
+
+        return others + work
+
+    def _boxes_close(self, box_a: Box, box_b: Box, gap: int) -> bool:
+        ax, ay, aw, ah = box_a
+        bx, by, bw, bh = box_b
+
+        return not (
+            ax + aw + gap < bx
+            or bx + bw + gap < ax
+            or ay + ah + gap < by
+            or by + bh + gap < ay
+        )
+
+    def _merge_detection_pair(self, det_a: Dict, det_b: Dict) -> Dict:
+        ax, ay, aw, ah = det_a["box"]
+        bx, by, bw, bh = det_b["box"]
+
+        x1 = min(ax, bx)
+        y1 = min(ay, by)
+        x2 = max(ax + aw, bx + bw)
+        y2 = max(ay + ah, by + bh)
+
+        keep = det_a if det_a.get("score", 0.0) >= det_b.get("score", 0.0) else det_b
+        merged = dict(keep)
+        merged["box"] = (x1, y1, x2 - x1, y2 - y1)
+        merged["score"] = max(det_a.get("score", 0.0), det_b.get("score", 0.0))
+        return merged
