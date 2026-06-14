@@ -56,7 +56,12 @@ class MaskRegionFilter:
 
         return out
 
-    def remove_large_mask_regions(self, mask: np.ndarray) -> np.ndarray:
+    def remove_large_mask_regions(
+        self,
+        mask: np.ndarray,
+        hsv: np.ndarray,
+        ore: str | None = None,
+    ) -> np.ndarray:
         h, w = mask.shape[:2]
         out = mask.copy()
 
@@ -70,6 +75,14 @@ class MaskRegionFilter:
             area = int(stats[i, cv2.CC_STAT_AREA])
             bw = int(stats[i, cv2.CC_STAT_WIDTH])
             bh = int(stats[i, cv2.CC_STAT_HEIGHT])
+            if ore == "copper" and area > int(image_area * 0.020):
+                component = np.zeros_like(out)
+                component[labels == i] = 255
+
+                # Copper darf in Hoehlen grossflaechig sein, aber nur wenn
+                # die Region wirklich copper-aehnlich und nicht nur Wandlicht ist.
+                if self._keeps_large_copper_region(component, hsv):
+                    continue
 
             if area > int(image_area * 0.020):
                 out[labels == i] = 0
@@ -80,9 +93,41 @@ class MaskRegionFilter:
 
         return out
 
-    def clean_runtime_mask(self, mask: np.ndarray, hsv: np.ndarray) -> np.ndarray:
+    def _keeps_large_copper_region(self, mask: np.ndarray, hsv: np.ndarray) -> bool:
+        """
+        True, wenn eine grosse Copper-Region trotz Flaeche erhalten bleiben sollte.
+        """
+
+        if mask.size == 0:
+            return False
+
+        mask_area = float(cv2.countNonZero(mask))
+        if mask_area <= 0:
+            return False
+
+        ys, xs = np.where(mask > 0)
+        if xs.size == 0 or ys.size == 0:
+            return False
+
+        x0 = int(xs.min())
+        x1 = int(xs.max()) + 1
+        y0 = int(ys.min())
+        y1 = int(ys.max()) + 1
+
+        roi = hsv[y0:y1, x0:x1]
+        if roi.size == 0:
+            return False
+
+        roi_mask = mask[y0:y1, x0:x1]
+        support = float(cv2.countNonZero(roi_mask)) / float(roi_mask.shape[0] * roi_mask.shape[1])
+        mean_s = float(roi[:, :, 1].mean())
+        mean_v = float(roi[:, :, 2].mean())
+        std_v = float(roi[:, :, 2].std())
+
+        return support >= 0.35 and mean_s >= 75.0 and mean_v >= 60.0 and std_v >= 12.0
+
+    def clean_runtime_mask(self, mask: np.ndarray, hsv: np.ndarray, ore: str | None = None) -> np.ndarray:
         out = self.remove_hud_regions(mask)
         out = self.remove_water_regions(out, hsv)
-        out = self.remove_large_mask_regions(out)
+        out = self.remove_large_mask_regions(out, hsv, ore=ore)
         return out
-

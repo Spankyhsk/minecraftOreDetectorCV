@@ -681,7 +681,8 @@ def load_template(path: str) -> np.ndarray:
 
 def find_candidates(
     mask: np.ndarray,
-    color_mask: Optional[np.ndarray] = None
+    color_mask: Optional[np.ndarray] = None,
+    ore: Optional[str] = None,
 ) -> List[Tuple[int, int, int, int]]:
     """
     Sucht Kandidatenregionen in einer binären Maske.
@@ -720,10 +721,10 @@ def find_candidates(
         int(img_area * 0.000035)
     )
 
-    max_area = int(img_area * 0.012)
+    max_area = int(img_area * (0.045 if ore and ore.lower() == "copper" else 0.012))
 
-    max_w = int(img_w * 0.18)
-    max_h = int(img_h * 0.18)
+    max_w = int(img_w * (0.35 if ore and ore.lower() == "copper" else 0.18))
+    max_h = int(img_h * (0.35 if ore and ore.lower() == "copper" else 0.18))
 
     for c in contours:
         x, y, w, h = cv2.boundingRect(c)
@@ -753,7 +754,10 @@ def find_candidates(
             white_pixels = int((crop > 0).sum())
             density = white_pixels / float(crop.size)
 
-            if density < 0.015 and white_pixels < 18:
+            if ore and ore.lower() == "copper":
+                if density < 0.030 and white_pixels < 36:
+                    continue
+            elif density < 0.015 and white_pixels < 18:
                 continue
 
         candidates.append((x, y, w, h))

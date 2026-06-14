@@ -10,6 +10,9 @@ Minecraft Ore Detector CV ist ein Computer-Vision-Projekt zur Erkennung von Mine
 
 Das Projekt verzichtet bewusst auf Machine Learning und basiert ausschließlich auf klassischen Bildverarbeitungstechniken.
 
+Aktueller Uebergabestand und Debug-Workflow:
+[docs/hand_off.md](docs/hand_off.md)
+
 ---
 
 ## Ziel des Projekts

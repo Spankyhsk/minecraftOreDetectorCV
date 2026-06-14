@@ -153,14 +153,14 @@ def build_stage_data(
     color_raw = color_mask(hsv, ore)
     color_no_hud = mask_filter.remove_hud_regions(color_raw)
     color_no_water = mask_filter.remove_water_regions(color_no_hud, hsv)
-    color_clean = mask_filter.remove_large_mask_regions(color_no_water)
+    color_clean = mask_filter.remove_large_mask_regions(color_no_water, hsv, ore=ore)
 
     mask = hybrid_mask(color_clean, edges) if use_edges_for_ore(ore) else color_clean
     mask = refine_mask_for_ore(ore, mask)
     mask = clean_mask(mask)
-    mask = mask_filter.clean_runtime_mask(mask, hsv)
+    mask = mask_filter.clean_runtime_mask(mask, hsv, ore=ore)
 
-    candidates = find_candidates(mask, color_clean)
+    candidates = find_candidates(mask, color_clean, ore=ore)
 
     template_bank = template_repo.get_for_ore(ore)
     raw = []

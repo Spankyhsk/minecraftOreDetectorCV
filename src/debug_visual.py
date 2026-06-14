@@ -174,12 +174,12 @@ def collect_pipeline_debug(img: np.ndarray, config: OreDetectorConfig) -> Tuple[
 
     for ore in supported_ores():
         color = color_mask(hsv, ore)
-        color_clean = mask_filter.clean_runtime_mask(color, hsv)
+        color_clean = mask_filter.clean_runtime_mask(color, hsv, ore=ore)
 
         mask = hybrid_mask(color_clean, edges_clean) if use_edges_for_ore(ore) else color_clean
         mask = refine_mask_for_ore(ore, mask)
         mask = clean_mask(mask)
-        mask = mask_filter.clean_runtime_mask(mask, hsv)
+        mask = mask_filter.clean_runtime_mask(mask, hsv, ore=ore)
 
         if ore == "coal":
             from candidate_filters import CoalDetector
@@ -187,7 +187,7 @@ def collect_pipeline_debug(img: np.ndarray, config: OreDetectorConfig) -> Tuple[
             candidates = coal_detector.find_candidates(img, color_clean)
             raw = coal_detector.detect_direct(img, candidates)
         else:
-            candidates = find_candidates(mask, color_clean)
+            candidates = find_candidates(mask, color_clean, ore=ore)
             if ore == "diamond":
                 from candidate_filters import DiamondCandidateExpander
                 candidates = DiamondCandidateExpander().expand(candidates, img.shape)
@@ -289,4 +289,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
