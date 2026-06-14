@@ -21,7 +21,7 @@ class OreDetectorConfig:
     """
 
     data_dir: str = DATA_DIR
-    image_path: str = os.path.join(DATA_DIR, "screenshots", "test6.png")
+    image_path: str = os.path.join(DATA_DIR, "screenshots", "test18.png")
     templates_dir: str = os.path.join(DATA_DIR, "templates")
     debug_mask_dir: str = os.path.join(DATA_DIR, "debug_masks")
     debug: bool = False
