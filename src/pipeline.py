@@ -10,7 +10,10 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import numpy as np
 
-from candidate_filters import CoalDetector, DiamondCandidateExpander
+from candidate_filters import (
+    CoalDetector,
+    DiamondCandidateExpander,
+)
 from config import OreDetectorConfig
 from detection import (
     _color_compatibility,
@@ -115,13 +118,13 @@ class OreDetector:
 
         for ore in supported_ores():
             color = color_mask(hsv, ore)
-            color = self.mask_filter.clean_runtime_mask(color, hsv)
+            color = self.mask_filter.clean_runtime_mask(color, hsv, ore=ore)
             self.debug_masks.save(f"01_color_{ore}", color)
 
             mask = hybrid_mask(color, edges) if use_edges_for_ore(ore) else color
             mask = refine_mask_for_ore(ore, mask)
             mask = clean_mask(mask)
-            mask = self.mask_filter.clean_runtime_mask(mask, hsv)
+            mask = self.mask_filter.clean_runtime_mask(mask, hsv, ore=ore)
             self.debug_masks.save(f"02_mask_{ore}", mask)
 
             if ore == "coal":
@@ -134,18 +137,19 @@ class OreDetector:
                     )
                 continue
 
-            candidates = find_candidates(mask, color)
+            candidates = find_candidates(mask, color, ore=ore)
 
             if ore == "diamond":
                 candidates = self.diamond_expander.expand(candidates, img.shape)
 
+            template_bank = self.template_repository.get_for_ore(ore)
+            if not template_bank:
+                all_candidates.extend(candidates)
+                continue
+
             all_candidates.extend(candidates)
 
             if not candidates:
-                continue
-
-            template_bank = self.template_repository.get_for_ore(ore)
-            if not template_bank:
                 continue
 
             raw = detect_with_template_bank(
@@ -248,10 +252,15 @@ class OreDetector:
                     and detection.get("copper_compatibility", 0.0) >= 0.84
                     and detection.get("copper_orange", 0.0) >= 0.72
                     and detection.get("copper_green", 0.0) <= 0.08
-                    and detection.get("edge_density", 0.0) >= 0.10
+                    and detection.get("edge_density", 0.0) >= 0.08
                 )
 
-            return edge_density >= 0.12 and v_mean >= 75.0 and s_mean <= 85.0
+            return (
+                detection.get("score", 0.0) >= 0.62
+                and _color_support_ratio("copper", roi) >= 0.045
+                and _color_compatibility("copper", roi) >= 0.72
+                and _copper_orange_support(roi) >= 0.03
+            )
 
         if label == "diamond":
             bright_textured_case = (
@@ -290,6 +299,26 @@ class OreDetector:
             )
 
             return normal_iron_case or dark_angled_iron_case
+
+        if label == "gold":
+            if max(w, h) > 110 or (w * h) > 12000:
+                return False
+
+            bright_textured_case = (
+                edge_density >= 0.08
+                and v_mean >= 80.0
+                and texture_strength >= 16.0
+                and _color_support_ratio("gold", roi) >= 0.015
+            )
+            dark_cave_case = (
+                s_mean >= 70.0
+                and v_mean >= 35.0
+                and texture_strength >= 8.0
+                and edge_density >= 0.020
+                and _color_support_ratio("gold", roi) >= 0.020
+            )
+
+            return bright_textured_case or dark_cave_case
 
         if label == "lapis":
             bright_lapis_case = (
