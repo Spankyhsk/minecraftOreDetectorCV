@@ -79,8 +79,16 @@ ORE_RULES: Dict[str, OreRule] = {
         min_detection_score=0.82,
     ),
     "iron": OreRule(
-        segmentation_ranges=[([8, 12, 45], [28, 140, 255])],
-        plausibility_ranges=[([8, 25, 45], [30, 165, 255])],
+        segmentation_ranges=[
+            ([0, 20, 45], [12, 115, 255]),
+            ([8, 12, 45], [28, 140, 255]),
+            ([165, 20, 45], [179, 115, 255]),
+        ],
+        plausibility_ranges=[
+            ([0, 25, 45], [12, 125, 255]),
+            ([8, 25, 45], [30, 165, 255]),
+            ([165, 25, 45], [179, 125, 255]),
+        ],
         match_threshold=0.61,
         min_color_support=0.014,
         good_color_support=0.045,
