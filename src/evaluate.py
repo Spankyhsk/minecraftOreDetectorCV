@@ -133,6 +133,38 @@ def box_iou(box_a: Box, box_b: Box) -> float:
     return intersection / float(union)
 
 
+def box_partial_overlap(box_a: Box, box_b: Box) -> float:
+    """
+    Anteil der kleineren Box, der von der anderen Box abgedeckt wird.
+
+    Das ist fuer Rand-/Teiltreffer nuetzlich: Eine sichtbare Teilbox kann
+    fachlich korrekt sein, obwohl ihre IoU gegen die groessere GT-Box klein ist.
+    """
+
+    ax, ay, aw, ah = box_a
+    bx, by, bw, bh = box_b
+
+    ax2 = ax + aw
+    ay2 = ay + ah
+    bx2 = bx + bw
+    by2 = by + bh
+
+    ix1 = max(ax, bx)
+    iy1 = max(ay, by)
+    ix2 = min(ax2, bx2)
+    iy2 = min(ay2, by2)
+
+    iw = max(0, ix2 - ix1)
+    ih = max(0, iy2 - iy1)
+    intersection = iw * ih
+    smaller_area = min(aw * ah, bw * bh)
+
+    if smaller_area <= 0:
+        return 0.0
+
+    return intersection / float(smaller_area)
+
+
 def precision_recall_f1(tp: int, fp: int, fn: int) -> Tuple[float, float, float]:
     precision = tp / float(tp + fp) if tp + fp > 0 else 0.0
     recall = tp / float(tp + fn) if tp + fn > 0 else 0.0
@@ -366,6 +398,7 @@ def apply_manual_review(
     image_review = manual_review.get(filename, {})
     reviewed_detections = image_review.get("detections", {})
     reviewed_misses = image_review.get("misses", {})
+    manually_valid_predictions = []
 
     tp_out = []
     fp_out = []
@@ -386,13 +419,15 @@ def apply_manual_review(
         decision = reviewed_detections.get(key, {}).get("decision")
 
         if decision == "valid":
-            tp_out.append({
+            manual_tp = {
                 "label": normalize_label(item["label"]),
                 "iou": None,
                 "prediction": item,
                 "ground_truth": None,
                 "manual": True,
-            })
+            }
+            tp_out.append(manual_tp)
+            manually_valid_predictions.append(item)
         elif decision == "ignore":
             continue
         else:
@@ -405,9 +440,39 @@ def apply_manual_review(
         if decision == "acceptable":
             continue
 
+        if is_covered_by_manual_valid_prediction(item, manually_valid_predictions):
+            continue
+
         fn_out.append(item)
 
     return tp_out, fp_out, fn_out
+
+
+def is_covered_by_manual_valid_prediction(
+    miss: dict,
+    manually_valid_predictions: List[dict],
+) -> bool:
+    """
+    True, wenn eine manuell gueltige Prediction denselben GT-Miss plausibel
+    abdeckt. Dadurch muss ein Teiltreffer nicht doppelt als valid + acceptable
+    gepflegt werden.
+    """
+
+    miss_label = normalize_label(miss["label"])
+    miss_box = tuple(miss["box"])
+
+    for prediction in manually_valid_predictions:
+        if normalize_label(prediction["label"]) != miss_label:
+            continue
+
+        pred_box = tuple(prediction["box"])
+
+        if box_iou(pred_box, miss_box) >= 0.20:
+            return True
+        if box_partial_overlap(pred_box, miss_box) >= 0.35:
+            return True
+
+    return False
 
 
 if __name__ == "__main__":

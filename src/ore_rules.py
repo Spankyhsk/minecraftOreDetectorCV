@@ -89,7 +89,7 @@ ORE_RULES: Dict[str, OreRule] = {
             ([8, 25, 45], [30, 165, 255]),
             ([165, 25, 45], [179, 125, 255]),
         ],
-        match_threshold=0.61,
+        match_threshold=0.54,
         min_color_support=0.014,
         good_color_support=0.045,
         min_compatibility=0.26,

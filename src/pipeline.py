@@ -13,10 +13,15 @@ import numpy as np
 from candidate_filters import CoalDetector, DiamondCandidateExpander
 from config import OreDetectorConfig
 from detection import (
+    _color_compatibility,
+    _copper_green_support,
+    _copper_orange_support,
+    _expand_box,
     _color_support_mask,
     _color_support_ratio,
     detect_with_template_bank,
     find_candidates,
+    match_template_multiscale,
     non_max_suppression,
 )
 from mask_filters import MaskRegionFilter
@@ -153,6 +158,26 @@ class OreDetector:
             )
             all_raw_detections.extend(raw)
 
+            if ore == "copper":
+                all_raw_detections.extend(
+                    self._detect_copper_edge_clusters(
+                        img,
+                        img_preprocessed,
+                        edges,
+                        template_bank
+                    )
+                )
+
+            if ore == "iron":
+                all_raw_detections.extend(
+                    self._detect_iron_color_clusters(
+                        img,
+                        img_preprocessed,
+                        color,
+                        template_bank
+                    )
+                )
+
         detections = non_max_suppression(
             all_raw_detections,
             iou_threshold=self.config.nms_iou_threshold
@@ -216,6 +241,16 @@ class OreDetector:
         aspect_ratio = max(w / float(h), h / float(w))
 
         if label == "copper":
+            if detection.get("source") == "copper_edge_cluster":
+                return (
+                    detection.get("template_score", 0.0) >= 0.54
+                    and 0.72 <= detection.get("copper_support", 0.0) <= 0.94
+                    and detection.get("copper_compatibility", 0.0) >= 0.84
+                    and detection.get("copper_orange", 0.0) >= 0.72
+                    and detection.get("copper_green", 0.0) <= 0.08
+                    and detection.get("edge_density", 0.0) >= 0.10
+                )
+
             return edge_density >= 0.12 and v_mean >= 75.0 and s_mean <= 85.0
 
         if label == "diamond":
@@ -235,10 +270,42 @@ class OreDetector:
             return bright_textured_case or dark_cave_case
 
         if label == "iron":
-            return edge_density >= 0.10 and v_mean >= 80.0 and s_mean <= 80.0
+            if detection.get("source") == "iron_color_cluster":
+                return (
+                    detection.get("pre_color_support", 0.0) >= 0.12
+                    and detection.get("pre_color_compatibility", 0.0) >= 0.60
+                    and detection.get("template_score", 0.0) >= 0.64
+                )
+
+            normal_iron_case = (
+                edge_density >= 0.10
+                and v_mean >= 80.0
+                and s_mean <= 80.0
+            )
+            dark_angled_iron_case = (
+                _color_support_ratio("iron", roi) >= 0.055
+                and _color_compatibility("iron", roi) >= 0.55
+                and s_mean <= 90.0
+                and texture_strength >= 4.5
+            )
+
+            return normal_iron_case or dark_angled_iron_case
 
         if label == "lapis":
-            return edge_density >= 0.08 and v_mean >= 80.0 and aspect_ratio <= 1.50
+            bright_lapis_case = (
+                edge_density >= 0.08
+                and v_mean >= 80.0
+                and aspect_ratio <= 1.50
+            )
+            dark_cave_lapis_case = (
+                edge_density >= 0.06
+                and texture_strength >= 8.0
+                and aspect_ratio <= 1.50
+                and _color_support_ratio("lapis", roi) >= 0.08
+                and _color_compatibility("lapis", roi) >= 0.75
+            )
+
+            return bright_lapis_case or dark_cave_lapis_case
 
         if label == "redstone":
             color_mask = _color_support_mask("redstone", roi)
@@ -253,6 +320,211 @@ class OreDetector:
             return red_s_mean >= 135.0 and red_v_mean >= 75.0
 
         return True
+
+    def _detect_copper_edge_clusters(
+        self,
+        img: np.ndarray,
+        img_preprocessed: np.ndarray,
+        edges: np.ndarray,
+        template_bank: Dict[str, np.ndarray]
+    ) -> List[Dict]:
+        """
+        Ergaenzt Copper-Kandidaten in warmen Hoehlen, wo die Farbflaeche zu
+        gross wird und deshalb nur die lokale Kantenkomponente brauchbar ist.
+        """
+
+        if not template_bank:
+            return []
+
+        contours, _ = cv2.findContours(
+            edges,
+            cv2.RETR_EXTERNAL,
+            cv2.CHAIN_APPROX_SIMPLE
+        )
+
+        detections = []
+
+        for contour in contours:
+            x, y, w, h = cv2.boundingRect(contour)
+            area = w * h
+
+            if area < 4500 or area > 18000:
+                continue
+
+            aspect_ratio = max(w / float(max(h, 1)), h / float(max(w, 1)))
+            if aspect_ratio > 1.75:
+                continue
+
+            edge_roi = edges[y:y + h, x:x + w]
+            edge_density = cv2.countNonZero(edge_roi) / float(area)
+            if edge_density < 0.10:
+                continue
+
+            roi = img[y:y + h, x:x + w]
+            pre_roi = img_preprocessed[y:y + h, x:x + w]
+
+            copper_support = max(
+                _color_support_ratio("copper", roi),
+                _color_support_ratio("copper", pre_roi)
+            )
+            copper_compatibility = max(
+                _color_compatibility("copper", roi),
+                _color_compatibility("copper", pre_roi)
+            )
+            copper_orange = max(
+                _copper_orange_support(roi),
+                _copper_orange_support(pre_roi)
+            )
+            copper_green = max(
+                _copper_green_support(roi),
+                _copper_green_support(pre_roi)
+            )
+
+            if not (0.72 <= copper_support <= 0.94):
+                continue
+            if copper_compatibility < 0.84:
+                continue
+            if copper_orange < 0.72 or copper_green > 0.08:
+                continue
+
+            pad = int(max(w, h) * 0.60)
+            x0 = max(0, x - pad)
+            y0 = max(0, y - pad)
+            x1 = min(img.shape[1], x + w + pad)
+            y1 = min(img.shape[0], y + h + pad)
+            match_roi = img[y0:y1, x0:x1]
+
+            if match_roi.size == 0:
+                continue
+
+            best_score = 0.0
+            best_name = None
+
+            for name, template in template_bank.items():
+                score = match_template_multiscale(match_roi, template)
+                if score > best_score:
+                    best_score = score
+                    best_name = name
+
+            if best_name is None or best_score < 0.54:
+                continue
+
+            detections.append({
+                "label": "Copper",
+                "variant": best_name,
+                "score": float(
+                    0.50
+                    + best_score * 0.20
+                    + copper_support * 0.08
+                    + copper_compatibility * 0.06
+                ),
+                "box": (x, y, w, h),
+                "source": "copper_edge_cluster",
+                "template_score": float(best_score),
+                "copper_support": float(copper_support),
+                "copper_compatibility": float(copper_compatibility),
+                "copper_orange": float(copper_orange),
+                "copper_green": float(copper_green),
+                "edge_density": float(edge_density),
+            })
+
+        return detections
+
+    def _detect_iron_color_clusters(
+        self,
+        img: np.ndarray,
+        img_preprocessed: np.ndarray,
+        color_mask: np.ndarray,
+        template_bank: Dict[str, np.ndarray]
+    ) -> List[Dict]:
+        """
+        Ergaenzt Iron-Kandidaten, die in dunklen Hoehlen farblich klar sind,
+        aber durch schräge Perspektive nur fragmentiert konturiert werden.
+        """
+
+        if not template_bank:
+            return []
+
+        grouped = cv2.dilate(
+            color_mask,
+            np.ones((15, 15), np.uint8),
+            iterations=1
+        )
+        grouped = cv2.morphologyEx(
+            grouped,
+            cv2.MORPH_CLOSE,
+            np.ones((15, 15), np.uint8)
+        )
+
+        contours, _ = cv2.findContours(
+            grouped,
+            cv2.RETR_EXTERNAL,
+            cv2.CHAIN_APPROX_SIMPLE
+        )
+
+        img_h, img_w = img.shape[:2]
+        max_area = min(90000, int(img_h * img_w * 0.045))
+        detections = []
+
+        for contour in contours:
+            x, y, w, h = cv2.boundingRect(contour)
+            area = w * h
+
+            if area < 1200 or area > max_area:
+                continue
+
+            aspect_ratio = max(w / float(max(h, 1)), h / float(max(w, 1)))
+            if aspect_ratio > 2.20:
+                continue
+
+            pre_roi = img_preprocessed[y:y + h, x:x + w]
+            pre_support = _color_support_ratio("iron", pre_roi)
+            pre_compatibility = _color_compatibility("iron", pre_roi)
+
+            if not (0.12 <= pre_support <= 0.30):
+                continue
+            if not (0.60 <= pre_compatibility <= 0.76):
+                continue
+
+            roi_box = _expand_box((x, y, w, h), img.shape, pad_factor=0.35, min_pad=8)
+            rx, ry, rw, rh = roi_box
+            roi = img[ry:ry + rh, rx:rx + rw]
+
+            if roi.size == 0:
+                continue
+
+            best_score = 0.0
+            best_name = None
+
+            for name, template in template_bank.items():
+                score = match_template_multiscale(roi, template)
+                if score > best_score:
+                    best_score = score
+                    best_name = name
+
+            if best_name is None or best_score < 0.64:
+                continue
+
+            final_score = min(
+                0.95,
+                0.50
+                + best_score * 0.25
+                + pre_support * 0.20
+                + pre_compatibility * 0.12
+            )
+
+            detections.append({
+                "label": "Iron",
+                "variant": best_name,
+                "score": float(final_score),
+                "box": (x, y, w, h),
+                "source": "iron_color_cluster",
+                "template_score": float(best_score),
+                "pre_color_support": float(pre_support),
+                "pre_color_compatibility": float(pre_compatibility),
+            })
+
+        return detections
 
     def _merge_close_diamond_detections(self, detections: List[Dict]) -> List[Dict]:
         diamonds = [d for d in detections if d["label"].lower() == "diamond"]
