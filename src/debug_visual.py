@@ -29,6 +29,7 @@ from segmentation import (
     use_edges_for_ore,
 )
 from template_repository import TemplateRepository
+from visualization import draw_candidates
 
 Box = Tuple[int, int, int, int]
 
@@ -72,6 +73,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--panel-width", type=int, default=420)
     parser.add_argument("--ore", default=None, help="Optional single ore mask board.")
+    parser.add_argument(
+        "--candidates-only",
+        action="store_true",
+        help="Write an original-image overlay with candidate boxes only.",
+    )
     return parser.parse_args()
 
 
@@ -277,13 +283,36 @@ def create_debug_board(image_name: str, args: argparse.Namespace, annotations: D
     return out_path
 
 
+def create_candidate_overlay(image_name: str, args: argparse.Namespace) -> str:
+    image_path = os.path.join(DATA_DIR, "screenshots", image_name)
+    img = load_image(image_path)
+    config = OreDetectorConfig(image_path=image_path, save_debug_masks=False)
+
+    with contextlib.redirect_stdout(io.StringIO()):
+        if args.ore:
+            _, _, per_ore, _ = collect_pipeline_debug(img, config)
+            candidates = per_ore.get(args.ore, {}).get("candidates", [])
+        else:
+            candidates = OreDetector(config).detect(img).candidates
+
+    out = draw_candidates(img, candidates)
+    os.makedirs(args.output_dir, exist_ok=True)
+    suffix = f"_{args.ore}" if args.ore else ""
+    out_path = os.path.join(args.output_dir, f"{os.path.splitext(image_name)[0]}{suffix}_candidates.png")
+    cv2.imwrite(out_path, out)
+    return out_path
+
+
 def main() -> None:
     args = parse_args()
     annotations = load_json(args.annotations)
     review = load_json(args.review)
 
     for image_name in resolve_images(args, annotations):
-        path = create_debug_board(image_name, args, annotations, review)
+        if args.candidates_only:
+            path = create_candidate_overlay(image_name, args)
+        else:
+            path = create_debug_board(image_name, args, annotations, review)
         print(path)
 
 

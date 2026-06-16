@@ -152,6 +152,13 @@ python3 src/debug_visual.py --image test17.png --ore gold
 python3 src/debug_visual.py --image test17.png --ore redstone
 ```
 
+Wenn nur die Kandidatenboxen ohne finale Detektionen sichtbar sein sollen:
+
+```bash
+python3 src/debug_visual.py --image test17.png --candidates-only
+python3 src/debug_visual.py --image test17.png --ore gold --candidates-only
+```
+
 Standardmäßig werden `difficulty: "hard"` und `ignore: true` nicht streng bewertet.
 Hard-Boxen können optional mit niedrigerer IoU in die Metrik aufgenommen werden:
 
