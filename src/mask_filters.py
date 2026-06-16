@@ -128,6 +128,12 @@ class MaskRegionFilter:
 
     def clean_runtime_mask(self, mask: np.ndarray, hsv: np.ndarray, ore: str | None = None) -> np.ndarray:
         out = self.remove_hud_regions(mask)
-        out = self.remove_water_regions(out, hsv)
+
+        # GEÄNDERT:
+        # Diamond und Lapis liegen farblich direkt im frueheren Wasserbereich.
+        # Der Wasserfilter hat dadurch in test1/test2 echte Erzpixel entfernt.
+        if ore not in {"diamond", "lapis"}:
+            out = self.remove_water_regions(out, hsv)
+
         out = self.remove_large_mask_regions(out, hsv, ore=ore)
         return out
