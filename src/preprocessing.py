@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from pathlib import Path
 import cv2
 import numpy as np
@@ -54,7 +53,7 @@ def match_scene_brightness(img: np.ndarray) -> np.ndarray:
 
     v = np.clip(v.astype(np.float32) * factor, 0, 255).astype(np.uint8)
 
-    return cv2.cvtColor(cv2.merge((h, s, v)), cv2.COLOR_HSV2BGR)
+    return cv2.merge((h, s, v))
 
 
 def apply_clahe(img: np.ndarray) -> np.ndarray:

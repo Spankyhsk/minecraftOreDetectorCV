@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Einstiegspunkt fuer die Minecraft-Ore-Detection.
+Hauptmodul (Main Entry Point) des Projekts 'Minecraft Ore Detector CV'.
+Dieses Skript steuert den gesamten Ablauf der Pipeline:
+1. Laden des Minecraft-Screenshots
+2. Vorverarbeitung (Helligkeitsanpassung und Rauschminderung)
+3. Erzeugung von Farb- und Kantenmasken
+4. Erz-spezifische Filterung und Konturanalyse zur Kandidatengewinnung
+5. Template-Matching zur detaillierten Block-Validierung
+6. Non-Maximum Suppression zur Zusammenfassung überlappender Treffer
+7. Visualisierung der Ergebnisse (mit optionalem Debug-Overlay)
 """
 
 from config import OreDetectorConfig
@@ -37,4 +45,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
