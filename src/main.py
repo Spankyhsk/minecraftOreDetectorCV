@@ -17,7 +17,7 @@ from typing import Dict
 import cv2
 import numpy as np
 
-from preprocessing import load_image, apply_clahe, blur, to_hsv
+from preprocessing import load_image, match_scene_brightness, to_hsv
 from segmentation import (
     color_mask,
     edge_mask,
@@ -26,7 +26,7 @@ from segmentation import (
     use_edges_for_ore,
     refine_mask_for_ore,
 )
-from morphology import clean_mask
+
 from detection import (
     find_candidates,
     load_template,
@@ -41,11 +41,11 @@ from utils import log
 # - True: Zeichnet zusätzlich alle gefundenen Roh-Kandidaten (blaue Boxen mit 'C')
 #         sowie die finalen Treffer (grüne Boxen).
 # - False: Zeichnet ausschließlich die finalen Treffer (grüne Boxen).
-DEBUG = False
+DEBUG = True
 
 # Optionaler Debug-Schalter.
 # Wenn True, werden Zwischenmasken im Ordner data/debug_masks gespeichert.
-SAVE_DEBUG_MASKS = False
+SAVE_DEBUG_MASKS = True
 
 
 # ==========================================
@@ -64,7 +64,7 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 IMAGE_PATH = os.path.join(
     DATA_DIR,
     "screenshots",
-    "test1.png"
+    "test6.png"
 )
 
 # Ordner mit den Erz-Templates
@@ -72,6 +72,8 @@ TEMPLATES_DIR = os.path.join(DATA_DIR, "templates")
 
 # Ordner für optionale Debug-Masken.
 DEBUG_MASK_DIR = os.path.join(DATA_DIR, "debug_masks")
+
+Vorverarbeitung_DIR = os.path.join(DATA_DIR, "vorverarbeitung")
 
 
 # Minimale Ähnlichkeitsgrenzen (Thresholds) für das Template Matching pro Erztyp.
@@ -659,6 +661,20 @@ def save_debug_mask(name: str, mask: np.ndarray) -> None:
     path = os.path.join(DEBUG_MASK_DIR, f"{name}.png")
     cv2.imwrite(path, mask)
 
+def save_vorverarbeitung(name: str, mask: np.ndarray) -> None:
+    """
+    NEU HINZUGEFÜGT:
+    Speichert Debug-Masken, falls SAVE_DEBUG_MASKS aktiviert ist.
+    """
+
+    if not SAVE_DEBUG_MASKS:
+        return
+
+    os.makedirs(Vorverarbeitung_DIR, exist_ok=True)
+
+    path = os.path.join(Vorverarbeitung_DIR, f"{name}.png")
+    cv2.imwrite(path, mask)
+
 
 def _ore_label(ore_key: str) -> str:
     """
@@ -710,19 +726,20 @@ def run_pipeline(img: np.ndarray) -> np.ndarray:
     # 1. Vorverarbeitung
     # ---------------------------------------------------------
 
-    img_preprocessed = apply_clahe(img)
-    img_preprocessed = blur(img_preprocessed)
+    img_preprocessed = match_scene_brightness(img)
+    save_vorverarbeitung("vorverarbeitung", img_preprocessed)
 
     # ---------------------------------------------------------
     # 2. Farbraumkonvertierung und Kantenerkennung
     # ---------------------------------------------------------
 
-    hsv = to_hsv(img_preprocessed)
+    # hsv = to_hsv(img_preprocessed)
+
 
     edges = edge_mask(img_preprocessed)
 
     edges = remove_hud_regions(edges)
-    edges = remove_water_regions(edges, hsv)
+    edges = remove_water_regions(edges, img_preprocessed)
     edges = remove_large_mask_regions(edges)
 
     save_debug_mask("00_edges_cleaned", edges)
@@ -744,10 +761,10 @@ def run_pipeline(img: np.ndarray) -> np.ndarray:
         # 4.1 Farbmaske für den aktuellen Erztyp erzeugen
         # -----------------------------------------------------
 
-        color = color_mask(hsv, ore)
+        color = color_mask(img_preprocessed, ore)
 
         color = remove_hud_regions(color)
-        color = remove_water_regions(color, hsv)
+        color = remove_water_regions(color, img_preprocessed)
         color = remove_large_mask_regions(color)
 
         save_debug_mask(f"01_color_{ore}", color)
@@ -771,10 +788,10 @@ def run_pipeline(img: np.ndarray) -> np.ndarray:
         # 4.4 Morphologische Bereinigung
         # -----------------------------------------------------
 
-        mask = clean_mask(mask)
+        # mask = clean_mask(mask)
 
         mask = remove_hud_regions(mask)
-        mask = remove_water_regions(mask, hsv)
+        mask = remove_water_regions(mask, img_preprocessed)
         mask = remove_large_mask_regions(mask)
 
         save_debug_mask(f"02_mask_{ore}", mask)
