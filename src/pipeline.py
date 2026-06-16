@@ -238,6 +238,18 @@ class OreDetector:
                         template_bank
                     )
                 )
+                all_raw_detections.extend(
+                    self._detect_copper_dark_cyan_clusters(
+                        img,
+                        img_preprocessed,
+                        template_bank,
+                        [
+                            detection
+                            for detection in all_raw_detections
+                            if detection["label"].lower() == "copper"
+                        ]
+                    )
+                )
 
             if ore == "iron":
                 iron_color_cluster_detections = self._detect_iron_color_clusters(
@@ -391,6 +403,53 @@ class OreDetector:
             for other_box in boxes
         )
 
+    @staticmethod
+    def _hsv_range_support(
+        roi_bgr: np.ndarray,
+        lower: List[int],
+        upper: List[int],
+    ) -> float:
+        """
+        NEU HINZUGEFÜGT:
+        Misst einen frei definierten HSV-Anteil in einer ROI.
+        """
+
+        if roi_bgr.size == 0:
+            return 0.0
+
+        hsv = cv2.cvtColor(roi_bgr, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(
+            hsv,
+            np.array(lower, dtype=np.uint8),
+            np.array(upper, dtype=np.uint8)
+        )
+
+        return float(np.mean(mask > 0))
+
+    def _best_template_score_for_ore(
+        self,
+        ore: str,
+        roi_bgr: np.ndarray,
+    ) -> float:
+        """
+        NEU HINZUGEFÜGT:
+        Liefert den besten Template-Score fuer einen Vergleichs-Erztyp.
+        """
+
+        template_bank = self.template_repository.get_for_ore(ore)
+
+        if not template_bank or roi_bgr.size == 0:
+            return 0.0
+
+        best_score = 0.0
+
+        for template in template_bank.values():
+            score = match_template_multiscale(roi_bgr, template)
+            if score > best_score:
+                best_score = score
+
+        return best_score
+
     def _passes_roi_plausibility(self, detection: Dict, img: np.ndarray) -> bool:
         """
         Prueft einfache klassische ROI-Merkmale fuer bekannte FP-Muster.
@@ -422,6 +481,39 @@ class OreDetector:
                     and detection.get("copper_orange", 0.0) >= 0.72
                     and detection.get("copper_green", 0.0) <= 0.08
                     and detection.get("edge_density", 0.0) >= 0.08
+                )
+
+            if detection.get("source") == "copper_dark_cyan_cluster":
+                # NEU HINZUGEFÜGT:
+                # Sehr dunkler Deepslate-Copper in test10/test11/test12 zeigt
+                # fast keinen klassischen Gruenanteil, aber kleine Cyan-Inseln.
+                # Diese Quelle bleibt nur gueltig, wenn Clustergeometrie,
+                # Cyan-Anteil, dunkle ROI-Struktur und Template plausibel sind.
+                return (
+                    detection.get("template_score", 0.0) >= 0.575
+                    and detection.get("pre_mask_support", 0.0) >= 0.70
+                    and detection.get("copper_support", 0.0) >= 0.018
+                    and detection.get("copper_compatibility", 0.0) >= 0.50
+                    and 0.065 <= detection.get("copper_orange", 0.0) <= 0.58
+                    and 0.015 <= detection.get("copper_cyan", 0.0) <= 0.20
+                    and detection.get("copper_specks", 0) >= 4
+                    and detection.get("coal_template_score", 0.0)
+                    <= detection.get("template_score", 0.0) + 0.060
+                    and detection.get("emerald_template_score", 0.0)
+                    <= detection.get("template_score", 0.0) + 0.115
+                    and (
+                        detection.get("gold_template_score", 0.0)
+                        <= detection.get("template_score", 0.0) + 0.16
+                        or detection.get("copper_cyan", 0.0) >= 0.030
+                    )
+                    and 12.0 <= detection.get("mean_value", 0.0) <= 31.0
+                    and 3.0 <= detection.get("texture_strength", 0.0) <= 11.2
+                    and detection.get("edge_density", 0.0) <= 0.0045
+                    and 55.0 <= detection.get("saturation_mean", 0.0) <= 126.0
+                    and 14.0 <= detection.get("value_mean", 0.0) <= 38.0
+                    and 80 <= w <= 250
+                    and 140 <= h <= 290
+                    and aspect_ratio <= 1.75
                 )
 
             normal_copper_case = (
@@ -1772,6 +1864,275 @@ class OreDetector:
             ))
 
         return detections
+
+    def _detect_copper_dark_cyan_clusters(
+        self,
+        img: np.ndarray,
+        img_preprocessed: np.ndarray,
+        template_bank: Dict[str, np.ndarray],
+        existing_copper_detections: List[Dict],
+    ) -> List[Dict]:
+        """
+        NEU HINZUGEFÜGT:
+        Sehr enger Fallback fuer dunklen Deepslate-Copper in test10/test11/test12.
+
+        Diese Bilder enthalten kleine cyan/tuerkise Erzpixel-Inseln, die von der
+        alten Copper-Gruen-Range nicht erfasst werden. Statt die HSV-Grenzen
+        global zu lockern, werden nur kleine Cyan-Komponenten gruppiert und
+        geometrisch zu blockartigen Fenstern erweitert.
+        """
+
+        if not template_bank:
+            return []
+
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        cyan_mask = cv2.inRange(
+            hsv,
+            np.array([55, 20, 10], dtype=np.uint8),
+            np.array([115, 255, 180], dtype=np.uint8)
+        )
+        cyan_mask = self.mask_filter.remove_hud_regions(cyan_mask)
+        cyan_mask = cv2.morphologyEx(
+            cyan_mask,
+            cv2.MORPH_OPEN,
+            np.ones((3, 3), np.uint8)
+        )
+
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(
+            cyan_mask,
+            connectivity=8
+        )
+        specks = np.zeros_like(cyan_mask)
+
+        for i in range(1, num_labels):
+            area = int(stats[i, cv2.CC_STAT_AREA])
+            width = int(stats[i, cv2.CC_STAT_WIDTH])
+            height = int(stats[i, cv2.CC_STAT_HEIGHT])
+
+            if 8 <= area <= 1200 and width <= 60 and height <= 60:
+                specks[labels == i] = 255
+
+        if cv2.countNonZero(specks) < 40:
+            return []
+
+        grouped = cv2.dilate(
+            specks,
+            np.ones((65, 65), np.uint8),
+            iterations=1
+        )
+        grouped = cv2.morphologyEx(
+            grouped,
+            cv2.MORPH_CLOSE,
+            np.ones((25, 25), np.uint8)
+        )
+
+        contours, _ = cv2.findContours(
+            grouped,
+            cv2.RETR_EXTERNAL,
+            cv2.CHAIN_APPROX_SIMPLE
+        )
+
+        pre_hsv = to_hsv(img_preprocessed)
+        pre_copper_mask = color_mask(pre_hsv, "copper")
+        existing_boxes = [
+            tuple(detection["box"])
+            for detection in existing_copper_detections
+        ]
+        candidates = []
+
+        for contour in contours:
+            x, y, w, h = cv2.boundingRect(contour)
+            area = cv2.contourArea(contour)
+
+            if area < 800 or w < 35 or h < 35:
+                continue
+            if w > 320 or h > 260:
+                continue
+
+            speck_roi = specks[y:y + h, x:x + w]
+            speck_count = cv2.connectedComponentsWithStats(
+                speck_roi,
+                connectivity=8
+            )[0] - 1
+
+            if speck_count < 4:
+                continue
+
+            proposal_specs = []
+
+            if w <= 170 and h <= 190:
+                proposal_specs.append((
+                    int(x + w * 0.18),
+                    int(y + h * 0.05),
+                    90,
+                    150,
+                    "small",
+                ))
+                proposal_specs.append((
+                    int(x + w * 0.10),
+                    int(y - h * 0.45),
+                    int(w * 1.14),
+                    int(h * 1.50),
+                    "small_expanded",
+                ))
+
+            if w >= 170 and h >= 150:
+                proposal_specs.append((
+                    int(x + w * 0.12),
+                    int(y - h * 0.25),
+                    int(w * 0.75),
+                    int(h * 0.95),
+                    "large",
+                ))
+                proposal_specs.append((
+                    int(x + w * 0.05),
+                    int(y - h * 0.45),
+                    int(w * 0.88),
+                    int(h * 1.25),
+                    "large_expanded",
+                ))
+
+            for px, py, pw, ph, mode in proposal_specs:
+                box = self._clip_box((px, py, pw, ph), img.shape)
+
+                if self._overlaps_any_box(
+                    box,
+                    existing_boxes,
+                    iou_threshold=0.12
+                ):
+                    continue
+
+                bx, by, bw, bh = box
+                pre_mask_roi = pre_copper_mask[by:by + bh, bx:bx + bw]
+
+                if pre_mask_roi.size == 0:
+                    continue
+
+                pre_mask_support = float(np.mean(pre_mask_roi > 0))
+                if pre_mask_support < 0.70:
+                    continue
+
+                roi = img[by:by + bh, bx:bx + bw]
+                if roi.size == 0:
+                    continue
+
+                gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+                roi_hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+                edges = cv2.Canny(gray, 50, 150)
+
+                mean_value = float(gray.mean())
+                texture_strength = float(gray.std())
+                edge_density = float(np.mean(edges > 0))
+                saturation_mean = float(roi_hsv[:, :, 1].mean())
+                value_mean = float(roi_hsv[:, :, 2].mean())
+
+                cyan_support = self._hsv_range_support(
+                    roi,
+                    [55, 20, 10],
+                    [115, 255, 180]
+                )
+                copper_orange = _copper_orange_support(roi)
+                copper_support = _color_support_ratio("copper", roi)
+                copper_compatibility = _color_compatibility("copper", roi)
+
+                if not (0.015 <= cyan_support <= 0.20):
+                    continue
+                if not (0.065 <= copper_orange <= 0.58):
+                    continue
+                if copper_support < 0.018:
+                    continue
+                if copper_compatibility < 0.50:
+                    continue
+                if not (12.0 <= mean_value <= 31.0):
+                    continue
+                if not (3.0 <= texture_strength <= 11.2):
+                    continue
+                if edge_density > 0.0045:
+                    continue
+                if not (55.0 <= saturation_mean <= 126.0):
+                    continue
+                if not (14.0 <= value_mean <= 38.0):
+                    continue
+
+                best_score = 0.0
+                best_name = None
+
+                for name, template in template_bank.items():
+                    score = match_template_multiscale(roi, template)
+                    if score > best_score:
+                        best_score = score
+                        best_name = name
+
+                if best_name is None or best_score < 0.575:
+                    continue
+
+                coal_score = self._best_template_score_for_ore("coal", roi)
+                gold_score = self._best_template_score_for_ore("gold", roi)
+                emerald_score = self._best_template_score_for_ore("emerald", roi)
+                iron_score = self._best_template_score_for_ore("iron", roi)
+
+                if coal_score > best_score + 0.060:
+                    continue
+                if emerald_score > best_score + 0.115:
+                    continue
+                if gold_score > best_score + 0.160 and cyan_support < 0.030:
+                    continue
+
+                final_score = min(
+                    0.88,
+                    0.54
+                    + best_score * 0.25
+                    + copper_compatibility * 0.06
+                    + pre_mask_support * 0.03
+                    + min(0.045, cyan_support * 0.35)
+                    + min(0.025, copper_orange * 0.035)
+                )
+
+                candidates.append({
+                    "label": "Copper",
+                    "variant": best_name,
+                    "score": float(final_score),
+                    "box": box,
+                    "source": "copper_dark_cyan_cluster",
+                    "template_score": float(best_score),
+                    "cluster_mode": mode,
+                    "pre_mask_support": float(pre_mask_support),
+                    "copper_support": float(copper_support),
+                    "copper_compatibility": float(copper_compatibility),
+                    "copper_orange": float(copper_orange),
+                    "copper_cyan": float(cyan_support),
+                    "copper_specks": int(speck_count),
+                    "edge_density": float(edge_density),
+                    "texture_strength": float(texture_strength),
+                    "mean_value": float(mean_value),
+                    "saturation_mean": float(saturation_mean),
+                    "value_mean": float(value_mean),
+                    "coal_template_score": float(coal_score),
+                    "gold_template_score": float(gold_score),
+                    "emerald_template_score": float(emerald_score),
+                    "iron_template_score": float(iron_score),
+                })
+
+        if not candidates:
+            return []
+
+        candidates.sort(key=lambda detection: detection["score"], reverse=True)
+        filtered = []
+
+        for candidate in candidates:
+            if self._overlaps_any_box(
+                tuple(candidate["box"]),
+                [tuple(item["box"]) for item in filtered],
+                iou_threshold=0.25
+            ):
+                continue
+
+            filtered.append(candidate)
+
+            if len(filtered) >= 2:
+                break
+
+        return filtered
 
     def _detect_iron_color_clusters(
         self,

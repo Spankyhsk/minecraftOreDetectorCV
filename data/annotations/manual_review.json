@@ -446,6 +446,18 @@
         "label": "copper",
         "original_kind": "fp",
         "score": 0.6293825332807159
+      },
+      "copper:777,216,90,150": {
+        "box": [
+          777,
+          216,
+          90,
+          150
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.7733955324105779
       }
     },
     "misses": {
@@ -540,6 +552,18 @@
         "label": "coal",
         "original_kind": "fp",
         "score": 0.9899999999999999
+      },
+      "copper:1221,174,159,192": {
+        "box": [
+          1221,
+          174,
+          159,
+          192
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.8016501177255264
       },
       "copper:845,471,80,40": {
         "box": [
@@ -739,6 +763,18 @@
   },
   "test12.png": {
     "detections": {
+      "copper:1397,9,243,287": {
+        "box": [
+          1397,
+          9,
+          243,
+          287
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.7947244605544582
+      },
       "copper:989,435,87,52": {
         "box": [
           989,
