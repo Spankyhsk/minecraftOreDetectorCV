@@ -727,18 +727,19 @@ def run_pipeline(img: np.ndarray) -> np.ndarray:
     # ---------------------------------------------------------
 
     img_preprocessed = match_scene_brightness(img)
+    save_vorverarbeitung("vorverarbeitung", img_preprocessed)
 
     # ---------------------------------------------------------
     # 2. Farbraumkonvertierung und Kantenerkennung
     # ---------------------------------------------------------
 
-    hsv = to_hsv(img_preprocessed)
-    save_vorverarbeitung("vorverarbeitung", hsv)
+    # hsv = to_hsv(img_preprocessed)
+
 
     edges = edge_mask(img_preprocessed)
 
     edges = remove_hud_regions(edges)
-    edges = remove_water_regions(edges, hsv)
+    edges = remove_water_regions(edges, img_preprocessed)
     edges = remove_large_mask_regions(edges)
 
     save_debug_mask("00_edges_cleaned", edges)
@@ -760,10 +761,10 @@ def run_pipeline(img: np.ndarray) -> np.ndarray:
         # 4.1 Farbmaske für den aktuellen Erztyp erzeugen
         # -----------------------------------------------------
 
-        color = color_mask(hsv, ore)
+        color = color_mask(img_preprocessed, ore)
 
         color = remove_hud_regions(color)
-        color = remove_water_regions(color, hsv)
+        color = remove_water_regions(color, img_preprocessed)
         color = remove_large_mask_regions(color)
 
         save_debug_mask(f"01_color_{ore}", color)
@@ -790,7 +791,7 @@ def run_pipeline(img: np.ndarray) -> np.ndarray:
         # mask = clean_mask(mask)
 
         mask = remove_hud_regions(mask)
-        mask = remove_water_regions(mask, hsv)
+        mask = remove_water_regions(mask, img_preprocessed)
         mask = remove_large_mask_regions(mask)
 
         save_debug_mask(f"02_mask_{ore}", mask)
