@@ -56,6 +56,27 @@ def match_scene_brightness(img: np.ndarray) -> np.ndarray:
     return cv2.merge((h, s, v))
 
 
+def apply_clahe(img: np.ndarray) -> np.ndarray:
+    """
+    Kompatibilitaetswrapper fuer alte Vergleichsskripte.
+
+    Die Pipeline nutzt jetzt match_scene_brightness(), weil diese Methode die
+    Szenenhelligkeit auf das Referenzbild normalisiert.
+    """
+
+    return match_scene_brightness(img)
+
+
+def blur(img: np.ndarray) -> np.ndarray:
+    """
+    Kompatibilitaetswrapper fuer alte Vergleichsskripte.
+
+    Die neue Vorverarbeitung verwendet keinen zusaetzlichen Blur.
+    """
+
+    return img
+
+
 # ------------------------------------------------------------
 # HSV KONVERTIERUNG
 # ------------------------------------------------------------

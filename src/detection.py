@@ -14,55 +14,8 @@ import cv2
 import numpy as np
 from typing import List, Dict, Tuple, Optional
 
+from ore_rules import get_ore_rule
 from utils import log_debug
-
-
-# ==========================================
-# HSV-Farbbereiche für Plausibilitätsprüfung
-# ==========================================
-
-# NEU HINZUGEFÜGT:
-# Diese HSV-Bereiche werden in detection.py nur für die nachgelagerte Prüfung benutzt.
-# Die eigentliche Segmentierung passiert weiterhin in segmentation.py.
-#
-# Ziel:
-# Ein Kandidat soll nicht nur vom Template her passen, sondern auch farblich
-# plausibel zum jeweiligen Erz sein.
-ORE_HSV_RANGES = {
-    "coal": [
-        ([0, 0, 0], [179, 75, 105])
-    ],
-    "copper": [
-        ([5, 65, 35], [25, 255, 255]),
-        # NEU HINZUGEFÜGT:
-        # Copper-Templates enthalten neben Orange/Braun oft auch oxidierte
-        # grün-türkise Pixel. Diese werden nur in der Plausibilitätsprüfung
-        # benutzt, damit die echten Copper-Blöcke in Zeile 3 wieder erkannt werden.
-        ([70, 25, 25], [98, 255, 255])
-    ],
-    # GEÄNDERT:
-    # Diamond/Emerald minimal toleranter für dunkle Deepslate-Varianten.
-    # Die eigentliche Fehlalarmkontrolle passiert danach über Template + Copper-Veto.
-    "diamond": [
-        ([75, 24, 18], [112, 255, 255])
-    ],
-    "emerald": [
-        ([45, 28, 18], [85, 255, 255])
-    ],
-    "gold": [
-        ([15, 55, 40], [42, 255, 255])
-    ],
-    "iron": [
-        ([8, 25, 45], [30, 165, 255])
-    ],
-    "lapis": [
-        ([95, 50, 30], [135, 255, 255])
-    ],
-    "redstone": [
-        ([0, 65, 35], [10, 255, 255]),
-        ([165, 65, 35], [179, 255, 255])
-    ],
-}
 
 
 # NEU HINZUGEFÜGT:
@@ -128,7 +81,7 @@ def _color_support_mask(ore: str, roi_bgr: np.ndarray) -> np.ndarray:
 
     out = np.zeros(hsv.shape[:2], dtype=np.uint8)
 
-    for lower, upper in ORE_HSV_RANGES.get(ore, []):
+    for lower, upper in get_ore_rule(ore).plausibility_ranges:
         lo = np.array(lower, dtype=np.uint8)
         hi = np.array(upper, dtype=np.uint8)
 
@@ -250,18 +203,7 @@ def _min_color_support(ore: str) -> float:
         Mindest-Farbsupport.
     """
 
-    return {
-        "coal": 0.10,
-        "copper": 0.018,
-        # GEÄNDERT:
-        # Minimal niedriger, damit dunkle Deepslate-Diamond/Emerald-Pixel nicht herausfallen.
-        "diamond": 0.003,
-        "emerald": 0.003,
-        "gold": 0.006,
-        "iron": 0.014,
-        "lapis": 0.004,
-        "redstone": 0.004,
-    }.get(ore.lower(), 0.0)
+    return get_ore_rule(ore).min_color_support
 
 
 def _good_color_support(ore: str) -> float:
@@ -273,18 +215,7 @@ def _good_color_support(ore: str) -> float:
     etwas niedriger sein darf, wenn die Farbe sehr eindeutig ist.
     """
 
-    return {
-        "coal": 0.16,
-        "copper": 0.050,
-        # GEÄNDERT:
-        # Für dunkle Varianten genügt etwas weniger Farbsupport.
-        "diamond": 0.014,
-        "emerald": 0.014,
-        "gold": 0.025,
-        "iron": 0.045,
-        "lapis": 0.020,
-        "redstone": 0.020,
-    }.get(ore.lower(), 0.025)
+    return get_ore_rule(ore).good_color_support
 
 
 def _min_compatibility(ore: str) -> float:
@@ -306,16 +237,7 @@ def _min_compatibility(ore: str) -> float:
         Minimale Kompatibilität.
     """
 
-    return {
-        "coal": 0.75,
-        "copper": 0.32,
-        "diamond": 0.10,
-        "emerald": 0.10,
-        "gold": 0.14,
-        "iron": 0.26,
-        "lapis": 0.10,
-        "redstone": 0.10,
-    }.get(ore.lower(), 0.0)
+    return get_ore_rule(ore).min_compatibility
 
 
 def _color_compatibility(ore: str, roi_bgr: np.ndarray) -> float:
@@ -759,7 +681,8 @@ def load_template(path: str) -> np.ndarray:
 
 def find_candidates(
     mask: np.ndarray,
-    color_mask: Optional[np.ndarray] = None
+    color_mask: Optional[np.ndarray] = None,
+    ore: Optional[str] = None,
 ) -> List[Tuple[int, int, int, int]]:
     """
     Sucht Kandidatenregionen in einer binären Maske.
@@ -798,10 +721,10 @@ def find_candidates(
         int(img_area * 0.000035)
     )
 
-    max_area = int(img_area * 0.012)
+    max_area = int(img_area * (0.045 if ore and ore.lower() == "copper" else 0.012))
 
-    max_w = int(img_w * 0.18)
-    max_h = int(img_h * 0.18)
+    max_w = int(img_w * (0.35 if ore and ore.lower() == "copper" else 0.18))
+    max_h = int(img_h * (0.35 if ore and ore.lower() == "copper" else 0.18))
 
     for c in contours:
         x, y, w, h = cv2.boundingRect(c)
@@ -831,7 +754,10 @@ def find_candidates(
             white_pixels = int((crop > 0).sum())
             density = white_pixels / float(crop.size)
 
-            if density < 0.015 and white_pixels < 18:
+            if ore and ore.lower() == "copper":
+                if density < 0.030 and white_pixels < 36:
+                    continue
+            elif density < 0.015 and white_pixels < 18:
                 continue
 
         candidates.append((x, y, w, h))
@@ -1335,7 +1261,21 @@ def detect_with_template_bank(
                 )
             )
 
-            if copper_like_region:
+            own_color_dominates = (
+                (
+                    label_key == "diamond"
+                    and color_support >= 0.020
+                    and compat_label >= copper_compat + 0.025
+                )
+                or (
+                    label_key == "emerald"
+                    and best_score >= 0.70
+                    and 0.060 <= color_support <= 0.140
+                    and compat_label >= copper_compat + 0.040
+                )
+            )
+
+            if copper_like_region and not own_color_dominates:
                 continue
 
         has_basic_template = best_score >= threshold

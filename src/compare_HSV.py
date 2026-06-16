@@ -93,13 +93,13 @@ def main():
     comparison = np.hstack((blur_vis, hsv_vis))
     
     # Speicherpfad für den Vergleich
-    out_path = os.path.join(output_dir, "hsv_comparison.png")
-    cv2.imwrite(out_path, comparison)
+    out_path = os.path.join(output_dir, "hsv.png")
+    cv2.imwrite(out_path, hsv_vis)
     log(f"Vergleichsbild erfolgreich gespeichert unter: {out_path}")
     
     # Bild anzeigen
     log("Zeige Vergleichsbild an. Drücke eine beliebige Taste im Bildfenster, um es zu schließen.")
-    show(comparison, window_name="Vergleich: Original vs. CLAHE (Vorverarbeitung)")
+    show(hsv_vis, window_name="Vergleich: Original vs. CLAHE (Vorverarbeitung)")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,3085 @@
+{
+  "test1.png": {
+    "detections": {
+      "coal:609,836,102,102": {
+        "box": [
+          609,
+          836,
+          102,
+          102
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9899999999999999
+      },
+      "coal:812,837,102,102": {
+        "box": [
+          812,
+          837,
+          102,
+          102
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9899999999999999
+      },
+      "copper:1020,648,92,79": {
+        "box": [
+          1020,
+          648,
+          92,
+          79
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6536606551682348
+      },
+      "copper:1021,648,90,79": {
+        "box": [
+          1021,
+          648,
+          90,
+          79
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6536028309141987
+      },
+      "copper:1223,649,92,79": {
+        "box": [
+          1223,
+          649,
+          92,
+          79
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6520789783907995
+      },
+      "copper:1224,650,91,77": {
+        "box": [
+          1224,
+          650,
+          91,
+          77
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.652085549802886
+      },
+      "diamond:599,420,136,134": {
+        "box": [
+          599,
+          420,
+          136,
+          134
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6387054167468095
+      },
+      "diamond:602,433,105,105": {
+        "box": [
+          602,
+          433,
+          105,
+          105
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6387432680804276
+      },
+      "diamond:797,425,130,129": {
+        "box": [
+          797,
+          425,
+          130,
+          129
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6664666771787208
+      },
+      "diamond:819,444,85,88": {
+        "box": [
+          819,
+          444,
+          85,
+          88
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6664465895193618
+      },
+      "diamond:819,447,86,85": {
+        "box": [
+          819,
+          447,
+          86,
+          85
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6664465874331992
+      },
+      "emerald:1019,252,89,82": {
+        "box": [
+          1019,
+          252,
+          89,
+          82
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7369308404981827
+      },
+      "emerald:1019,253,88,80": {
+        "box": [
+          1019,
+          253,
+          88,
+          80
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7356738190710281
+      },
+      "emerald:1212,245,93,87": {
+        "box": [
+          1212,
+          245,
+          93,
+          87
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7507762593184543
+      },
+      "emerald:1212,246,94,87": {
+        "box": [
+          1212,
+          246,
+          94,
+          87
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7506643492137027
+      },
+      "gold:618,648,91,84": {
+        "box": [
+          618,
+          648,
+          91,
+          84
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8457446828668942
+      },
+      "gold:618,648,91,85": {
+        "box": [
+          618,
+          648,
+          91,
+          85
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8457645097559323
+      },
+      "gold:819,648,90,85": {
+        "box": [
+          819,
+          648,
+          90,
+          85
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8550617500284908
+      },
+      "gold:820,649,88,83": {
+        "box": [
+          820,
+          649,
+          88,
+          83
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8529657261708973
+      },
+      "iron:1014,830,105,105": {
+        "box": [
+          1014,
+          830,
+          105,
+          105
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7211316402206615
+      },
+      "iron:1014,831,104,104": {
+        "box": [
+          1014,
+          831,
+          104,
+          104
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7211636337446816
+      },
+      "iron:1219,831,105,105": {
+        "box": [
+          1219,
+          831,
+          105,
+          105
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.771023170120829
+      },
+      "iron:1220,832,103,103": {
+        "box": [
+          1220,
+          832,
+          103,
+          103
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7641071651157966
+      },
+      "lapis:1020,448,90,83": {
+        "box": [
+          1020,
+          448,
+          90,
+          83
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6789309087140166
+      },
+      "lapis:1021,443,88,87": {
+        "box": [
+          1021,
+          443,
+          88,
+          87
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6789285075409017
+      },
+      "lapis:1220,448,91,83": {
+        "box": [
+          1220,
+          448,
+          91,
+          83
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6810019724090672
+      },
+      "lapis:1221,449,90,81": {
+        "box": [
+          1221,
+          449,
+          90,
+          81
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6810045696814633
+      },
+      "redstone:621,255,92,79": {
+        "box": [
+          621,
+          255,
+          92,
+          79
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.6920543799146884
+      },
+      "redstone:621,256,93,78": {
+        "box": [
+          621,
+          256,
+          93,
+          78
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.6920554292544598
+      },
+      "redstone:822,259,87,74": {
+        "box": [
+          822,
+          259,
+          87,
+          74
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7138733886475613
+      },
+      "redstone:822,259,88,73": {
+        "box": [
+          822,
+          259,
+          88,
+          73
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7138714026207975
+      }
+    },
+    "misses": {
+      "diamond:619,440,97,94": {
+        "box": [
+          619,
+          440,
+          97,
+          94
+        ],
+        "decision": "missed",
+        "label": "diamond"
+      },
+      "lapis:1015,436,102,101": {
+        "box": [
+          1015,
+          436,
+          102,
+          101
+        ],
+        "decision": "missed",
+        "label": "lapis"
+      }
+    }
+  },
+  "test10.png": {
+    "detections": {
+      "coal:579,436,102,102": {
+        "box": [
+          579,
+          436,
+          102,
+          102
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8450529893276634
+      },
+      "coal:929,462,86,86": {
+        "box": [
+          929,
+          462,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9899999999999999
+      },
+      "coal:964,291,86,86": {
+        "box": [
+          964,
+          291,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8390706090960947
+      },
+      "copper:489,434,172,82": {
+        "box": [
+          489,
+          434,
+          172,
+          82
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6293825332807159
+      },
+      "copper:777,216,90,150": {
+        "box": [
+          777,
+          216,
+          90,
+          150
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.7733955324105779
+      }
+    },
+    "misses": {
+      "coal:780,340,91,102": {
+        "box": [
+          780,
+          340,
+          91,
+          102
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:866,324,58,117": {
+        "box": [
+          866,
+          324,
+          58,
+          117
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:920,314,54,112": {
+        "box": [
+          920,
+          314,
+          54,
+          112
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "copper:778,216,90,150": {
+        "box": [
+          778,
+          216,
+          90,
+          150
+        ],
+        "decision": "missed",
+        "label": "copper"
+      }
+    }
+  },
+  "test11.png": {
+    "detections": {
+      "coal:1724,245,86,86": {
+        "box": [
+          1724,
+          245,
+          86,
+          86
+        ],
+        "decision": "ignore",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8456869692126064
+      },
+      "coal:1865,315,55,86": {
+        "box": [
+          1865,
+          315,
+          55,
+          86
+        ],
+        "decision": "ignore",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8460625155538284
+      },
+      "coal:878,470,86,86": {
+        "box": [
+          878,
+          470,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9899999999999999
+      },
+      "coal:939,470,102,102": {
+        "box": [
+          939,
+          470,
+          102,
+          102
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9899999999999999
+      },
+      "copper:1221,174,159,192": {
+        "box": [
+          1221,
+          174,
+          159,
+          192
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.8016501177255264
+      },
+      "copper:845,471,80,40": {
+        "box": [
+          845,
+          471,
+          80,
+          40
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6116231099227663
+      },
+      "gold:1168,572,84,93": {
+        "box": [
+          1168,
+          572,
+          84,
+          93
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.5958263158352354
+      },
+      "gold:1192,184,119,64": {
+        "box": [
+          1192,
+          184,
+          119,
+          64
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7878764375112562
+      },
+      "gold:1298,663,84,125": {
+        "box": [
+          1298,
+          663,
+          84,
+          125
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7214600591735323
+      },
+      "gold:1573,261,96,48": {
+        "box": [
+          1573,
+          261,
+          96,
+          48
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.5362054206626075
+      },
+      "gold:770,130,66,132": {
+        "box": [
+          770,
+          130,
+          66,
+          132
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7603600530175292
+      },
+      "gold:904,280,41,19": {
+        "box": [
+          904,
+          280,
+          41,
+          19
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7293160136544107
+      },
+      "gold:914,67,66,57": {
+        "box": [
+          914,
+          67,
+          66,
+          57
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6857360934800344
+      },
+      "iron:1402,216,131,131": {
+        "box": [
+          1402,
+          216,
+          131,
+          131
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6801545202514124
+      },
+      "redstone:1062,721,149,95": {
+        "box": [
+          1062,
+          721,
+          149,
+          95
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.5265509044057827
+      },
+      "redstone:1248,363,106,50": {
+        "box": [
+          1248,
+          363,
+          106,
+          50
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6195273879547512
+      }
+    },
+    "misses": {
+      "coal:1413,270,210,204": {
+        "box": [
+          1413,
+          270,
+          210,
+          204
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1436,441,197,82": {
+        "box": [
+          1436,
+          441,
+          197,
+          82
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1610,242,305,168": {
+        "box": [
+          1610,
+          242,
+          305,
+          168
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1639,384,270,130": {
+        "box": [
+          1639,
+          384,
+          270,
+          130
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "copper:1222,190,155,174": {
+        "box": [
+          1222,
+          190,
+          155,
+          174
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "copper:1245,328,149,101": {
+        "box": [
+          1245,
+          328,
+          149,
+          101
+        ],
+        "decision": "missed",
+        "label": "copper"
+      }
+    }
+  },
+  "test12.png": {
+    "detections": {
+      "copper:1397,9,243,287": {
+        "box": [
+          1397,
+          9,
+          243,
+          287
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.7947244605544582
+      },
+      "copper:989,435,87,52": {
+        "box": [
+          989,
+          435,
+          87,
+          52
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.5933824412674208
+      },
+      "gold:1167,172,23,21": {
+        "box": [
+          1167,
+          172,
+          23,
+          21
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.759780991273112
+      },
+      "gold:1436,502,57,52": {
+        "box": [
+          1436,
+          502,
+          57,
+          52
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6783287408296621
+      },
+      "gold:1611,0,214,89": {
+        "box": [
+          1611,
+          0,
+          214,
+          89
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7325428758710519
+      },
+      "gold:920,106,22,48": {
+        "box": [
+          920,
+          106,
+          22,
+          48
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7366606134232107
+      },
+      "redstone:1422,141,123,91": {
+        "box": [
+          1422,
+          141,
+          123,
+          91
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6822397994471228
+      },
+      "redstone:1449,264,149,68": {
+        "box": [
+          1449,
+          264,
+          149,
+          68
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6669092130959737
+      }
+    },
+    "misses": {
+      "coal:1636,146,281,224": {
+        "box": [
+          1636,
+          146,
+          281,
+          224
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:1710,331,202,143": {
+        "box": [
+          1710,
+          331,
+          202,
+          143
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "copper:1418,52,208,242": {
+        "box": [
+          1418,
+          52,
+          208,
+          242
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "copper:1460,207,217,149": {
+        "box": [
+          1460,
+          207,
+          217,
+          149
+        ],
+        "decision": "missed",
+        "label": "copper"
+      }
+    }
+  },
+  "test13.png": {
+    "detections": {
+      "iron:1063,252,158,215": {
+        "box": [
+          1063,
+          252,
+          158,
+          215
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8002884829818594
+      },
+      "iron:1083,260,130,133": {
+        "box": [
+          1083,
+          260,
+          130,
+          133
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.5578009444254493
+      },
+      "iron:1234,275,194,188": {
+        "box": [
+          1234,
+          275,
+          194,
+          188
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7994889062522883
+      },
+      "iron:1331,501,240,230": {
+        "box": [
+          1331,
+          501,
+          240,
+          230
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.752846751832962
+      },
+      "redstone:0,718,77,100": {
+        "box": [
+          0,
+          718,
+          77,
+          100
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6374394773771944
+      },
+      "redstone:0,719,73,97": {
+        "box": [
+          0,
+          719,
+          73,
+          97
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.637434896164197
+      },
+      "redstone:233,583,138,157": {
+        "box": [
+          233,
+          583,
+          138,
+          157
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6574954104616227
+      },
+      "redstone:486,769,41,58": {
+        "box": [
+          486,
+          769,
+          41,
+          58
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6231583879705418
+      },
+      "redstone:644,711,77,116": {
+        "box": [
+          644,
+          711,
+          77,
+          116
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6733746678167928
+      },
+      "redstone:652,730,62,86": {
+        "box": [
+          652,
+          730,
+          62,
+          86
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6733902902274296
+      }
+    },
+    "misses": {
+      "iron:1057,223,156,248": {
+        "box": [
+          1057,
+          223,
+          156,
+          248
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1214,272,190,224": {
+        "box": [
+          1214,
+          272,
+          190,
+          224
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1326,505,254,198": {
+        "box": [
+          1326,
+          505,
+          254,
+          198
+        ],
+        "decision": "missed",
+        "label": "iron"
+      }
+    }
+  },
+  "test14.png": {
+    "detections": {
+      "iron:1062,252,157,215": {
+        "box": [
+          1062,
+          252,
+          157,
+          215
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7936348830956165
+      },
+      "iron:1205,275,220,222": {
+        "box": [
+          1205,
+          275,
+          220,
+          222
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7854600828995822
+      },
+      "iron:1348,572,260,200": {
+        "box": [
+          1348,
+          572,
+          260,
+          200
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7513390161558299
+      },
+      "redstone:0,723,73,99": {
+        "box": [
+          0,
+          723,
+          73,
+          99
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6306618097219184
+      },
+      "redstone:0,726,59,93": {
+        "box": [
+          0,
+          726,
+          59,
+          93
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6306558391246514
+      },
+      "redstone:230,585,139,156": {
+        "box": [
+          230,
+          585,
+          139,
+          156
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6525916783122409
+      },
+      "redstone:485,770,40,57": {
+        "box": [
+          485,
+          770,
+          40,
+          57
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6391766456961343
+      },
+      "redstone:643,713,77,114": {
+        "box": [
+          643,
+          713,
+          77,
+          114
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6511190704937881
+      }
+    },
+    "misses": {
+      "iron:1034,213,181,268": {
+        "box": [
+          1034,
+          213,
+          181,
+          268
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1198,272,216,229": {
+        "box": [
+          1198,
+          272,
+          216,
+          229
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1324,508,262,189": {
+        "box": [
+          1324,
+          508,
+          262,
+          189
+        ],
+        "decision": "missed",
+        "label": "iron"
+      }
+    }
+  },
+  "test15.png": {
+    "detections": {
+      "copper:120,660,240,240": {
+        "box": [
+          120,
+          660,
+          240,
+          240
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.759657411785529
+      },
+      "gold:1087,350,74,65": {
+        "box": [
+          1087,
+          350,
+          74,
+          65
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.741047248000984
+      },
+      "gold:1117,202,104,135": {
+        "box": [
+          1117,
+          202,
+          104,
+          135
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7092485062851651
+      },
+      "gold:1364,369,72,63": {
+        "box": [
+          1364,
+          369,
+          72,
+          63
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7747754798110492
+      },
+      "gold:694,401,33,38": {
+        "box": [
+          694,
+          401,
+          33,
+          38
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6401440429229295
+      }
+    },
+    "misses": {
+      "copper:100,583,382,72": {
+        "box": [
+          100,
+          583,
+          382,
+          72
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "copper:122,658,397,249": {
+        "box": [
+          122,
+          658,
+          397,
+          249
+        ],
+        "decision": "missed",
+        "label": "copper"
+      }
+    }
+  },
+  "test16.png": {
+    "detections": {
+      "diamond:1578,460,105,105": {
+        "box": [
+          1578,
+          460,
+          105,
+          105
+        ],
+        "decision": "invalid",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6324286055564882
+      },
+      "gold:291,362,138,107": {
+        "box": [
+          291,
+          362,
+          138,
+          107
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.67603098003593
+      }
+    },
+    "misses": {
+      "coal:627,244,148,134": {
+        "box": [
+          627,
+          244,
+          148,
+          134
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:642,394,123,111": {
+        "box": [
+          642,
+          394,
+          123,
+          111
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:764,519,104,87": {
+        "box": [
+          764,
+          519,
+          104,
+          87
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:876,403,116,110": {
+        "box": [
+          876,
+          403,
+          116,
+          110
+        ],
+        "decision": "missed",
+        "label": "coal"
+      }
+    }
+  },
+  "test17.png": {
+    "detections": {
+      "coal:1084,155,86,86": {
+        "box": [
+          1084,
+          155,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8459289792028856
+      },
+      "coal:1109,195,102,102": {
+        "box": [
+          1109,
+          195,
+          102,
+          102
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8570033313199592
+      },
+      "coal:1255,372,86,86": {
+        "box": [
+          1255,
+          372,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.932485457685687
+      },
+      "coal:1276,307,86,86": {
+        "box": [
+          1276,
+          307,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8641703365381971
+      },
+      "coal:725,286,86,86": {
+        "box": [
+          725,
+          286,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8550792601102786
+      },
+      "coal:859,450,102,102": {
+        "box": [
+          859,
+          450,
+          102,
+          102
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9650764012336731
+      },
+      "coal:861,182,86,86": {
+        "box": [
+          861,
+          182,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.8855267269714842
+      },
+      "copper:1605,457,78,97": {
+        "box": [
+          1605,
+          457,
+          78,
+          97
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6962827428380256
+      },
+      "copper:1607,458,75,96": {
+        "box": [
+          1607,
+          458,
+          75,
+          96
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6962170436485621
+      },
+      "copper:1833,512,87,42": {
+        "box": [
+          1833,
+          512,
+          87,
+          42
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6544823757704202
+      },
+      "gold:109,801,60,26": {
+        "box": [
+          109,
+          801,
+          60,
+          26
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7055252600688856
+      },
+      "gold:1843,19,49,69": {
+        "box": [
+          1843,
+          19,
+          49,
+          69
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.8001765513420104
+      },
+      "gold:1847,23,42,66": {
+        "box": [
+          1847,
+          23,
+          42,
+          66
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.8001763260364531
+      },
+      "gold:187,756,98,71": {
+        "box": [
+          187,
+          756,
+          98,
+          71
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7827565520565976
+      },
+      "gold:265,195,54,24": {
+        "box": [
+          265,
+          195,
+          54,
+          24
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6600922596461701
+      },
+      "gold:293,0,163,59": {
+        "box": [
+          293,
+          0,
+          163,
+          59
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6638270759174038
+      },
+      "gold:313,0,146,57": {
+        "box": [
+          313,
+          0,
+          146,
+          57
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6639487642108918
+      },
+      "gold:438,133,126,78": {
+        "box": [
+          438,
+          133,
+          126,
+          78
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.748761768309268
+      },
+      "gold:580,357,36,86": {
+        "box": [
+          580,
+          357,
+          36,
+          86
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6820817351923962
+      },
+      "gold:581,357,33,86": {
+        "box": [
+          581,
+          357,
+          33,
+          86
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6819465261247746
+      },
+      "gold:585,161,40,33": {
+        "box": [
+          585,
+          161,
+          40,
+          33
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6985403870412281
+      },
+      "gold:802,755,102,57": {
+        "box": [
+          802,
+          755,
+          102,
+          57
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6745791690370772
+      },
+      "iron:1298,154,71,68": {
+        "box": [
+          1298,
+          154,
+          71,
+          68
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6714024833627016
+      },
+      "redstone:1296,0,78,96": {
+        "box": [
+          1296,
+          0,
+          78,
+          96
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6094248076581009
+      },
+      "redstone:1301,0,71,105": {
+        "box": [
+          1301,
+          0,
+          71,
+          105
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6034705264139336
+      },
+      "redstone:1390,240,57,43": {
+        "box": [
+          1390,
+          240,
+          57,
+          43
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6218968600617291
+      },
+      "redstone:1550,214,230,97": {
+        "box": [
+          1550,
+          214,
+          230,
+          97
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6874038227305045
+      },
+      "redstone:1811,119,76,50": {
+        "box": [
+          1811,
+          119,
+          76,
+          50
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6082947280728843
+      },
+      "redstone:345,506,109,43": {
+        "box": [
+          345,
+          506,
+          109,
+          43
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6382272617962348
+      },
+      "redstone:469,459,124,84": {
+        "box": [
+          469,
+          459,
+          124,
+          84
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.651898390523861
+      }
+    },
+    "misses": {
+      "coal:834,451,130,131": {
+        "box": [
+          834,
+          451,
+          130,
+          131
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:852,421,117,32": {
+        "box": [
+          852,
+          421,
+          117,
+          32
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:964,454,122,74": {
+        "box": [
+          964,
+          454,
+          122,
+          74
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:970,325,114,102": {
+        "box": [
+          970,
+          325,
+          114,
+          102
+        ],
+        "decision": "missed",
+        "label": "coal"
+      }
+    }
+  },
+  "test18.png": {
+    "detections": {
+      "copper:977,141,112,101": {
+        "box": [
+          977,
+          141,
+          112,
+          101
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.7404597208482747
+      },
+      "diamond:969,741,179,200": {
+        "box": [
+          969,
+          741,
+          179,
+          200
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.900403540627694
+      },
+      "diamond:990,761,136,124": {
+        "box": [
+          990,
+          761,
+          136,
+          124
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.9004183732435463
+      },
+      "emerald:762,779,105,100": {
+        "box": [
+          762,
+          779,
+          105,
+          100
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.79261790601808
+      },
+      "gold:1144,528,112,112": {
+        "box": [
+          1144,
+          528,
+          112,
+          112
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.96
+      },
+      "iron:792,449,96,96": {
+        "box": [
+          792,
+          449,
+          96,
+          96
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8783806954220672
+      },
+      "lapis:888,374,79,73": {
+        "box": [
+          888,
+          374,
+          79,
+          73
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6023090222118426
+      },
+      "redstone:340,556,170,136": {
+        "box": [
+          340,
+          556,
+          170,
+          136
+        ],
+        "decision": "invalid",
+        "label": "redstone",
+        "original_kind": "fp",
+        "score": 0.6806940311772933
+      },
+      "redstone:971,449,102,82": {
+        "box": [
+          971,
+          449,
+          102,
+          82
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.6779603184655695
+      }
+    },
+    "misses": {
+      "coal:795,190,87,82": {
+        "box": [
+          795,
+          190,
+          87,
+          82
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:798,276,85,31": {
+        "box": [
+          798,
+          276,
+          85,
+          31
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "copper:978,152,97,89": {
+        "box": [
+          978,
+          152,
+          97,
+          89
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "copper:978,247,94,32": {
+        "box": [
+          978,
+          247,
+          94,
+          32
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "diamond:1000,762,134,26": {
+        "box": [
+          1000,
+          762,
+          134,
+          26
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
+      },
+      "diamond:1004,795,136,136": {
+        "box": [
+          1004,
+          795,
+          136,
+          136
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
+      },
+      "emerald:754,774,120,112": {
+        "box": [
+          754,
+          774,
+          120,
+          112
+        ],
+        "decision": "missed",
+        "label": "emerald"
+      },
+      "emerald:768,736,103,36": {
+        "box": [
+          768,
+          736,
+          103,
+          36
+        ],
+        "decision": "missed",
+        "label": "emerald"
+      },
+      "gold:1105,537,31,119": {
+        "box": [
+          1105,
+          537,
+          31,
+          119
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:1136,528,132,128": {
+        "box": [
+          1136,
+          528,
+          132,
+          128
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "iron:793,451,86,89": {
+        "box": [
+          793,
+          451,
+          86,
+          89
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "lapis:880,370,89,77": {
+        "box": [
+          880,
+          370,
+          89,
+          77
+        ],
+        "decision": "missed",
+        "label": "lapis"
+      },
+      "redstone:976,441,102,88": {
+        "box": [
+          976,
+          441,
+          102,
+          88
+        ],
+        "decision": "missed",
+        "label": "redstone"
+      }
+    }
+  },
+  "test2.png": {
+    "detections": {
+      "coal:565,776,102,102": {
+        "box": [
+          565,
+          776,
+          102,
+          102
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9899999999999999
+      },
+      "coal:762,776,102,102": {
+        "box": [
+          762,
+          776,
+          102,
+          102
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9899999999999999
+      },
+      "copper:1167,589,90,77": {
+        "box": [
+          1167,
+          589,
+          90,
+          77
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6256006983385947
+      },
+      "copper:1168,590,88,75": {
+        "box": [
+          1168,
+          590,
+          88,
+          75
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6255910101996328
+      },
+      "copper:967,589,90,77": {
+        "box": [
+          967,
+          589,
+          90,
+          77
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6164880227025954
+      },
+      "copper:968,589,88,76": {
+        "box": [
+          968,
+          589,
+          88,
+          76
+        ],
+        "decision": "valid",
+        "label": "copper",
+        "original_kind": "tp",
+        "score": 0.6164335008439032
+      },
+      "diamond:543,359,136,137": {
+        "box": [
+          543,
+          359,
+          136,
+          137
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6590821006567403
+      },
+      "diamond:743,365,130,131": {
+        "box": [
+          743,
+          365,
+          130,
+          131
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.7029130288121217
+      },
+      "diamond:759,383,92,91": {
+        "box": [
+          759,
+          383,
+          92,
+          91
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.702890838300895
+      },
+      "diamond:765,384,85,89": {
+        "box": [
+          765,
+          384,
+          85,
+          89
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.702892636573028
+      },
+      "emerald:1165,177,97,92": {
+        "box": [
+          1165,
+          177,
+          97,
+          92
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7525895137255305
+      },
+      "emerald:1165,178,96,90": {
+        "box": [
+          1165,
+          178,
+          96,
+          90
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.752687482005846
+      },
+      "emerald:967,184,90,85": {
+        "box": [
+          967,
+          184,
+          90,
+          85
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7402952804564721
+      },
+      "emerald:967,184,91,86": {
+        "box": [
+          967,
+          184,
+          91,
+          86
+        ],
+        "decision": "valid",
+        "label": "emerald",
+        "original_kind": "tp",
+        "score": 0.7401913791298157
+      },
+      "gold:570,589,88,82": {
+        "box": [
+          570,
+          589,
+          88,
+          82
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8428300571127219
+      },
+      "gold:571,583,88,89": {
+        "box": [
+          571,
+          583,
+          88,
+          89
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8447488134784978
+      },
+      "gold:768,589,89,83": {
+        "box": [
+          768,
+          589,
+          89,
+          83
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.85210440706748
+      },
+      "gold:769,590,87,81": {
+        "box": [
+          769,
+          590,
+          87,
+          81
+        ],
+        "decision": "valid",
+        "label": "gold",
+        "original_kind": "tp",
+        "score": 0.8499972660495662
+      },
+      "iron:1165,781,90,88": {
+        "box": [
+          1165,
+          781,
+          90,
+          88
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7662669318484028
+      },
+      "iron:1166,782,88,86": {
+        "box": [
+          1166,
+          782,
+          88,
+          86
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7662707620428761
+      },
+      "iron:967,781,89,88": {
+        "box": [
+          967,
+          781,
+          89,
+          88
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7210095109451328
+      },
+      "iron:967,782,88,86": {
+        "box": [
+          967,
+          782,
+          88,
+          86
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7210083426940953
+      },
+      "lapis:1169,388,90,84": {
+        "box": [
+          1169,
+          388,
+          90,
+          84
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6987423987015489
+      },
+      "lapis:1170,388,89,83": {
+        "box": [
+          1170,
+          388,
+          89,
+          83
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6987432915791275
+      },
+      "lapis:967,389,89,82": {
+        "box": [
+          967,
+          389,
+          89,
+          82
+        ],
+        "decision": "valid",
+        "label": "lapis",
+        "original_kind": "tp",
+        "score": 0.6877349914043945
+      },
+      "redstone:558,186,95,84": {
+        "box": [
+          558,
+          186,
+          95,
+          84
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7057769798156753
+      },
+      "redstone:558,186,96,84": {
+        "box": [
+          558,
+          186,
+          96,
+          84
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7060325889703766
+      },
+      "redstone:765,191,91,77": {
+        "box": [
+          765,
+          191,
+          91,
+          77
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7734337063450883
+      },
+      "redstone:765,191,91,78": {
+        "box": [
+          765,
+          191,
+          91,
+          78
+        ],
+        "decision": "valid",
+        "label": "redstone",
+        "original_kind": "tp",
+        "score": 0.7734357007165025
+      }
+    },
+    "misses": {
+      "copper:962,579,100,100": {
+        "box": [
+          962,
+          579,
+          100,
+          100
+        ],
+        "decision": "missed",
+        "label": "copper"
+      },
+      "diamond:560,378,102,102": {
+        "box": [
+          560,
+          378,
+          102,
+          102
+        ],
+        "decision": "missed",
+        "label": "diamond"
+      },
+      "lapis:962,379,101,99": {
+        "box": [
+          962,
+          379,
+          101,
+          99
+        ],
+        "decision": "acceptable",
+        "label": "lapis"
+      }
+    }
+  },
+  "test3.png": {
+    "detections": {
+      "gold:264,117,138,88": {
+        "box": [
+          264,
+          117,
+          138,
+          88
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7192811312015303
+      },
+      "iron:1052,451,71,64": {
+        "box": [
+          1052,
+          451,
+          71,
+          64
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.6599495742191335
+      },
+      "iron:1615,508,98,98": {
+        "box": [
+          1615,
+          508,
+          98,
+          98
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6991330140482794
+      },
+      "iron:982,527,131,131": {
+        "box": [
+          982,
+          527,
+          131,
+          131
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.6888106176994007
+      }
+    },
+    "misses": {
+      "iron:1052,453,64,63": {
+        "box": [
+          1052,
+          453,
+          64,
+          63
+        ],
+        "decision": "missed",
+        "label": "iron"
+      }
+    }
+  },
+  "test4.png": {
+    "detections": {
+      "diamond:509,428,105,105": {
+        "box": [
+          509,
+          428,
+          105,
+          105
+        ],
+        "decision": "invalid",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6918431125375247
+      },
+      "diamond:524,338,230,223": {
+        "box": [
+          524,
+          338,
+          230,
+          223
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.6918423615190005
+      },
+      "diamond:849,228,323,368": {
+        "box": [
+          849,
+          228,
+          323,
+          368
+        ],
+        "decision": "valid",
+        "label": "diamond",
+        "original_kind": "tp",
+        "score": 0.7019167622236877
+      },
+      "gold:1000,377,39,21": {
+        "box": [
+          1000,
+          377,
+          39,
+          21
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7104625361899576
+      },
+      "gold:505,0,37,24": {
+        "box": [
+          505,
+          0,
+          37,
+          24
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6735302926650223
+      },
+      "iron:968,210,131,131": {
+        "box": [
+          968,
+          210,
+          131,
+          131
+        ],
+        "decision": "invalid",
+        "label": "iron",
+        "original_kind": "fp",
+        "score": 0.69784186163407
+      }
+    },
+    "misses": {
+      "diamond:546,358,301,202": {
+        "box": [
+          546,
+          358,
+          301,
+          202
+        ],
+        "decision": "missed",
+        "label": "diamond"
+      },
+      "diamond:867,374,288,226": {
+        "box": [
+          867,
+          374,
+          288,
+          226
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
+      },
+      "diamond:922,240,224,123": {
+        "box": [
+          922,
+          240,
+          224,
+          123
+        ],
+        "decision": "acceptable",
+        "label": "diamond"
+      }
+    }
+  },
+  "test5.png": {
+    "detections": {
+      "coal:915,517,86,86": {
+        "box": [
+          915,
+          517,
+          86,
+          86
+        ],
+        "decision": "invalid",
+        "label": "coal",
+        "original_kind": "fp",
+        "score": 0.9603011252488171
+      }
+    },
+    "misses": {
+      "diamond:825,502,125,28": {
+        "box": [
+          825,
+          502,
+          125,
+          28
+        ],
+        "decision": "missed",
+        "label": "diamond"
+      }
+    }
+  },
+  "test6.png": {
+    "detections": {
+      "copper:1526,67,75,48": {
+        "box": [
+          1526,
+          67,
+          75,
+          48
+        ],
+        "decision": "invalid",
+        "label": "copper",
+        "original_kind": "fp",
+        "score": 0.6588898714794539
+      },
+      "diamond:308,538,105,105": {
+        "box": [
+          308,
+          538,
+          105,
+          105
+        ],
+        "decision": "invalid",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6339629694953366
+      },
+      "diamond:309,539,105,105": {
+        "box": [
+          309,
+          539,
+          105,
+          105
+        ],
+        "decision": "invalid",
+        "label": "diamond",
+        "original_kind": "fp",
+        "score": 0.6343771059648139
+      },
+      "gold:1523,13,107,61": {
+        "box": [
+          1523,
+          13,
+          107,
+          61
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6861789223755067
+      },
+      "gold:1610,70,42,31": {
+        "box": [
+          1610,
+          70,
+          42,
+          31
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6753986158835082
+      },
+      "gold:1710,0,210,65": {
+        "box": [
+          1710,
+          0,
+          210,
+          65
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7706960126973802
+      },
+      "gold:1856,79,64,117": {
+        "box": [
+          1856,
+          79,
+          64,
+          117
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6924539262465068
+      },
+      "gold:1858,291,41,38": {
+        "box": [
+          1858,
+          291,
+          41,
+          38
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.7314044767240054
+      },
+      "gold:860,659,72,67": {
+        "box": [
+          860,
+          659,
+          72,
+          67
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6714721363424915
+      },
+      "iron:1079,560,260,190": {
+        "box": [
+          1079,
+          560,
+          260,
+          190
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8182875050761562
+      },
+      "iron:1119,360,200,240": {
+        "box": [
+          1119,
+          360,
+          200,
+          240
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8430123737220534
+      },
+      "iron:1119,80,260,240": {
+        "box": [
+          1119,
+          80,
+          260,
+          240
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7959773021876712
+      },
+      "iron:959,640,260,190": {
+        "box": [
+          959,
+          640,
+          260,
+          190
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8119813688397235
+      },
+      "iron:999,480,200,240": {
+        "box": [
+          999,
+          480,
+          200,
+          240
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8163654840072581
+      }
+    },
+    "misses": {
+      "gold:621,620,101,34": {
+        "box": [
+          621,
+          620,
+          101,
+          34
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:626,654,125,48": {
+        "box": [
+          626,
+          654,
+          125,
+          48
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:724,603,98,43": {
+        "box": [
+          724,
+          603,
+          98,
+          43
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:751,637,102,50": {
+        "box": [
+          751,
+          637,
+          102,
+          50
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "iron:1117,298,200,238": {
+        "box": [
+          1117,
+          298,
+          200,
+          238
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1125,559,180,306": {
+        "box": [
+          1125,
+          559,
+          180,
+          306
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1128,58,246,225": {
+        "box": [
+          1128,
+          58,
+          246,
+          225
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1321,585,348,348": {
+        "box": [
+          1321,
+          585,
+          348,
+          348
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1406,255,342,322": {
+        "box": [
+          1406,
+          255,
+          342,
+          322
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:1761,247,126,315": {
+        "box": [
+          1761,
+          247,
+          126,
+          315
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:938,547,160,311": {
+        "box": [
+          938,
+          547,
+          160,
+          311
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:972,492,288,100": {
+        "box": [
+          972,
+          492,
+          288,
+          100
+        ],
+        "decision": "missed",
+        "label": "iron"
+      }
+    }
+  },
+  "test7.png": {
+    "detections": {
+      "gold:708,0,129,126": {
+        "box": [
+          708,
+          0,
+          129,
+          126
+        ],
+        "decision": "invalid",
+        "label": "gold",
+        "original_kind": "fp",
+        "score": 0.6561510241023506
+      },
+      "iron:1340,0,580,827": {
+        "box": [
+          1340,
+          0,
+          580,
+          827
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.7941494460935798
+      },
+      "iron:761,0,579,827": {
+        "box": [
+          761,
+          0,
+          579,
+          827
+        ],
+        "decision": "valid",
+        "label": "iron",
+        "original_kind": "tp",
+        "score": 0.8041389123550898
+      }
+    },
+    "misses": {
+      "gold:451,649,174,83": {
+        "box": [
+          451,
+          649,
+          174,
+          83
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:469,607,156,54": {
+        "box": [
+          469,
+          607,
+          156,
+          54
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:627,631,73,60": {
+        "box": [
+          627,
+          631,
+          73,
+          60
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "gold:631,567,103,65": {
+        "box": [
+          631,
+          567,
+          103,
+          65
+        ],
+        "decision": "missed",
+        "label": "gold"
+      },
+      "iron:1356,40,514,938": {
+        "box": [
+          1356,
+          40,
+          514,
+          938
+        ],
+        "decision": "missed",
+        "label": "iron"
+      },
+      "iron:751,154,488,786": {
+        "box": [
+          751,
+          154,
+          488,
+          786
+        ],
+        "decision": "missed",
+        "label": "iron"
+      }
+    }
+  },
+  "test8.png": {
+    "detections": {
+      "lapis:315,531,87,86": {
+        "box": [
+          315,
+          531,
+          87,
+          86
+        ],
+        "decision": "invalid",
+        "label": "lapis",
+        "original_kind": "fp",
+        "score": 0.6395824881262889
+      },
+      "lapis:480,175,105,63": {
+        "box": [
+          480,
+          175,
+          105,
+          63
+        ],
+        "decision": "invalid",
+        "label": "lapis",
+        "original_kind": "fp",
+        "score": 0.6036256745549876
+      },
+      "lapis:508,353,109,50": {
+        "box": [
+          508,
+          353,
+          109,
+          50
+        ],
+        "decision": "invalid",
+        "label": "lapis",
+        "original_kind": "fp",
+        "score": 0.6742851519974743
+      }
+    },
+    "misses": {
+      "coal:291,400,151,148": {
+        "box": [
+          291,
+          400,
+          151,
+          148
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:324,522,165,169": {
+        "box": [
+          324,
+          522,
+          165,
+          169
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:426,212,154,156": {
+        "box": [
+          426,
+          212,
+          154,
+          156
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:460,355,160,144": {
+        "box": [
+          460,
+          355,
+          160,
+          144
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:486,489,165,163": {
+        "box": [
+          486,
+          489,
+          165,
+          163
+        ],
+        "decision": "missed",
+        "label": "coal"
+      },
+      "coal:597,360,126,110": {
+        "box": [
+          597,
+          360,
+          126,
+          110
+        ],
+        "decision": "missed",
+        "label": "coal"
+      }
+    }
+  },
+  "test9.png": {
+    "detections": {}
+  }
+}

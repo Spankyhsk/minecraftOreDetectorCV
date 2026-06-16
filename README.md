@@ -10,6 +10,9 @@ Minecraft Ore Detector CV ist ein Computer-Vision-Projekt zur Erkennung von Mine
 
 Das Projekt verzichtet bewusst auf Machine Learning und basiert ausschließlich auf klassischen Bildverarbeitungstechniken.
 
+Aktueller Uebergabestand und Debug-Workflow:
+[docs/hand_off.md](docs/hand_off.md)
+
 ---
 
 ## Ziel des Projekts
@@ -53,13 +56,24 @@ Input Bild
 ### Aktueller Ablauf im Code
 
 1. `src/main.py` laden und starten.
-2. Screenshot wird mit CLAHE + Blur vorverarbeitet.
-3. Für jede Overworld-Erzfamilie wird eine HSV-Maske mit Kantenmaske kombiniert.
-4. Kandidaten werden gefunden, gefiltert und nahe Boxen werden gemerged.
-5. Für jeden Erztyp wird die passende Template-Bank aus `data/templates/` geladen
+2. `OreDetector` aus `src/pipeline.py` steuert die komplette Pipeline.
+3. Screenshot wird mit CLAHE + Blur vorverarbeitet.
+4. Für jede Overworld-Erzfamilie wird eine HSV-Maske mit Kantenmaske kombiniert.
+5. Kandidaten werden gefunden, gefiltert und nahe Boxen werden gemerged.
+6. Für jeden Erztyp wird die passende Template-Bank aus `data/templates/` geladen
    (z. B. `diamond_ore.png` und `diamond_deepslate_ore.png`).
-6. Für jeden Kandidaten wird Multi-Scale-Template-Matching ausgeführt.
-7. Überlappende Doppel-Treffer werden per NMS entfernt.
+7. Für jeden Kandidaten wird Multi-Scale-Template-Matching ausgeführt.
+8. Überlappende Doppel-Treffer werden per NMS entfernt.
+
+### Code-Struktur
+
+- `src/main.py`: schlanker Einstiegspunkt und kompatibler `run_pipeline`-Wrapper.
+- `src/pipeline.py`: zentrale `OreDetector`-Klasse.
+- `src/config.py`: Pfade, Debug-Schalter und Matching-Thresholds.
+- `src/mask_filters.py`: HUD-, Wasser- und Großflächenfilter.
+- `src/candidate_filters.py`: Sonderfälle für Coal und Diamond-Kandidaten.
+- `src/template_repository.py`: Laden und Caching der Template-Banks.
+- `src/segmentation.py`, `src/morphology.py`, `src/detection.py`: klassische Bildverarbeitungsbausteine.
 
 ### Hinweis zu Templates
 
@@ -73,6 +87,89 @@ Für eine reine Konsolen-Auswertung ohne GUI:
 
 ```bash
 python3 src/eval_debug.py
+```
+
+### Ground Truth / Regression Tests
+
+Manuelle Boxen werden in `data/annotations/ground_truth.json` gespeichert.
+Zum Eintragen gibt es ein kleines Zeichenwerkzeug:
+
+```bash
+python3 src/annotate.py --image test1.png
+```
+
+Bedienung im Fenster:
+
+- `1` bis `8`: Erzlabel wählen (`1=Coal`, `2=Copper`, `3=Diamond`, `4=Emerald`, `5=Gold`, `6=Iron`, `7=Lapis`, `8=Redstone`)
+- Linke Maustaste ziehen: Box zeichnen
+- Rechte Maustaste: vorhandene Box auswählen
+- `z`: letzte Box entfernen
+- `h`: ausgewählte Box als schwierig markieren; ohne Auswahl gilt `h` für neu gezeichnete Boxen
+- `i`: ausgewählte Box ignorieren
+- `s`: speichern
+- `q` oder `ESC`: speichern und schließen
+
+Die automatische Genauigkeitsmessung läuft danach mit:
+
+```bash
+python3 src/evaluate.py
+```
+
+Falls du die automatischen Treffer/Misses manuell gegenpruefen willst:
+
+```bash
+python3 src/review_detections.py
+```
+
+Das Review-Fenster zeigt nacheinander `TP`, `FP` und `FN`-Faelle:
+
+- `y`: Fall als gut/korrekt markieren
+- `n`: Fall als schlecht/falsch markieren
+- `i`: Detektion ignorieren bzw. verpassten Fall als akzeptabel markieren
+- `s`: manuelle Entscheidung loeschen/ueberspringen
+- `a` / `d`: vorheriger / naechster Fall
+- `q` oder `ESC`: speichern und schliessen
+
+Die Entscheidungen landen in `data/annotations/manual_review.json`.
+Die Evaluation nutzt sie mit:
+
+```bash
+python3 src/evaluate.py --review data/annotations/manual_review.json
+```
+
+Fuer visuelles Pipeline-Debugging kann ein Debug-Board pro Bild erzeugt werden:
+
+```bash
+python3 src/debug_visual.py --image test17.png
+```
+
+Das Board landet unter `data/debug_visual/` und zeigt Original, Vorverarbeitung,
+Kanten, finale Treffer, Ground Truth, Review-Overlay sowie Farb-/Clean-Masken
+inklusive Kandidaten pro Erz. Einzelne Erze koennen isoliert werden:
+
+```bash
+python3 src/debug_visual.py --image test17.png --ore gold
+python3 src/debug_visual.py --image test17.png --ore redstone
+```
+
+Wenn nur die Kandidatenboxen ohne finale Detektionen sichtbar sein sollen:
+
+```bash
+python3 src/debug_visual.py --image test17.png --candidates-only
+python3 src/debug_visual.py --image test17.png --ore gold --candidates-only
+```
+
+Standardmäßig werden `difficulty: "hard"` und `ignore: true` nicht streng bewertet.
+Hard-Boxen können optional mit niedrigerer IoU in die Metrik aufgenommen werden:
+
+```bash
+python3 src/evaluate.py --include-hard --hard-iou 0.20
+```
+
+Optional kann ein Mindestwert für Regression-Checks gesetzt werden:
+
+```bash
+python3 src/evaluate.py --min-f1 0.65
 ```
 
 Start der normalen Pipeline mit Visualisierung:
