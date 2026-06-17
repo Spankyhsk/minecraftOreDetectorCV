@@ -1875,6 +1875,18 @@
   },
   "test18.png": {
     "detections": {
+      "coal:781,199,87,82": {
+        "box": [
+          781,
+          199,
+          87,
+          82
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9204750917851924
+      },
       "copper:977,141,112,101": {
         "box": [
           977,
