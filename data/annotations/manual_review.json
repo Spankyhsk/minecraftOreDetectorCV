@@ -411,6 +411,42 @@
         "original_kind": "fp",
         "score": 0.8450529893276634
       },
+      "coal:783,321,118,118": {
+        "box": [
+          783,
+          321,
+          118,
+          118
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.898598429441452
+      },
+      "coal:875,309,64,118": {
+        "box": [
+          875,
+          309,
+          64,
+          118
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.8906083540916443
+      },
+      "coal:921,305,54,112": {
+        "box": [
+          921,
+          305,
+          54,
+          112
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.8766013135910034
+      },
       "coal:929,462,86,86": {
         "box": [
           929,
@@ -505,6 +541,30 @@
   },
   "test11.png": {
     "detections": {
+      "coal:1377,292,183,173": {
+        "box": [
+          1377,
+          292,
+          183,
+          173
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.911564392864704
+      },
+      "coal:1532,227,311,169": {
+        "box": [
+          1532,
+          227,
+          311,
+          169
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9051906833648681
+      },
       "coal:1724,245,86,86": {
         "box": [
           1724,
@@ -763,6 +823,18 @@
   },
   "test12.png": {
     "detections": {
+      "coal:1636,172,279,258": {
+        "box": [
+          1636,
+          172,
+          279,
+          258
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9084893063902855
+      },
       "copper:1397,9,243,287": {
         "box": [
           1397,
@@ -1279,6 +1351,54 @@
   },
   "test16.png": {
     "detections": {
+      "coal:620,260,148,134": {
+        "box": [
+          620,
+          260,
+          148,
+          134
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9187575347423553
+      },
+      "coal:676,382,123,111": {
+        "box": [
+          676,
+          382,
+          123,
+          111
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9160415534973144
+      },
+      "coal:753,501,104,87": {
+        "box": [
+          753,
+          501,
+          104,
+          87
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.8790146138668061
+      },
+      "coal:837,428,130,130": {
+        "box": [
+          837,
+          428,
+          130,
+          130
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.8987328245639801
+      },
       "diamond:1578,460,105,105": {
         "box": [
           1578,
@@ -2979,6 +3099,78 @@
   },
   "test8.png": {
     "detections": {
+      "coal:273,390,151,148": {
+        "box": [
+          273,
+          390,
+          151,
+          148
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9148717129230499
+      },
+      "coal:324,531,165,169": {
+        "box": [
+          324,
+          531,
+          165,
+          169
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9127639257907867
+      },
+      "coal:425,201,154,156": {
+        "box": [
+          425,
+          201,
+          154,
+          156
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9170995058417319
+      },
+      "coal:495,480,165,163": {
+        "box": [
+          495,
+          480,
+          165,
+          163
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9125108438134193
+      },
+      "coal:518,343,166,166": {
+        "box": [
+          518,
+          343,
+          166,
+          166
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9443087549209594
+      },
+      "coal:614,355,126,110": {
+        "box": [
+          614,
+          355,
+          126,
+          110
+        ],
+        "decision": "valid",
+        "label": "coal",
+        "original_kind": "tp",
+        "score": 0.9139096158742904
+      },
       "lapis:315,531,87,86": {
         "box": [
           315,
