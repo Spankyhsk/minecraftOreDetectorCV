@@ -8,7 +8,7 @@ from typing import Dict
 
 import numpy as np
 
-from minecraft_ore_detector.detection.core import load_template
+from minecraft_ore_detector.detection import load_template
 from minecraft_ore_detector.common.utils import log
 
 

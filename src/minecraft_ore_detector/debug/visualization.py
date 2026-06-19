@@ -14,7 +14,7 @@ import cv2
 import numpy as np
 
 from minecraft_ore_detector.app.config import DATA_DIR, OreDetectorConfig
-from minecraft_ore_detector.detection.core import detect_with_template_bank, find_candidates, non_max_suppression
+from minecraft_ore_detector.detection import detect_with_template_bank, find_candidates, non_max_suppression
 from minecraft_ore_detector.evaluation.evaluate import detection_key, normalize_label
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.morphology import clean_mask

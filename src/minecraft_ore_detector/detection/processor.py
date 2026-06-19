@@ -14,7 +14,7 @@ from minecraft_ore_detector.detection.candidate_detection import (
 from minecraft_ore_detector.detection.ores.coal.fallbacks import CoalFallbackDetector
 from minecraft_ore_detector.app.config import OreDetectorConfig
 from minecraft_ore_detector.detection.ores.copper import CopperDetector
-from minecraft_ore_detector.detection.core import (
+from minecraft_ore_detector.detection import (
     _color_compatibility,
     _copper_green_support,
     _copper_orange_support,

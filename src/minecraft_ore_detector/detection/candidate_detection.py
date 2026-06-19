@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import numpy as np
 
-from minecraft_ore_detector.detection.core import match_template_multiscale
+from minecraft_ore_detector.detection import match_template_multiscale
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 
 Box = Tuple[int, int, int, int]

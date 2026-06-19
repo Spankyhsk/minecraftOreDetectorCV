@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import numpy as np
 
-from minecraft_ore_detector.detection.core import _color_support_mask
+from minecraft_ore_detector.detection import _color_support_mask
 
 Box = Tuple[int, int, int, int]
 

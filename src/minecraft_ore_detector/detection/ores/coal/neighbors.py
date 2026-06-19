@@ -8,7 +8,7 @@ import numpy as np
 
 from minecraft_ore_detector.app.config import OreDetectorConfig
 from minecraft_ore_detector.detection.candidate_detection import CoalPrimaryDetector
-from minecraft_ore_detector.detection.core import (
+from minecraft_ore_detector.detection import (
     _copper_green_support,
     _copper_orange_support,
     match_template_multiscale,

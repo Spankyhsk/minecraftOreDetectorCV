@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 from minecraft_ore_detector.app.config import OreDetectorConfig
-from minecraft_ore_detector.detection.core import (
+from minecraft_ore_detector.detection import (
     _color_compatibility,
     _color_support_mask,
     match_template_multiscale,

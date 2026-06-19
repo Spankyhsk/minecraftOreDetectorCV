@@ -6,7 +6,7 @@ from typing import Dict, List, Tuple
 import cv2
 import numpy as np
 
-from minecraft_ore_detector.detection.core import (
+from minecraft_ore_detector.detection import (
     _color_compatibility,
     _color_support_ratio,
     _copper_green_support,
