@@ -57,7 +57,7 @@ Input Bild
 
 1. `src/main.py` laden und starten.
 2. `OreDetector` aus `src/pipeline.py` steuert die komplette Pipeline.
-3. Screenshot wird mit CLAHE + Blur vorverarbeitet.
+3. Screenshot-Helligkeit wird anhand des Referenzbilds normalisiert.
 4. Für jede Overworld-Erzfamilie wird eine HSV-Maske mit Kantenmaske kombiniert.
 5. Kandidaten werden gefunden, gefiltert und nahe Boxen werden gemerged.
 6. Für jeden Erztyp wird die passende Template-Bank aus `data/templates/` geladen
@@ -67,11 +67,18 @@ Input Bild
 
 ### Code-Struktur
 
-- `src/main.py`: schlanker Einstiegspunkt und kompatibler `run_pipeline`-Wrapper.
-- `src/pipeline.py`: zentrale `OreDetector`-Klasse.
+- `src/main.py`: schlanker Einstiegspunkt für die Einzelbildverarbeitung.
+- `src/live_detection.py`: wiederverwendet einen Detector für fortlaufende Frames.
+- `src/pipeline.py`: schlanke Ablaufsteuerung der kompletten Pipeline.
+- `src/ore_detection_processor.py`: interne Verarbeitungsschritte und Erzstrategien.
+- `src/coal_fallback_detector.py`: aufeinander aufbauende Coal-Sonderstrategien.
+- `src/copper_detector.py`: Copper-spezifische Zusatzstrategien.
+- `src/iron_detector.py`: Iron-spezifische Zusatzstrategien.
+- `src/gold_detector.py`: Gold-spezifische Erkennung großer Maskenbereiche.
+- `src/diamond_postprocessor.py`: Diamond-Merging und Anpassung kleiner Clusterboxen.
 - `src/config.py`: Pfade, Debug-Schalter und Matching-Thresholds.
-- `src/mask_filters.py`: HUD-, Wasser- und Großflächenfilter.
-- `src/candidate_filters.py`: Sonderfälle für Coal und Diamond-Kandidaten.
+- `src/runtime_mask_filter.py`: HUD-, Wasser- und Großflächenfilter.
+- `src/ore_candidate_detection.py`: Sonderfälle für Coal und Diamond-Kandidaten.
 - `src/template_repository.py`: Laden und Caching der Template-Banks.
 - `src/segmentation.py`, `src/morphology.py`, `src/detection.py`: klassische Bildverarbeitungsbausteine.
 
@@ -86,7 +93,7 @@ damit das Matching gegen kleine Kandidaten im Zielbild möglich ist.
 Für eine reine Konsolen-Auswertung ohne GUI:
 
 ```bash
-python3 src/eval_debug.py
+python3 src/debug_evaluation.py
 ```
 
 ### Ground Truth / Regression Tests
@@ -140,7 +147,7 @@ python3 src/evaluate.py --review data/annotations/manual_review.json
 Fuer visuelles Pipeline-Debugging kann ein Debug-Board pro Bild erzeugt werden:
 
 ```bash
-python3 src/debug_visual.py --image test17.png
+python3 src/debug_visualization.py --image test17.png
 ```
 
 Das Board landet unter `data/debug_visual/` und zeigt Original, Vorverarbeitung,
@@ -148,15 +155,15 @@ Kanten, finale Treffer, Ground Truth, Review-Overlay sowie Farb-/Clean-Masken
 inklusive Kandidaten pro Erz. Einzelne Erze koennen isoliert werden:
 
 ```bash
-python3 src/debug_visual.py --image test17.png --ore gold
-python3 src/debug_visual.py --image test17.png --ore redstone
+python3 src/debug_visualization.py --image test17.png --ore gold
+python3 src/debug_visualization.py --image test17.png --ore redstone
 ```
 
 Wenn nur die Kandidatenboxen ohne finale Detektionen sichtbar sein sollen:
 
 ```bash
-python3 src/debug_visual.py --image test17.png --candidates-only
-python3 src/debug_visual.py --image test17.png --ore gold --candidates-only
+python3 src/debug_visualization.py --image test17.png --candidates-only
+python3 src/debug_visualization.py --image test17.png --ore gold --candidates-only
 ```
 
 Standardmäßig werden `difficulty: "hard"` und `ignore: true` nicht streng bewertet.

@@ -51,12 +51,12 @@ Ablauf:
   - Template-Matching.
   - Entscheidungslogik fuer Label, Farbe und Score.
   - Copper-gegen-Emerald/Diamond Schutz.
-- `src/mask_filters.py`
+- `src/runtime_mask_filter.py`
   - HUD-, Wasser- und Grossflaechenfilter.
   - Copper-Regionen werden nicht pauschal geloescht, wenn sie als grosse echte Copper-Fläche plausibel wirken.
-- `src/candidate_filters.py`
+- `src/ore_candidate_detection.py`
   - Diamond-Candidate-Expander.
-  - CoalDetector.
+  - CoalPrimaryDetector.
   - Der fruehere Copper-Expander ist nicht mehr Teil des aktiven Pfads.
 
 ## Debug- und Analyse-Tools
@@ -122,16 +122,16 @@ Wichtig:
 - `--include-hard` nimmt als `hard` markierte Boxen mit auf.
 - `--hard-iou` steuert die strengere IoU fuer `hard`-Falle.
 
-### `src/debug_visual.py`
+### `src/debug_visualization.py`
 
 Erstellt ein visuelles Debug-Board pro Bild mit den internen Pipeline-Stufen.
 
 Beispiele:
 
 ```bash
-python3 src/debug_visual.py --image test17.png
-python3 src/debug_visual.py --image test17.png --ore gold
-python3 src/debug_visual.py --image test17.png --ore redstone
+python3 src/debug_visualization.py --image test17.png
+python3 src/debug_visualization.py --image test17.png --ore gold
+python3 src/debug_visualization.py --image test17.png --ore redstone
 ```
 
 Was das Board zeigt:
@@ -172,7 +172,7 @@ Was es ausgibt:
 
 Das Tool ist ideal, wenn man wissen will, ob ein Fehler in Farbe, Maske, Kandidatenbildung, Template-Matching oder Filterung entsteht.
 
-### `src/eval_debug.py`
+### `src/debug_evaluation.py`
 
 Konsolenbasierte Debug-/Ausgabevariante fuer Evaluation. Nuerzlich, wenn man ohne GUI schnell Metriken sehen will.
 
@@ -182,7 +182,7 @@ Empfohlener Zyklus:
 
 1. Aenderung klein halten.
 2. `src/analyze_misses.py` auf betroffenen Bildern ausfuehren.
-3. `src/debug_visual.py` anschauen, wenn die Boxen oder Masken unklar sind.
+3. `src/debug_visualization.py` anschauen, wenn die Boxen oder Masken unklar sind.
 4. Manuell mit `src/review_detections.py` gegenpruefen.
 5. Dann erst die Metrik mit `src/evaluate.py` werten.
 

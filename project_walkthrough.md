@@ -10,7 +10,7 @@ Das System arbeitet als serielle Pipeline. Ein Eingabebild durchläuft definiert
 
 ```mermaid
 graph TD
-    A[Input Screenshot] --> B[Vorverarbeitung: CLAHE + Blur]
+    A[Input Screenshot] --> B[Vorverarbeitung: Helligkeitsnormalisierung]
     B --> C[Maskenerstellung: HSV-Farbe + Canny-Kante]
     C --> D[Morphologische Bereinigung: Opening & Closing]
     D --> E[Kandidatensuche: Konturen + Bounding Box Merging]
@@ -26,10 +26,10 @@ graph TD
 
 ### A. Vorverarbeitung ([preprocessing.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/preprocessing.py))
 Die Vorverarbeitung bereitet das rohe Screenshot-Bild für die mathematische Segmentierung vor.
-*   **CLAHE (Contrast Limited Adaptive Histogram Equalization):**
-    Minecraft-Höhlenszenarien sind oft extrem dunkel. Ein globaler Kontrastausgleich würde das Bild verzerren oder Rauschen verstärken. CLAHE arbeitet adaptiv in einem Kachelraster ($8 \times 8$) und begrenzt die Kontrastverstärkung. Um Farbverfälschungen zu verhindern, wird das BGR-Bild in den LAB-Farbraum transformiert und CLAHE ausschließlich auf dem Helligkeitskanal (L) angewendet.
-*   **Gauß-Filter (Gaussian Blur):**
-    Die pixeligen Texturen von Minecraft erzeugen hochfrequentes Bildrauschen. Ein kleiner $3 \times 3$ Gauß-Filter glättet das Bild leicht, wodurch Artefakte reduziert und die nachfolgende Kantenerkennung stabilisiert wird.
+*   **Helligkeitsnormalisierung:**
+    Der Median des HSV-Helligkeitskanals wird an ein Referenzbild angeglichen. Dadurch werden sehr helle und sehr dunkle Szenen vergleichbarer, ohne einen adaptiven CLAHE-Kontrastausgleich vorzutäuschen.
+*   **Kein zusätzlicher Blur:**
+    Die aktuelle Hauptpipeline glättet das vorverarbeitete Farbbild nicht. Nur die Kantenberechnung verwendet intern einen kleinen Gauß-Filter.
 *   **HSV-Konvertierung:**
     Für die Farbsegmentierung wird das Bild in den HSV-Farbraum (Hue, Saturation, Value) transformiert. Im Gegensatz zu RGB/BGR trennt HSV den Farbton von der Helligkeit, was die Erkennung unter wechselnden Lichtbedingungen (z. B. Fackellicht oder Schatten) massiv erleichtert.
 
@@ -101,7 +101,7 @@ Obwohl die Pipeline eine sehr hohe Erkennungsrate auf den Testbildern aufweist, 
     ```
 *   **Headless Testauswertung (reine Textausgabe):**
     ```bash
-    python3 src/eval_debug.py
+    python3 src/debug_evaluation.py
     ```
 *   **HSV Extremwert-Analyse eines Crops:**
     ```bash
