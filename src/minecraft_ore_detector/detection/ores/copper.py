@@ -13,6 +13,11 @@ from minecraft_ore_detector.detection.core import (
     _copper_orange_support,
     match_template_multiscale,
 )
+from minecraft_ore_detector.detection.geometry import (
+    box_iou,
+    clip_box,
+    overlaps_any_box,
+)
 from minecraft_ore_detector.imaging.preprocessing import convert_bgr_to_hsv
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.segmentation import color_mask
@@ -32,36 +37,8 @@ class CopperDetector:
         self.mask_filter = mask_filter
         self.template_repository = template_repository
 
-    @staticmethod
-    def _clip_box(box: Box, img_shape: Tuple[int, ...]) -> Box:
-        x, y, width, height = box
-        img_h, img_w = img_shape[:2]
-        x = max(0, min(int(x), img_w - 1))
-        y = max(0, min(int(y), img_h - 1))
-        width = max(1, min(int(width), img_w - x))
-        height = max(1, min(int(height), img_h - y))
-        return x, y, width, height
 
-    @staticmethod
-    def _box_iou(box_a: Box, box_b: Box) -> float:
-        ax, ay, aw, ah = box_a
-        bx, by, bw, bh = box_b
-        ix1, iy1 = max(ax, bx), max(ay, by)
-        ix2, iy2 = min(ax + aw, bx + bw), min(ay + ah, by + bh)
-        intersection = max(0, ix2 - ix1) * max(0, iy2 - iy1)
-        union = aw * ah + bw * bh - intersection
-        return intersection / float(union) if union > 0 else 0.0
 
-    def _overlaps_any_box(
-        self,
-        box: Box,
-        boxes: List[Box],
-        iou_threshold: float,
-    ) -> bool:
-        return any(
-            self._box_iou(box, other_box) > iou_threshold
-            for other_box in boxes
-        )
 
     @staticmethod
     def _hsv_range_support(
@@ -488,9 +465,9 @@ class CopperDetector:
                 ))
 
             for px, py, pw, ph, mode in proposal_specs:
-                box = self._clip_box((px, py, pw, ph), img.shape)
+                box = clip_box((px, py, pw, ph), img.shape)
 
-                if self._overlaps_any_box(
+                if overlaps_any_box(
                     box,
                     existing_boxes,
                     iou_threshold=0.12
@@ -615,7 +592,7 @@ class CopperDetector:
         filtered = []
 
         for candidate in candidates:
-            if self._overlaps_any_box(
+            if overlaps_any_box(
                 tuple(candidate["box"]),
                 [tuple(item["box"]) for item in filtered],
                 iou_threshold=0.25

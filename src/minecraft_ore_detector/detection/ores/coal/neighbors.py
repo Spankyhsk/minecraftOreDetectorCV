@@ -14,6 +14,7 @@ from minecraft_ore_detector.detection.core import (
     match_template_multiscale,
     non_max_suppression,
 )
+from minecraft_ore_detector.detection.geometry import box_iou
 from minecraft_ore_detector.imaging.morphology import clean_mask
 from minecraft_ore_detector.imaging.preprocessing import convert_bgr_to_hsv
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
@@ -36,27 +37,8 @@ class NeighborCoalStrategy:
         self.template_repository = template_repository
         self.coal_detector = coal_detector
 
-    @staticmethod
-    def _mask_integral(mask: np.ndarray) -> np.ndarray:
-        return cv2.integral((mask > 0).astype(np.uint8))
 
-    @staticmethod
-    def _integral_support(
-        integral: np.ndarray, x: int, y: int, width: int, height: int
-    ) -> float:
-        x2, y2 = x + width, y + height
-        total = integral[y2, x2] - integral[y, x2] - integral[y2, x] + integral[y, x]
-        return float(total) / float(max(1, width * height))
 
-    @staticmethod
-    def _box_iou(box_a: Box, box_b: Box) -> float:
-        ax, ay, aw, ah = box_a
-        bx, by, bw, bh = box_b
-        ix1, iy1 = max(ax, bx), max(ay, by)
-        ix2, iy2 = min(ax + aw, bx + bw), min(ay + ah, by + bh)
-        intersection = max(0, ix2 - ix1) * max(0, iy2 - iy1)
-        union = aw * ah + bw * bh - intersection
-        return intersection / float(union) if union > 0 else 0.0
 
     def _best_template_score_for_ore(self, ore: str, roi_bgr: np.ndarray) -> float:
         templates = self.template_repository.get_templates_for_ore(ore)
@@ -269,7 +251,7 @@ class NeighborCoalStrategy:
 
                         candidate_box = (wx, wy, window_w, window_h)
 
-                        if self._box_iou(candidate_box, tuple(anchor["box"])) >= 0.25:
+                        if box_iou(candidate_box, tuple(anchor["box"])) >= 0.25:
                             continue
 
                         detection = self._evaluate_coal_neighbor_window(

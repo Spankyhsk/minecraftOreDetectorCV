@@ -15,6 +15,11 @@ import numpy as np
 from typing import List, Dict, Tuple, Optional
 
 from minecraft_ore_detector.detection.rules import get_ore_rule
+from minecraft_ore_detector.detection.geometry import (
+    box_iou,
+    center_distance,
+    containment_ratio,
+)
 from minecraft_ore_detector.common.utils import log_debug
 
 
@@ -1382,135 +1387,10 @@ def detect_with_template_bank(
     return detections
 
 
-def _iou(
-    box_a: Tuple[int, int, int, int],
-    box_b: Tuple[int, int, int, int]
-) -> float:
-    """
-    Berechnet Intersection over Union zweier Bounding Boxes.
-
-    Parameters
-    ----------
-    box_a : Tuple[int, int, int, int]
-        Erste Box.
-    box_b : Tuple[int, int, int, int]
-        Zweite Box.
-
-    Returns
-    -------
-    float
-        IoU-Wert.
-    """
-
-    ax, ay, aw, ah = box_a
-    bx, by, bw, bh = box_b
-
-    ax2 = ax + aw
-    ay2 = ay + ah
-    bx2 = bx + bw
-    by2 = by + bh
-
-    inter_x1 = max(ax, bx)
-    inter_y1 = max(ay, by)
-    inter_x2 = min(ax2, bx2)
-    inter_y2 = min(ay2, by2)
-
-    inter_w = max(0, inter_x2 - inter_x1)
-    inter_h = max(0, inter_y2 - inter_y1)
-
-    inter_area = inter_w * inter_h
-    union_area = aw * ah + bw * bh - inter_area
-
-    if union_area <= 0:
-        return 0.0
-
-    return inter_area / float(union_area)
 
 
-def _containment(
-    box_a: Tuple[int, int, int, int],
-    box_b: Tuple[int, int, int, int]
-) -> float:
-    """
-    NEU HINZUGEFÜGT:
-    Berechnet, wie stark die kleinere Box in der größeren Box enthalten ist.
-
-    Das hilft bei Fällen, in denen normale IoU niedrig ist, aber eine kleine Box
-    eigentlich innerhalb derselben Objektregion liegt.
-
-    Parameters
-    ----------
-    box_a : Tuple[int, int, int, int]
-        Erste Box.
-    box_b : Tuple[int, int, int, int]
-        Zweite Box.
-
-    Returns
-    -------
-    float
-        Enthaltenheitswert bezogen auf die kleinere Box.
-    """
-
-    ax, ay, aw, ah = box_a
-    bx, by, bw, bh = box_b
-
-    ax2 = ax + aw
-    ay2 = ay + ah
-    bx2 = bx + bw
-    by2 = by + bh
-
-    inter_x1 = max(ax, bx)
-    inter_y1 = max(ay, by)
-    inter_x2 = min(ax2, bx2)
-    inter_y2 = min(ay2, by2)
-
-    inter_w = max(0, inter_x2 - inter_x1)
-    inter_h = max(0, inter_y2 - inter_y1)
-
-    inter_area = inter_w * inter_h
-
-    area_a = aw * ah
-    area_b = bw * bh
-
-    smaller_area = min(area_a, area_b)
-
-    if smaller_area <= 0:
-        return 0.0
-
-    return inter_area / float(smaller_area)
 
 
-def _center_distance(
-    box_a: Tuple[int, int, int, int],
-    box_b: Tuple[int, int, int, int]
-) -> float:
-    """
-    NEU HINZUGEFÜGT:
-    Berechnet den Abstand der Box-Zentren.
-
-    Parameters
-    ----------
-    box_a : Tuple[int, int, int, int]
-        Erste Box.
-    box_b : Tuple[int, int, int, int]
-        Zweite Box.
-
-    Returns
-    -------
-    float
-        Abstand der Mittelpunkte.
-    """
-
-    ax, ay, aw, ah = box_a
-    bx, by, bw, bh = box_b
-
-    acx = ax + aw / 2.0
-    acy = ay + ah / 2.0
-
-    bcx = bx + bw / 2.0
-    bcy = by + bh / 2.0
-
-    return float(((acx - bcx) ** 2 + (acy - bcy) ** 2) ** 0.5)
 
 
 def non_max_suppression(
@@ -1552,9 +1432,9 @@ def non_max_suppression(
         keep = True
 
         for k in kept:
-            iou = _iou(det["box"], k["box"])
-            containment = _containment(det["box"], k["box"])
-            dist = _center_distance(det["box"], k["box"])
+            iou = box_iou(det["box"], k["box"])
+            containment = containment_ratio(det["box"], k["box"])
+            dist = center_distance(det["box"], k["box"])
 
             x, y, w, h = det["box"]
             kx, ky, kw, kh = k["box"]

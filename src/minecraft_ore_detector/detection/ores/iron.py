@@ -15,6 +15,15 @@ from minecraft_ore_detector.detection.core import (
     match_template_multiscale,
     non_max_suppression,
 )
+from minecraft_ore_detector.detection.geometry import (
+    box_iou,
+    clip_box,
+    overlaps_any_box,
+)
+from minecraft_ore_detector.detection.mask_statistics import (
+    integral_support,
+    mask_integral,
+)
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.segmentation import color_mask
 
@@ -32,58 +41,10 @@ class IronDetector:
         self.config = config
         self.mask_filter = mask_filter
 
-    @staticmethod
-    def _mask_integral(mask: np.ndarray) -> np.ndarray:
-        return cv2.integral((mask > 0).astype(np.uint8))
 
-    @staticmethod
-    def _integral_support(
-        integral: np.ndarray,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-    ) -> float:
-        x2 = x + width
-        y2 = y + height
-        total = (
-            integral[y2, x2]
-            - integral[y, x2]
-            - integral[y2, x]
-            + integral[y, x]
-        )
-        return float(total) / float(max(1, width * height))
 
-    @staticmethod
-    def _clip_box(box: Box, img_shape: Tuple[int, ...]) -> Box:
-        x, y, width, height = box
-        img_h, img_w = img_shape[:2]
-        x = max(0, min(int(x), img_w - 1))
-        y = max(0, min(int(y), img_h - 1))
-        width = max(1, min(int(width), img_w - x))
-        height = max(1, min(int(height), img_h - y))
-        return x, y, width, height
 
-    @staticmethod
-    def _box_iou(box_a: Box, box_b: Box) -> float:
-        ax, ay, aw, ah = box_a
-        bx, by, bw, bh = box_b
-        ix1, iy1 = max(ax, bx), max(ay, by)
-        ix2, iy2 = min(ax + aw, bx + bw), min(ay + ah, by + bh)
-        intersection = max(0, ix2 - ix1) * max(0, iy2 - iy1)
-        union = aw * ah + bw * bh - intersection
-        return intersection / float(union) if union > 0 else 0.0
 
-    def _overlaps_any_box(
-        self,
-        box: Box,
-        boxes: List[Box],
-        iou_threshold: float,
-    ) -> bool:
-        return any(
-            self._box_iou(box, other_box) > iou_threshold
-            for other_box in boxes
-        )
 
     def detect_dense_wide_split(
         self,
@@ -278,9 +239,9 @@ class IronDetector:
 
         img_h, img_w = img.shape[:2]
         img_area = img_h * img_w
-        raw_integral = self._mask_integral(raw_mask)
-        orig_integral = self._mask_integral(_color_support_mask("iron", img))
-        pre_integral = self._mask_integral(
+        raw_integral = mask_integral(raw_mask)
+        orig_integral = mask_integral(_color_support_mask("iron", img))
+        pre_integral = mask_integral(
             _color_support_mask("iron", img_preprocessed)
         )
 
@@ -333,7 +294,7 @@ class IronDetector:
 
                 for wy in range(y0, y1 + 1, 40):
                     for wx in range(x0, x1 + 1, 40):
-                        raw_support = self._integral_support(
+                        raw_support = integral_support(
                             raw_integral,
                             wx,
                             wy,
@@ -344,14 +305,14 @@ class IronDetector:
                         if raw_support < 0.58:
                             continue
 
-                        pre_color_support = self._integral_support(
+                        pre_color_support = integral_support(
                             pre_integral,
                             wx,
                             wy,
                             win_w,
                             win_h
                         )
-                        iron_support = self._integral_support(
+                        iron_support = integral_support(
                             orig_integral,
                             wx,
                             wy,
@@ -491,9 +452,9 @@ class IronDetector:
 
         img_h, img_w = img.shape[:2]
         img_area = img_h * img_w
-        raw_integral = self._mask_integral(raw_mask)
-        orig_integral = self._mask_integral(_color_support_mask("iron", img))
-        pre_integral = self._mask_integral(
+        raw_integral = mask_integral(raw_mask)
+        orig_integral = mask_integral(_color_support_mask("iron", img))
+        pre_integral = mask_integral(
             _color_support_mask("iron", img_preprocessed)
         )
 
@@ -534,21 +495,21 @@ class IronDetector:
 
                 for wy in range(y0, y1 + 1, 20):
                     for wx in range(x0, x1 + 1, 20):
-                        raw_support = self._integral_support(
+                        raw_support = integral_support(
                             raw_integral,
                             wx,
                             wy,
                             win_w,
                             win_h
                         )
-                        pre_color_support = self._integral_support(
+                        pre_color_support = integral_support(
                             pre_integral,
                             wx,
                             wy,
                             win_w,
                             win_h
                         )
-                        iron_support = self._integral_support(
+                        iron_support = integral_support(
                             orig_integral,
                             wx,
                             wy,
@@ -676,9 +637,9 @@ class IronDetector:
         if cv2.countNonZero(raw_mask) < 900:
             return []
 
-        raw_integral = self._mask_integral(raw_mask)
-        orig_integral = self._mask_integral(_color_support_mask("iron", img))
-        pre_integral = self._mask_integral(
+        raw_integral = mask_integral(raw_mask)
+        orig_integral = mask_integral(_color_support_mask("iron", img))
+        pre_integral = mask_integral(
             _color_support_mask("iron", img_preprocessed)
         )
 
@@ -693,7 +654,7 @@ class IronDetector:
 
             for wy in range(int(0.08 * img_h), img_h - side + 1, step):
                 for wx in range(0, img_w - side + 1, step):
-                    raw_support = self._integral_support(
+                    raw_support = integral_support(
                         raw_integral,
                         wx,
                         wy,
@@ -704,14 +665,14 @@ class IronDetector:
                     if raw_support < 0.55:
                         continue
 
-                    iron_support = self._integral_support(
+                    iron_support = integral_support(
                         orig_integral,
                         wx,
                         wy,
                         side,
                         side
                     )
-                    pre_color_support = self._integral_support(
+                    pre_color_support = integral_support(
                         pre_integral,
                         wx,
                         wy,
@@ -946,7 +907,7 @@ class IronDetector:
                 ]:
                     x = int(ax + aw * scale_x) + offset_x
                     y = int(ay + ah + ah * scale_y) + offset_y
-                    x, y, width, height = self._clip_box(
+                    x, y, width, height = clip_box(
                         (x, y, width, height),
                         img.shape
                     )
@@ -954,7 +915,7 @@ class IronDetector:
                     if width <= 0 or height <= 0:
                         continue
 
-                    if self._overlaps_any_box(
+                    if overlaps_any_box(
                         (x, y, width, height),
                         [tuple(item["box"]) for item in iron_clusters],
                         iou_threshold=0.10

@@ -13,6 +13,10 @@ from minecraft_ore_detector.detection.core import (
     match_template_multiscale,
     non_max_suppression,
 )
+from minecraft_ore_detector.detection.mask_statistics import (
+    integral_support,
+    mask_integral,
+)
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.segmentation import color_mask
 
@@ -48,11 +52,11 @@ class GoldDetector:
         if cv2.countNonZero(raw_mask) < 1800:
             return []
 
-        raw_integral = self._create_mask_integral(raw_mask)
-        orig_integral = self._create_mask_integral(
+        raw_integral = mask_integral(raw_mask)
+        orig_integral = mask_integral(
             _color_support_mask("gold", img)
         )
-        pre_integral = self._create_mask_integral(
+        pre_integral = mask_integral(
             _color_support_mask("gold", img_preprocessed)
         )
 
@@ -71,7 +75,7 @@ class GoldDetector:
 
             for wy in range(0, max_y + 1, step):
                 for wx in range(0, img_w - side + 1, step):
-                    raw_support = self._mask_support(
+                    raw_support = integral_support(
                         raw_integral,
                         wx,
                         wy,
@@ -82,14 +86,14 @@ class GoldDetector:
                     if raw_support < 0.55:
                         continue
 
-                    gold_support = self._mask_support(
+                    gold_support = integral_support(
                         orig_integral,
                         wx,
                         wy,
                         side,
                         side,
                     )
-                    gold_pre_support = self._mask_support(
+                    gold_pre_support = integral_support(
                         pre_integral,
                         wx,
                         wy,
@@ -172,25 +176,3 @@ class GoldDetector:
             candidates[:6],
             iou_threshold=self.config.nms_iou_threshold,
         )[:3]
-
-    @staticmethod
-    def _create_mask_integral(mask: np.ndarray) -> np.ndarray:
-        return cv2.integral((mask > 0).astype(np.uint8))
-
-    @staticmethod
-    def _mask_support(
-        integral: np.ndarray,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-    ) -> float:
-        x2 = x + width
-        y2 = y + height
-        total = (
-            integral[y2, x2]
-            - integral[y, x2]
-            - integral[y2, x]
-            + integral[y, x]
-        )
-        return float(total) / float(max(1, width * height))
