@@ -69,8 +69,8 @@ Input Bild
 
 ### Aktueller Ablauf im Code
 
-1. `src/main.py` laden und starten.
-2. `OreDetector` aus `src/pipeline.py` steuert die komplette Pipeline.
+1. `python3 -m minecraft_ore_detector.app.main` starten.
+2. `OreDetector` aus `minecraft_ore_detector.app.pipeline` steuert die Pipeline.
 3. Screenshot-Helligkeit wird anhand des Referenzbilds normalisiert.
 4. Für jede Overworld-Erzfamilie wird eine HSV-Maske mit Kantenmaske kombiniert.
 5. Kandidaten werden gefunden, gefiltert und nahe Boxen werden gemerged.
@@ -81,20 +81,14 @@ Input Bild
 
 ### Code-Struktur
 
-- `src/main.py`: schlanker Einstiegspunkt für die Einzelbildverarbeitung.
-- `src/live_detection.py`: wiederverwendet einen Detector für fortlaufende Frames.
-- `src/pipeline.py`: schlanke Ablaufsteuerung der kompletten Pipeline.
-- `src/ore_detection_processor.py`: interne Verarbeitungsschritte und Erzstrategien.
-- `src/coal_fallback_detector.py`: aufeinander aufbauende Coal-Sonderstrategien.
-- `src/copper_detector.py`: Copper-spezifische Zusatzstrategien.
-- `src/iron_detector.py`: Iron-spezifische Zusatzstrategien.
-- `src/gold_detector.py`: Gold-spezifische Erkennung großer Maskenbereiche.
-- `src/diamond_postprocessor.py`: Diamond-Merging und Anpassung kleiner Clusterboxen.
-- `src/config.py`: Pfade, Debug-Schalter und Matching-Thresholds.
-- `src/runtime_mask_filter.py`: HUD-, Wasser- und Großflächenfilter.
-- `src/ore_candidate_detection.py`: Sonderfälle für Coal und Diamond-Kandidaten.
-- `src/template_repository.py`: Laden und Caching der Template-Banks.
-- `src/segmentation.py`, `src/morphology.py`, `src/detection.py`: klassische Bildverarbeitungsbausteine.
+- `app/`: Konfiguration, Einstiegspunkte und schlanke Pipeline.
+- `detection/`: Kandidatensuche, Farbvalidierung, Template-Matching, NMS und Plausibilitätsfilter.
+- `detection/ores/`: Copper-, Iron-, Gold-, Diamond- und Coal-spezifische Strategien.
+- `imaging/`: Vorverarbeitung, Segmentierung, Morphologie und Laufzeit-Maskenfilter.
+- `evaluation/`: Annotation, Review und automatische Evaluation.
+- `debug/`: Debug-Board, Miss-Analyse, Farbanalyse und Headless-Auswertung.
+- `tools/comparisons/`: optionale visuelle Vergleichsskripte.
+- `presentation/` und `repositories/`: Darstellung und Template-Zugriff.
 
 ### Hinweis zu Templates
 

@@ -21,11 +21,11 @@ Dieses Dokument beschreibt den aktuellen Arbeitsstand fuer die Uebergabe an den 
 
 ## Pipeline-Uebersicht
 
-Die Hauptpipeline sitzt in `src/pipeline.py`.
+Die Hauptpipeline sitzt in `minecraft_ore_detector.app.pipeline`.
 
 Ablauf:
 
-1. Bildvorverarbeitung mit Helligkeitsanpassung in `src/preprocessing.py`
+1. Bildvorverarbeitung mit Helligkeitsanpassung in `minecraft_ore_detector.imaging.preprocessing`
 2. Umwandlung nach HSV
 3. Kantenbild erzeugen
 4. Pro Erz eine Farbmaske erzeugen
@@ -41,27 +41,27 @@ Ablauf:
 
 ## Wichtige Codepunkte
 
-- `src/pipeline.py`
+- `minecraft_ore_detector.app.pipeline`
   - Zentrale Pipeline und finale ROI-Plausibilitaeten.
   - Copper-Fallback ueber `_detect_copper_edge_clusters(...)`.
   - Iron-Fallback ueber `_detect_iron_color_clusters(...)`.
   - Gold hat eine enge Groessen- und Farbrestriktion.
-- `src/detection.py`
+- `minecraft_ore_detector.detection`
   - Konturbasierte Kandidatensuche.
   - Template-Matching.
   - Entscheidungslogik fuer Label, Farbe und Score.
   - Copper-gegen-Emerald/Diamond Schutz.
-- `src/runtime_mask_filter.py`
+- `minecraft_ore_detector.imaging.runtime_mask_filter`
   - HUD-, Wasser- und Grossflaechenfilter.
   - Copper-Regionen werden nicht pauschal geloescht, wenn sie als grosse echte Copper-Fläche plausibel wirken.
-- `src/ore_candidate_detection.py`
+- `minecraft_ore_detector.detection.candidate_detection`
   - Diamond-Candidate-Expander.
   - CoalPrimaryDetector.
   - Der fruehere Copper-Expander ist nicht mehr Teil des aktiven Pfads.
 
 ## Debug- und Analyse-Tools
 
-### `src/annotate.py`
+### `minecraft_ore_detector.evaluation.annotate`
 
 Zum Zeichnen von Ground-Truth-Boxen.
 
@@ -82,7 +82,7 @@ Bedienung:
 - `s`: speichern
 - `q` oder `ESC`: speichern und schliessen
 
-### `src/review_detections.py`
+### `minecraft_ore_detector.evaluation.review_detections`
 
 Zum manuellen Bewerten der Detektionen. Das ist wichtig, weil die automatische Auswertung allein bei schwierigen Hoehlenbildern nicht reicht.
 
@@ -103,7 +103,7 @@ Bedienung:
 
 Die Entscheidungen landen in `data/annotations/manual_review.json`.
 
-### `src/evaluate.py`
+### `minecraft_ore_detector.evaluation.evaluate`
 
 Berechnet Metriken gegen Ground Truth und optional gegen die manuelle Review.
 
@@ -122,7 +122,7 @@ Wichtig:
 - `--include-hard` nimmt als `hard` markierte Boxen mit auf.
 - `--hard-iou` steuert die strengere IoU fuer `hard`-Falle.
 
-### `src/debug_visualization.py`
+### `minecraft_ore_detector.debug.visualization`
 
 Erstellt ein visuelles Debug-Board pro Bild mit den internen Pipeline-Stufen.
 
@@ -149,7 +149,7 @@ Ausgabeort:
 
 - `data/debug_visual/`
 
-### `src/analyze_misses.py`
+### `minecraft_ore_detector.debug.analyze_misses`
 
 Das wichtigste Diagnosewerkzeug fuer Verpasser.
 
@@ -172,7 +172,7 @@ Was es ausgibt:
 
 Das Tool ist ideal, wenn man wissen will, ob ein Fehler in Farbe, Maske, Kandidatenbildung, Template-Matching oder Filterung entsteht.
 
-### `src/debug_evaluation.py`
+### `minecraft_ore_detector.debug.evaluation`
 
 Konsolenbasierte Debug-/Ausgabevariante fuer Evaluation. Nuerzlich, wenn man ohne GUI schnell Metriken sehen will.
 
@@ -181,10 +181,10 @@ Konsolenbasierte Debug-/Ausgabevariante fuer Evaluation. Nuerzlich, wenn man ohn
 Empfohlener Zyklus:
 
 1. Aenderung klein halten.
-2. `src/analyze_misses.py` auf betroffenen Bildern ausfuehren.
-3. `src/debug_visualization.py` anschauen, wenn die Boxen oder Masken unklar sind.
-4. Manuell mit `src/review_detections.py` gegenpruefen.
-5. Dann erst die Metrik mit `src/evaluate.py` werten.
+2. `minecraft_ore_detector.debug.analyze_misses` auf betroffenen Bildern ausfuehren.
+3. `minecraft_ore_detector.debug.visualization` anschauen, wenn Boxen oder Masken unklar sind.
+4. Manuell mit `minecraft_ore_detector.evaluation.review_detections` gegenpruefen.
+5. Dann erst mit `minecraft_ore_detector.evaluation.evaluate` auswerten.
 
 Das Projekt ist bewusst auf nachvollziehbare klassische CV ausgelegt. Wenn eine Aenderung den Durchsatz oder die Interpretierbarkeit verschlechtert, ist sie wahrscheinlich der falsche Pfad.
 
@@ -193,5 +193,4 @@ Das Projekt ist bewusst auf nachvollziehbare klassische CV ausgelegt. Wenn eine 
 - Kein Machine Learning.
 - Keine neuen Abhaengigkeiten, die ML oder neuronale Netze einfuehren.
 - Keine grossen brute-force Suchfenster, wenn dieselbe Information schon ueber einen kleineren, strukturierteren Pfad erreichbar ist.
-- `src/config.py` lokal fuer eigene Testbilder verwenden, aber nicht blind als Projektstand committen.
-
+- Die Konfiguration lokal fuer eigene Testbilder verwenden, aber nicht blind als Projektstand committen.

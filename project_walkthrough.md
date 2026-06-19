@@ -24,7 +24,7 @@ graph TD
 
 ## 2. Detaillierte Modulbeschreibung
 
-### A. Vorverarbeitung ([preprocessing.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/preprocessing.py))
+### A. Vorverarbeitung (`minecraft_ore_detector.imaging.preprocessing`)
 Die Vorverarbeitung bereitet das rohe Screenshot-Bild für die mathematische Segmentierung vor.
 *   **Helligkeitsnormalisierung:**
     Der Median des HSV-Helligkeitskanals wird an ein Referenzbild angeglichen. Dadurch werden sehr helle und sehr dunkle Szenen vergleichbarer, ohne einen adaptiven CLAHE-Kontrastausgleich vorzutäuschen.
@@ -33,7 +33,7 @@ Die Vorverarbeitung bereitet das rohe Screenshot-Bild für die mathematische Seg
 *   **HSV-Konvertierung:**
     Für die Farbsegmentierung wird das Bild in den HSV-Farbraum (Hue, Saturation, Value) transformiert. Im Gegensatz zu RGB/BGR trennt HSV den Farbton von der Helligkeit, was die Erkennung unter wechselnden Lichtbedingungen (z. B. Fackellicht oder Schatten) massiv erleichtert.
 
-### B. Segmentierung ([segmentation.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/segmentation.py)) & Bereinigung ([morphology.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/morphology.py))
+### B. Segmentierung und Bereinigung (`minecraft_ore_detector.imaging`)
 Hier werden relevante Farbinformationen extrahiert.
 *   **HSV-Thresholding:**
     Jedes Erz besitzt ein definiertes Farbprofil im HSV-Farbraum. Die Schwellenwerte sind bewusst tolerant gewählt, um möglichst alle Erze zu erfassen (hoher Recall). Redstone stellt eine Besonderheit dar: Da Rot im HSV-Farbraum am Rand liegt (Schnittstelle 0/180), werden hier zwei getrennte Bereiche über eine ODER-Verknüpfung kombiniert.
@@ -44,7 +44,7 @@ Hier werden relevante Farbinformationen extrahiert.
 *   **Morphologische Operationen:**
     Mit einem $3 \times 3$ Kernel wird erst ein *Opening* (entfernt isolierte Störpixel) und anschließend ein *Closing* (schließt kleine Risse und Hohlräume innerhalb von Clustern) ausgeführt.
 
-### C. Kandidatensuche ([detection.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/detection.py) → `find_candidates`)
+### C. Kandidatensuche (`minecraft_ore_detector.detection.candidate_finder`)
 Aus der bereinigten Binärmaske werden konkrete Kandidatenboxen extrahiert.
 *   **Konturanalyse:**
     `cv2.findContours` erfasst zusammenhängende weiße Flächen.
@@ -55,7 +55,7 @@ Aus der bereinigten Binärmaske werden konkrete Kandidatenboxen extrahiert.
 *   **Bounding Box Merging (`_merge_nearby_boxes`):**
     Erze treten im Spiel oft in Adern auf. Durch perspektivische Verzerrungen oder Texturlücken entstehen manchmal mehrere kleine Bounding Boxes für einen einzigen Block. Liegen Boxen näher als 18 Pixel beieinander, werden sie zu einer Region verschmolzen.
 
-### D. Erz-Matching & Plausibilität ([detection.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/detection.py))
+### D. Erz-Matching und Plausibilität (`minecraft_ore_detector.detection`)
 Dies ist der rechenintensivste und wichtigste Schritt zur Validierung der Kandidaten.
 *   **Template-Generierung (`load_template`):**
     Die Template-Datenbank enthält Vollbild-Screenshots. Das System schneidet beim Laden automatisch den zentrierten Erzblock aus, indem es die neutrale Wandfarbe (Beton) detektiert, herausfiltert und die Bounding Box des zentrierten Objekts extrahiert.
@@ -71,7 +71,7 @@ Dies ist der rechenintensivste und wichtigste Schritt zur Validierung der Kandid
 ### E. Überlappungsbereinigung & Ausgabe
 *   **Non-Maximum Suppression (NMS) (`non_max_suppression`):**
     Da verschiedene Erz-Detektoren (z. B. Gold und Eisen) denselben Block erfassen könnten oder mehrere Skalierungsstufen anschlagen, filtert NMS überlappende Boxen. Basierend auf der **Intersection over Union (IoU)** werden Boxen mit einer Überlappung von $\ge 25\%$ verglichen; nur die Box mit dem höchsten Übereinstimmungs-Score wird behalten.
-*   **Visualisierung ([visualization.py](file:///Users/cilas/Studium/Semester7/2d/minecraftOreDetectorCV/src/visualization.py)):**
+*   **Visualisierung (`minecraft_ore_detector.presentation.visualization`):**
     Die Ergebnisse werden mit OpenCV gezeichnet. Ein Tkinter-Aufruf ermittelt die Bildschirmauflösung des Host-Systems, um das Bild dynamisch und ohne Verzerrung an das Display anzupassen. Im Debug-Modus werden zusätzlich alle Roh-Kandidaten (blau) eingezeichnet.
 
 ---
@@ -103,7 +103,7 @@ Obwohl die Pipeline eine sehr hohe Erkennungsrate auf den Testbildern aufweist, 
     ```bash
     python3 -m minecraft_ore_detector.debug.evaluation
     ```
-*   **HSV Extremwert-Analyse eines Crops:**
+*   **HSV- und Farbdiagnose annotierter Boxen:**
     ```bash
-    python3 src/gettingHighesAndLowestPixelValuesInHSV.py
+    python3 -m minecraft_ore_detector.debug.color_diagnostics
     ```
