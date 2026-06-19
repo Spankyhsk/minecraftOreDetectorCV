@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Temporäres Hilfsskript zum Vergleich des Originalbildes mit der CLAHE-vorverarbeiteten Version.
-Dieses Skript lädt einen Minecraft-Screenshot, wendet CLAHE an, fügt zur Kennzeichnung Textlabels hinzu,
-speichert den Vergleich als Datei unter 'data/clahe_comparison.png' und zeigt ihn in einem Fenster an.
+Vergleicht die aktuell verwendeten Vorverarbeitungsstufen.
 """
 
 import os
@@ -11,8 +9,8 @@ import numpy as np
 import cv2
 
 # Importieren der Pipeline-Funktionen
-from preprocessing import load_image, apply_clahe
-from visualization import show
+from preprocessing import load_image, normalize_scene_brightness
+from visualization import show_image
 from utils import log, log_warning
 
 
@@ -44,7 +42,7 @@ def main():
     screenshots_dir = os.path.join(data_dir, "screenshots")
     
     # ArgumentParser für einfache Auswahl des Bildes
-    parser = argparse.ArgumentParser(description="Vergleiche ein Minecraft-Bild mit seiner CLAHE-angepassten Version.")
+    parser = argparse.ArgumentParser(description="Vergleiche die Vorverarbeitungsstufen eines Minecraft-Bildes.")
     parser.format_class = argparse.ArgumentDefaultsHelpFormatter
     parser.add_argument(
         "--image", 
@@ -75,28 +73,29 @@ def main():
             log_warning("Kein Testbild gefunden. Bitte stelle sicher, dass 'data/screenshots/test1.png' existiert.")
             return
 
-    log("Wende CLAHE-Kontrastausgleich an...")
-    clahe_img = apply_clahe(orig)
-    
+    log("Normalisiere Szenenhelligkeit...")
+    normalized_img = normalize_scene_brightness(orig)
     # Kopien für die Visualisierung erstellen, um die Originalbilder nicht zu verändern
     orig_vis = orig.copy()
-    clahe_vis = clahe_img.copy()
+    normalized_vis = normalized_img.copy()
+    final_preprocessing_vis = normalized_img.copy()
     
     # Labels hinzufügen
     draw_label(orig_vis, "Original")
-    draw_label(clahe_vis, "CLAHE (Kontrastausgleich)")
+    draw_label(normalized_vis, "Helligkeitsnormalisierung")
+    draw_label(final_preprocessing_vis, "Aktuelle Vorverarbeitung (ohne Blur)")
     
     # Bilder horizontal nebeneinander zusammenfügen
-    comparison = np.hstack((orig_vis, clahe_vis))
+    comparison = np.hstack((normalized_vis, final_preprocessing_vis))
     
     # Speicherpfad für den Vergleich
-    out_path = os.path.join(output_dir, "clahe_comparison.png")
+    out_path = os.path.join(output_dir, "blur_comparison.png")
     cv2.imwrite(out_path, comparison)
     log(f"Vergleichsbild erfolgreich gespeichert unter: {out_path}")
     
     # Bild anzeigen
     log("Zeige Vergleichsbild an. Drücke eine beliebige Taste im Bildfenster, um es zu schließen.")
-    show(comparison, window_name="Vergleich: Original vs. CLAHE (Vorverarbeitung)")
+    show_image(comparison, window_name="Vergleich: Vorverarbeitung")
 
 
 if __name__ == "__main__":

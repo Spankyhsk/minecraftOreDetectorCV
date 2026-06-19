@@ -21,7 +21,7 @@ class TemplateRepository:
         self.templates_dir = templates_dir
         self._cache: Dict[str, Dict[str, np.ndarray]] = {}
 
-    def get_for_ore(self, ore_key: str) -> Dict[str, np.ndarray]:
+    def get_templates_for_ore(self, ore_key: str) -> Dict[str, np.ndarray]:
         if ore_key not in self._cache:
             self._cache[ore_key] = self._load_for_ore(ore_key)
         return self._cache[ore_key]

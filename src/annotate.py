@@ -87,7 +87,7 @@ class AnnotationSession:
 
         print("Annotation controls:")
         print("  1-8  select label: " + ", ".join(f"{idx + 1}={label}" for idx, label in enumerate(LABELS)))
-        print("  left mouse drag      draw box")
+        print("  left mouse drag      draw_detection_boxes box")
         print("  right mouse click    select existing box")
         print("  z                    undo last box")
         print("  backspace/delete     delete selected box")

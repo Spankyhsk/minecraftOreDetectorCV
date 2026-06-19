@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 
-class MaskRegionFilter:
+class RuntimeMaskFilter:
     """
     Entfernt Regionen, die fuer die Erzerkennung systematisch problematisch sind.
     """
@@ -126,7 +126,7 @@ class MaskRegionFilter:
 
         return support >= 0.35 and mean_s >= 75.0 and mean_v >= 60.0 and std_v >= 12.0
 
-    def clean_runtime_mask(self, mask: np.ndarray, hsv: np.ndarray, ore: str | None = None) -> np.ndarray:
+    def filter_mask(self, mask: np.ndarray, hsv: np.ndarray, ore: str | None = None) -> np.ndarray:
         out = self.remove_hud_regions(mask)
 
         # GEÄNDERT:

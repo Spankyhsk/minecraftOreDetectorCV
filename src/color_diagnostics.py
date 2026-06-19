@@ -17,7 +17,7 @@ import numpy as np
 from config import DATA_DIR
 from evaluate import load_annotations, normalize_label
 from ore_rules import ORE_RULES, supported_ores
-from preprocessing import load_image, match_scene_brightness
+from preprocessing import load_image, normalize_scene_brightness
 
 Box = Tuple[int, int, int, int]
 
@@ -161,7 +161,7 @@ def collect_cases(args: argparse.Namespace) -> List[Dict]:
             continue
 
         img = load_image(image_path)
-        preprocessed = match_scene_brightness(img)
+        preprocessed = normalize_scene_brightness(img)
 
         for item in annotations[image_name]:
             label = normalize_label(item["label"])

@@ -34,10 +34,10 @@ from evaluate import (
     match_image,
     normalize_label,
 )
-from mask_filters import MaskRegionFilter
+from runtime_mask_filter import RuntimeMaskFilter
 from morphology import clean_mask
 from pipeline import OreDetector
-from preprocessing import load_image, match_scene_brightness, to_hsv
+from preprocessing import load_image, normalize_scene_brightness, convert_bgr_to_hsv
 from segmentation import (
     color_mask,
     edge_mask,
@@ -143,12 +143,12 @@ def build_stage_data(
     detector: OreDetector,
     template_repo: TemplateRepository,
 ) -> Dict:
-    preprocessed = match_scene_brightness(img)
-    hsv = to_hsv(preprocessed)
-    mask_filter = MaskRegionFilter()
+    preprocessed = normalize_scene_brightness(img)
+    hsv = convert_bgr_to_hsv(preprocessed)
+    mask_filter = RuntimeMaskFilter()
 
     edges = edge_mask(preprocessed)
-    edges = mask_filter.clean_runtime_mask(edges, hsv)
+    edges = mask_filter.filter_mask(edges, hsv)
 
     color_raw = color_mask(hsv, ore)
     color_no_hud = mask_filter.remove_hud_regions(color_raw)
@@ -158,11 +158,11 @@ def build_stage_data(
     mask = hybrid_mask(color_clean, edges) if use_edges_for_ore(ore) else color_clean
     mask = refine_mask_for_ore(ore, mask)
     mask = clean_mask(mask)
-    mask = mask_filter.clean_runtime_mask(mask, hsv, ore=ore)
+    mask = mask_filter.filter_mask(mask, hsv, ore=ore)
 
     candidates = find_candidates(mask, color_clean, ore=ore)
 
-    template_bank = template_repo.get_for_ore(ore)
+    template_bank = template_repo.get_templates_for_ore(ore)
     raw = []
 
     if template_bank and candidates:
@@ -177,7 +177,7 @@ def build_stage_data(
             )
 
     nms = non_max_suppression(raw, detector.config.nms_iou_threshold)
-    filtered = detector._filter_low_confidence_outputs(nms, img)
+    filtered = detector.processor.filter_plausible_detections(nms, img)
 
     return {
         "preprocessed": preprocessed,
@@ -280,7 +280,7 @@ def explain_case(
 
     print("  nearest raw detections:")
     for iou, partial, detection in rank_detections(data["raw"], gt_box, top):
-        passes = detector._passes_roi_plausibility(detection, img)
+        passes = detector.processor.is_detection_plausible(detection, img)
         print(
             f"    iou={iou:.3f} partial={partial:.3f} "
             f"score={detection.get('score', 0.0):.3f} "

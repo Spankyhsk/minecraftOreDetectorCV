@@ -40,7 +40,7 @@ def load_image(path: str) -> np.ndarray:
 # ------------------------------------------------------------
 # HELLIGKEIT AN TEMPLATE ANPASSEN (OHNE PARAMETER)
 # ------------------------------------------------------------
-def match_scene_brightness(img: np.ndarray) -> np.ndarray:
+def normalize_scene_brightness(img: np.ndarray) -> np.ndarray:
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
 
@@ -56,31 +56,8 @@ def match_scene_brightness(img: np.ndarray) -> np.ndarray:
     # return cv2.merge((h, s, v)) Führt aktuell zu einem Schlechten ergebniss. Besser, wie vor dem Merge ist:
     return cv2.cvtColor(cv2.merge((h, s, v)), cv2.COLOR_HSV2BGR)
 
-
-
-def apply_clahe(img: np.ndarray) -> np.ndarray:
-    """
-    Kompatibilitaetswrapper fuer alte Vergleichsskripte.
-
-    Die Pipeline nutzt jetzt match_scene_brightness(), weil diese Methode die
-    Szenenhelligkeit auf das Referenzbild normalisiert.
-    """
-
-    return match_scene_brightness(img)
-
-
-def blur(img: np.ndarray) -> np.ndarray:
-    """
-    Kompatibilitaetswrapper fuer alte Vergleichsskripte.
-
-    Die neue Vorverarbeitung verwendet keinen zusaetzlichen Blur.
-    """
-
-    return img
-
-
 # ------------------------------------------------------------
 # HSV KONVERTIERUNG
 # ------------------------------------------------------------
-def to_hsv(img: np.ndarray) -> np.ndarray:
+def convert_bgr_to_hsv(img: np.ndarray) -> np.ndarray:
     return cv2.cvtColor(img, cv2.COLOR_BGR2HSV)

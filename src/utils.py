@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 
 
-def resize(img: np.ndarray, scale: float = 1.0) -> np.ndarray:
+def resize_image(img: np.ndarray, scale: float = 1.0) -> np.ndarray:
     """
     Skaliert ein Bild proportional mit einem Skalierungsfaktor.
 

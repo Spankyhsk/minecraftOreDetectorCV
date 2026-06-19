@@ -3,7 +3,7 @@ import cv2
 import mss
 import numpy as np
 
-from main import run_pipeline
+from pipeline import OreDetector
 
 
 SHOW_FPS = True
@@ -26,6 +26,7 @@ def main():
     print("[INFO] Starte Capture... (ESC zum Beenden)")
 
     last_time = time.time()
+    detector = OreDetector()
 
     while True:
 
@@ -35,7 +36,7 @@ def main():
             frame = np.array(screenshot)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
 
-            output = run_pipeline(frame)
+            output = detector.detect_and_render(frame)
 
             if SHOW_FPS:
                 now = time.time()

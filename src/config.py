@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Zentrale Konfiguration fuer die Ore-Detection-Pipeline.
+Zentrale Konfiguration für die Ore-Detection-Pipeline.
 """
 
 import os
@@ -17,7 +17,7 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 @dataclass(frozen=True)
 class OreDetectorConfig:
     """
-    Buendelt Pfade, Debug-Schalter und Matching-Thresholds.
+    Bündelt Pfade, Debug-Schalter und Matching-Thresholds.
     """
 
     data_dir: str = DATA_DIR

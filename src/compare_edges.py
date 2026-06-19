@@ -11,9 +11,9 @@ import numpy as np
 import cv2
 
 # Importieren der Pipeline-Funktionen
-from preprocessing import load_image, apply_clahe, blur, to_hsv
+from preprocessing import load_image, normalize_scene_brightness, convert_bgr_to_hsv
 from segmentation import edge_mask
-from visualization import show
+from visualization import show_image
 from utils import log, log_warning
 
 
@@ -76,10 +76,10 @@ def main():
             log_warning("Kein Testbild gefunden. Bitte stelle sicher, dass 'data/screenshots/test1.png' existiert.")
             return
 
-    log("Wende CLAHE-Kontrastausgleich an...")
-    clahe_img = apply_clahe(orig)
-    #blur_img = blur(clahe_img)
-    hsv = to_hsv(clahe_img)
+    log("Normalisiere Szenenhelligkeit...")
+    normalized_img = normalize_scene_brightness(orig)
+    #preprocessed_img = normalized_img
+    hsv = convert_bgr_to_hsv(normalized_img)
     edges_img = edge_mask(hsv)
     # Kopien für die Visualisierung erstellen, um die Originalbilder nicht zu verändern
     orig_vis = orig.copy()
@@ -95,13 +95,13 @@ def main():
     comparison = edges_vis
     
     # Speicherpfad für den Vergleich
-    out_path = os.path.join(output_dir, "edgesWithOutBlur.png")
+    out_path = os.path.join(output_dir, "edges_without_blur.png")
     cv2.imwrite(out_path, comparison)
     log(f"Vergleichsbild erfolgreich gespeichert unter: {out_path}")
     
     # Bild anzeigen
     log("Zeige Vergleichsbild an. Drücke eine beliebige Taste im Bildfenster, um es zu schließen.")
-    show(comparison, window_name="Vergleich: Original vs. CLAHE (Vorverarbeitung)")
+    show_image(comparison, window_name="Vergleich: Vorverarbeitung")
 
 
 if __name__ == "__main__":

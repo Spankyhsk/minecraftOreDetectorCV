@@ -11,9 +11,9 @@ import numpy as np
 import cv2
 
 # Importieren der Pipeline-Funktionen
-from preprocessing import load_image, apply_clahe, blur, to_hsv
+from preprocessing import load_image, normalize_scene_brightness, convert_bgr_to_hsv
 from segmentation import color_mask, supported_ores
-from visualization import show
+from visualization import show_image
 from utils import log, log_warning
 
 
@@ -76,10 +76,10 @@ def main():
             log_warning("Kein Testbild gefunden. Bitte stelle sicher, dass 'data/screenshots/test1.png' existiert.")
             return
 
-    log("Wende CLAHE-Kontrastausgleich an...")
-    clahe_img = apply_clahe(orig)
-    blur_img = blur(clahe_img)
-    hsv = to_hsv(blur_img)
+    log("Normalisiere Szenenhelligkeit...")
+    normalized_img = normalize_scene_brightness(orig)
+    preprocessed_img = normalized_img
+    hsv = convert_bgr_to_hsv(preprocessed_img)
 
     for ore in supported_ores():
         color = color_mask(hsv, ore)
@@ -90,16 +90,16 @@ def main():
 
     # Kopien für die Visualisierung erstellen, um die Originalbilder nicht zu verändern
     orig_vis = orig.copy()
-    blur_vis = blur_img.copy()
+    preprocessed_vis = preprocessed_img.copy()
     hsv_vis = hsv.copy()
     
     # Labels hinzufügen
     draw_label(orig_vis, "Original")
-    draw_label(blur_vis, "CLAHE + Blur (Vorverarbeitung)")
+    draw_label(preprocessed_vis, "Helligkeitsnormalisierung")
     draw_label(hsv_vis, "HSV-Farbbild (Masken)")
     
     # Bilder horizontal nebeneinander zusammenfügen
-    comparison = np.hstack((blur_vis, hsv_vis))
+    comparison = np.hstack((preprocessed_vis, hsv_vis))
     
     # Speicherpfad für den Vergleich
     out_path = os.path.join(output_dir, "hsv.png")
@@ -108,7 +108,7 @@ def main():
     
     # Bild anzeigen
     log("Zeige Vergleichsbild an. Drücke eine beliebige Taste im Bildfenster, um es zu schließen.")
-    show(hsv_vis, window_name="Vergleich: Original vs. CLAHE (Vorverarbeitung)")
+    show_image(hsv_vis, window_name="Vergleich: Vorverarbeitung")
 
 
 if __name__ == "__main__":

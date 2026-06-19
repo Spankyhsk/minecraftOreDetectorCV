@@ -11,7 +11,7 @@ import tkinter as tk
 from typing import List, Dict, Tuple
 
 
-def draw_debug(img: np.ndarray, candidates: List[Tuple[int, int, int, int]], detections: List[Dict]) -> np.ndarray:
+def draw_debug_overlay(img: np.ndarray, candidates: List[Tuple[int, int, int, int]], detections: List[Dict]) -> np.ndarray:
     """
     Zeichnet sowohl die Rohkandidaten (Blau) als auch die finalen Detektionen (Grün)
     in das Bild ein. Dies hilft bei der Analyse von Fehlalarmen (False Positives)
@@ -88,7 +88,7 @@ def draw_debug(img: np.ndarray, candidates: List[Tuple[int, int, int, int]], det
     return out
 
 
-def draw_candidates(img: np.ndarray, candidates: List[Tuple[int, int, int, int]]) -> np.ndarray:
+def draw_candidate_boxes(img: np.ndarray, candidates: List[Tuple[int, int, int, int]]) -> np.ndarray:
     """
     Zeichnet ausschließlich die erzeugten Segmentierungskandidaten (Blau) in das Bild ein.
 
@@ -127,7 +127,7 @@ def draw_candidates(img: np.ndarray, candidates: List[Tuple[int, int, int, int]]
     return out
 
 
-def draw(img: np.ndarray, detections: List[Dict]) -> np.ndarray:
+def draw_detection_boxes(img: np.ndarray, detections: List[Dict]) -> np.ndarray:
     """
     Zeichnet nur die finalen erkannten Erze (Grün) in das Bild ein.
     Dies entspricht der Standard-Ausgabe für den Endnutzer.
@@ -173,7 +173,7 @@ def draw(img: np.ndarray, detections: List[Dict]) -> np.ndarray:
     return out
 
 
-def show(img: np.ndarray, window_name: str = "VoxelVision") -> None:
+def show_image(img: np.ndarray, window_name: str = "VoxelVision") -> None:
     """
     Zeigt das Bild in einem OpenCV-Fenster an, das sich automatisch an die
     aktuelle Bildschirmauflösung anpasst, um ein Abschneiden des Fensters zu verhindern.

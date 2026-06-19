@@ -16,10 +16,10 @@ import numpy as np
 from config import DATA_DIR, OreDetectorConfig
 from detection import detect_with_template_bank, find_candidates, non_max_suppression
 from evaluate import detection_key, normalize_label
-from mask_filters import MaskRegionFilter
+from runtime_mask_filter import RuntimeMaskFilter
 from morphology import clean_mask
 from pipeline import OreDetector
-from preprocessing import load_image, match_scene_brightness, to_hsv
+from preprocessing import load_image, normalize_scene_brightness, convert_bgr_to_hsv
 from segmentation import (
     color_mask,
     edge_mask,
@@ -29,7 +29,7 @@ from segmentation import (
     use_edges_for_ore,
 )
 from template_repository import TemplateRepository
-from visualization import draw_candidates
+from visualization import draw_candidate_boxes
 
 Box = Tuple[int, int, int, int]
 
@@ -167,38 +167,38 @@ def draw_detections(img: np.ndarray, detections: List[dict], image_review: Dict)
 
 
 def collect_pipeline_debug(img: np.ndarray, config: OreDetectorConfig) -> Tuple[np.ndarray, np.ndarray, Dict[str, dict], List[dict]]:
-    mask_filter = MaskRegionFilter()
+    mask_filter = RuntimeMaskFilter()
     templates = TemplateRepository(config.templates_dir)
 
-    preprocessed = match_scene_brightness(img)
-    hsv = to_hsv(preprocessed)
+    preprocessed = normalize_scene_brightness(img)
+    hsv = convert_bgr_to_hsv(preprocessed)
     edges = edge_mask(preprocessed)
-    edges_clean = mask_filter.clean_runtime_mask(edges, hsv)
+    edges_clean = mask_filter.filter_mask(edges, hsv)
 
     per_ore = {}
     raw_detections = []
 
     for ore in supported_ores():
         color = color_mask(hsv, ore)
-        color_clean = mask_filter.clean_runtime_mask(color, hsv, ore=ore)
+        color_clean = mask_filter.filter_mask(color, hsv, ore=ore)
 
         mask = hybrid_mask(color_clean, edges_clean) if use_edges_for_ore(ore) else color_clean
         mask = refine_mask_for_ore(ore, mask)
         mask = clean_mask(mask)
-        mask = mask_filter.clean_runtime_mask(mask, hsv, ore=ore)
+        mask = mask_filter.filter_mask(mask, hsv, ore=ore)
 
         if ore == "coal":
-            from candidate_filters import CoalDetector
-            coal_detector = CoalDetector(mask_filter)
+            from ore_candidate_detection import CoalPrimaryDetector
+            coal_detector = CoalPrimaryDetector(mask_filter)
             candidates = coal_detector.find_candidates(img, color_clean)
-            raw = coal_detector.detect_direct(img, candidates)
+            raw = coal_detector.detect_from_candidates(img, candidates)
         else:
             candidates = find_candidates(mask, color_clean, ore=ore)
             if ore == "diamond":
-                from candidate_filters import DiamondCandidateExpander
-                candidates = DiamondCandidateExpander().expand(candidates, img.shape)
+                from ore_candidate_detection import DiamondCandidateExpander
+                candidates = DiamondCandidateExpander().expand_candidates(candidates, img.shape)
 
-            bank = templates.get_for_ore(ore)
+            bank = templates.get_templates_for_ore(ore)
             raw = []
             if bank:
                 raw = detect_with_template_bank(
@@ -241,7 +241,7 @@ def create_debug_board(image_name: str, args: argparse.Namespace, annotations: D
 
     with contextlib.redirect_stdout(io.StringIO()):
         preprocessed, edges, per_ore, detections = collect_pipeline_debug(img, config)
-        final = OreDetector(config).run(img)
+        final = OreDetector(config).detect_and_render(img)
 
     gt_items = annotations.get(image_name, [])
     image_review = review.get(image_name, {})
@@ -295,7 +295,7 @@ def create_candidate_overlay(image_name: str, args: argparse.Namespace) -> str:
         else:
             candidates = OreDetector(config).detect(img).candidates
 
-    out = draw_candidates(img, candidates)
+    out = draw_candidate_boxes(img, candidates)
     os.makedirs(args.output_dir, exist_ok=True)
     suffix = f"_{args.ore}" if args.ore else ""
     out_path = os.path.join(args.output_dir, f"{os.path.splitext(image_name)[0]}{suffix}_candidates.png")

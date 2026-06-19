@@ -10,7 +10,7 @@ from pipeline import OreDetector
 from preprocessing import load_image
 
 
-def run_eval() -> None:
+def run_debug_evaluation() -> None:
     """
     Fuehrt die Pipeline ohne GUI aus und gibt Kandidaten/Detektionen aus.
     """
@@ -41,5 +41,4 @@ def run_eval() -> None:
 
 
 if __name__ == "__main__":
-    run_eval()
-
+    run_debug_evaluation()

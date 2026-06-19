@@ -15,15 +15,7 @@ from config import OreDetectorConfig
 from pipeline import OreDetector
 from preprocessing import load_image
 from utils import log
-from visualization import show
-
-
-def run_pipeline(img):
-    """
-    Rueckwaertskompatibler Wrapper fuer Skripte wie live_runner.py.
-    """
-
-    return OreDetector().run(img)
+from visualization import show_image
 
 
 def main():
@@ -36,9 +28,9 @@ def main():
 
     log("Bild erfolgreich geladen.")
 
-    output = OreDetector(config).run(img)
+    output = OreDetector(config).detect_and_render(img)
 
-    show(output)
+    show_image(output)
 
     log("Programm beendet.")
 

@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 
 from detection import match_template_multiscale
-from mask_filters import MaskRegionFilter
+from runtime_mask_filter import RuntimeMaskFilter
 
 Box = Tuple[int, int, int, int]
 
@@ -19,7 +19,7 @@ class DiamondCandidateExpander:
     Fasst kleine Diamond-Farbinseln zu blockgrossen Kandidaten zusammen.
     """
 
-    def expand(self, candidates: List[Box], img_shape: Tuple[int, ...]) -> List[Box]:
+    def expand_candidates(self, candidates: List[Box], img_shape: Tuple[int, ...]) -> List[Box]:
         img_h, img_w = img_shape[:2]
         block_size = int(img_w * 0.055)
         block_size = max(70, min(block_size, 115))
@@ -87,12 +87,12 @@ class DiamondCandidateExpander:
         return normal_candidates + merged_candidates
 
 
-class CoalDetector:
+class CoalPrimaryDetector:
     """
-    Sondererkennung fuer Coal ohne Template-Matching.
+    Fuehrt die primaere Coal-Kandidatensuche und -Erkennung aus.
     """
 
-    def __init__(self, mask_filter: MaskRegionFilter):
+    def __init__(self, mask_filter: RuntimeMaskFilter):
         self.mask_filter = mask_filter
 
     def find_candidates(self, img: np.ndarray, coal_mask: np.ndarray) -> List[Box]:
@@ -249,7 +249,7 @@ class CoalDetector:
             best_detection = None
 
             for window in windows:
-                detection = self._coal_template_fallback_detection(
+                detection = self._evaluate_template_fallback_candidate(
                     img,
                     gray,
                     hsv,
@@ -273,7 +273,7 @@ class CoalDetector:
 
         return detections
 
-    def detect_direct(self, img: np.ndarray, candidates: List[Box]) -> List[dict]:
+    def detect_from_candidates(self, img: np.ndarray, candidates: List[Box]) -> List[dict]:
         detections = []
         img_h, _ = img.shape[:2]
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -376,7 +376,7 @@ class CoalDetector:
 
         return gray, hsv, coal_seed, local_dark, grouped, block_size
 
-    def _coal_template_fallback_detection(
+    def _evaluate_template_fallback_candidate(
         self,
         img: np.ndarray,
         gray: np.ndarray,
