@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minecraft-ore-detector"
+version = "0.1.0"
+description = "Classical computer-vision detector for Minecraft ores"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "opencv-python",
+]
+
+[project.optional-dependencies]
+live = ["mss"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

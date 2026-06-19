@@ -1,0 +1,1 @@
+"""Ore-specific detection strategies."""

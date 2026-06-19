@@ -97,11 +97,11 @@ Obwohl die Pipeline eine sehr hohe Erkennungsrate auf den Testbildern aufweist, 
 
 *   **Normale Pipeline mit Visualisierung:**
     ```bash
-    python3 src/main.py
+    python3 -m minecraft_ore_detector.app.main
     ```
 *   **Headless Testauswertung (reine Textausgabe):**
     ```bash
-    python3 src/debug_evaluation.py
+    python3 -m minecraft_ore_detector.debug.evaluation
     ```
 *   **HSV Extremwert-Analyse eines Crops:**
     ```bash

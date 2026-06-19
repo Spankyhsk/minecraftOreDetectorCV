@@ -1,0 +1,1 @@
+"""Coal-specific detection strategies."""

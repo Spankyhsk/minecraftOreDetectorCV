@@ -68,7 +68,7 @@ Zum Zeichnen von Ground-Truth-Boxen.
 Beispiel:
 
 ```bash
-python3 src/annotate.py --image test1.png
+python3 -m minecraft_ore_detector.evaluation.annotate --image test1.png
 ```
 
 Bedienung:
@@ -89,7 +89,7 @@ Zum manuellen Bewerten der Detektionen. Das ist wichtig, weil die automatische A
 Beispiel:
 
 ```bash
-python3 src/review_detections.py
+python3 -m minecraft_ore_detector.evaluation.review_detections
 ```
 
 Bedienung:
@@ -110,10 +110,10 @@ Berechnet Metriken gegen Ground Truth und optional gegen die manuelle Review.
 Beispiele:
 
 ```bash
-python3 src/evaluate.py
-python3 src/evaluate.py --review data/annotations/manual_review.json
-python3 src/evaluate.py --include-hard --hard-iou 0.20
-python3 src/evaluate.py --min-f1 0.65
+python3 -m minecraft_ore_detector.evaluation.evaluate
+python3 -m minecraft_ore_detector.evaluation.evaluate --review data/annotations/manual_review.json
+python3 -m minecraft_ore_detector.evaluation.evaluate --include-hard --hard-iou 0.20
+python3 -m minecraft_ore_detector.evaluation.evaluate --min-f1 0.65
 ```
 
 Wichtig:
@@ -129,9 +129,9 @@ Erstellt ein visuelles Debug-Board pro Bild mit den internen Pipeline-Stufen.
 Beispiele:
 
 ```bash
-python3 src/debug_visualization.py --image test17.png
-python3 src/debug_visualization.py --image test17.png --ore gold
-python3 src/debug_visualization.py --image test17.png --ore redstone
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png --ore gold
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png --ore redstone
 ```
 
 Was das Board zeigt:
@@ -156,9 +156,9 @@ Das wichtigste Diagnosewerkzeug fuer Verpasser.
 Beispiele:
 
 ```bash
-python3 src/analyze_misses.py
-python3 src/analyze_misses.py --image data/screenshots/test12.png --label copper
-python3 src/analyze_misses.py --image data/screenshots/test18.png --label copper
+python3 -m minecraft_ore_detector.debug.analyze_misses
+python3 -m minecraft_ore_detector.debug.analyze_misses --image data/screenshots/test12.png --label copper
+python3 -m minecraft_ore_detector.debug.analyze_misses --image data/screenshots/test18.png --label copper
 ```
 
 Was es ausgibt:

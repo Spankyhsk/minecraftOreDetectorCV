@@ -13,6 +13,20 @@ Das Projekt verzichtet bewusst auf Machine Learning und basiert ausschließlich 
 Aktueller Uebergabestand und Debug-Workflow:
 [docs/hand_off.md](docs/hand_off.md)
 
+## Installation
+
+Das Projekt wird als lokales Python-Paket installiert:
+
+```bash
+python3 -m pip install -e .
+```
+
+Für den optionalen Live-Modus:
+
+```bash
+python3 -m pip install -e ".[live]"
+```
+
 ---
 
 ## Ziel des Projekts
@@ -93,7 +107,7 @@ damit das Matching gegen kleine Kandidaten im Zielbild möglich ist.
 Für eine reine Konsolen-Auswertung ohne GUI:
 
 ```bash
-python3 src/debug_evaluation.py
+python3 -m minecraft_ore_detector.debug.evaluation
 ```
 
 ### Ground Truth / Regression Tests
@@ -102,7 +116,7 @@ Manuelle Boxen werden in `data/annotations/ground_truth.json` gespeichert.
 Zum Eintragen gibt es ein kleines Zeichenwerkzeug:
 
 ```bash
-python3 src/annotate.py --image test1.png
+python3 -m minecraft_ore_detector.evaluation.annotate --image test1.png
 ```
 
 Bedienung im Fenster:
@@ -119,13 +133,13 @@ Bedienung im Fenster:
 Die automatische Genauigkeitsmessung läuft danach mit:
 
 ```bash
-python3 src/evaluate.py
+python3 -m minecraft_ore_detector.evaluation.evaluate
 ```
 
 Falls du die automatischen Treffer/Misses manuell gegenpruefen willst:
 
 ```bash
-python3 src/review_detections.py
+python3 -m minecraft_ore_detector.evaluation.review_detections
 ```
 
 Das Review-Fenster zeigt nacheinander `TP`, `FP` und `FN`-Faelle:
@@ -141,13 +155,13 @@ Die Entscheidungen landen in `data/annotations/manual_review.json`.
 Die Evaluation nutzt sie mit:
 
 ```bash
-python3 src/evaluate.py --review data/annotations/manual_review.json
+python3 -m minecraft_ore_detector.evaluation.evaluate --review data/annotations/manual_review.json
 ```
 
 Fuer visuelles Pipeline-Debugging kann ein Debug-Board pro Bild erzeugt werden:
 
 ```bash
-python3 src/debug_visualization.py --image test17.png
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png
 ```
 
 Das Board landet unter `data/debug_visual/` und zeigt Original, Vorverarbeitung,
@@ -155,34 +169,34 @@ Kanten, finale Treffer, Ground Truth, Review-Overlay sowie Farb-/Clean-Masken
 inklusive Kandidaten pro Erz. Einzelne Erze koennen isoliert werden:
 
 ```bash
-python3 src/debug_visualization.py --image test17.png --ore gold
-python3 src/debug_visualization.py --image test17.png --ore redstone
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png --ore gold
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png --ore redstone
 ```
 
 Wenn nur die Kandidatenboxen ohne finale Detektionen sichtbar sein sollen:
 
 ```bash
-python3 src/debug_visualization.py --image test17.png --candidates-only
-python3 src/debug_visualization.py --image test17.png --ore gold --candidates-only
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png --candidates-only
+python3 -m minecraft_ore_detector.debug.visualization --image test17.png --ore gold --candidates-only
 ```
 
 Standardmäßig werden `difficulty: "hard"` und `ignore: true` nicht streng bewertet.
 Hard-Boxen können optional mit niedrigerer IoU in die Metrik aufgenommen werden:
 
 ```bash
-python3 src/evaluate.py --include-hard --hard-iou 0.20
+python3 -m minecraft_ore_detector.evaluation.evaluate --include-hard --hard-iou 0.20
 ```
 
 Optional kann ein Mindestwert für Regression-Checks gesetzt werden:
 
 ```bash
-python3 src/evaluate.py --min-f1 0.65
+python3 -m minecraft_ore_detector.evaluation.evaluate --min-f1 0.65
 ```
 
 Start der normalen Pipeline mit Visualisierung:
 
 ```bash
-python3 src/main.py
+python3 -m minecraft_ore_detector.app.main
 ```
 
 ---
