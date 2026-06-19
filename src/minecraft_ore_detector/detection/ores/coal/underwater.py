@@ -7,7 +7,6 @@ import cv2
 import numpy as np
 
 from minecraft_ore_detector.app.config import OreDetectorConfig
-from minecraft_ore_detector.detection.candidate_detection import CoalPrimaryDetector
 from minecraft_ore_detector.detection import (
     _copper_green_support,
     _copper_orange_support,
@@ -19,6 +18,7 @@ from minecraft_ore_detector.detection.mask_statistics import (
     integral_support,
     mask_integral,
 )
+from minecraft_ore_detector.detection.ores.coal.primary import CoalPrimaryDetector
 from minecraft_ore_detector.imaging.morphology import clean_mask
 from minecraft_ore_detector.imaging.preprocessing import convert_bgr_to_hsv
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter

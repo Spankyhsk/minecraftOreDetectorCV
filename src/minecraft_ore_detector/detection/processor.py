@@ -7,11 +7,8 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import numpy as np
 
-from minecraft_ore_detector.detection.candidate_detection import (
-    CoalPrimaryDetector,
-    DiamondCandidateExpander,
-)
 from minecraft_ore_detector.detection.ores.coal.fallbacks import CoalFallbackDetector
+from minecraft_ore_detector.detection.ores.coal.primary import CoalPrimaryDetector
 from minecraft_ore_detector.app.config import OreDetectorConfig
 from minecraft_ore_detector.detection.ores.copper import CopperDetector
 from minecraft_ore_detector.detection import (
@@ -30,6 +27,7 @@ from minecraft_ore_detector.detection.ores.diamond import DiamondPostprocessor
 from minecraft_ore_detector.detection.ores.gold import GoldDetector
 from minecraft_ore_detector.detection.ores.iron import IronDetector
 from minecraft_ore_detector.detection.plausibility import DetectionPlausibilityFilter
+from minecraft_ore_detector.detection.ores.diamond_expander import DiamondCandidateExpander
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.morphology import clean_mask
 from minecraft_ore_detector.imaging.preprocessing import normalize_scene_brightness, convert_bgr_to_hsv

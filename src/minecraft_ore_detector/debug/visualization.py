@@ -188,14 +188,14 @@ def collect_pipeline_debug(img: np.ndarray, config: OreDetectorConfig) -> Tuple[
         mask = mask_filter.filter_mask(mask, hsv, ore=ore)
 
         if ore == "coal":
-            from minecraft_ore_detector.detection.candidate_detection import CoalPrimaryDetector
+            from minecraft_ore_detector.detection.ores.coal.primary import CoalPrimaryDetector
             coal_detector = CoalPrimaryDetector(mask_filter)
             candidates = coal_detector.find_candidates(img, color_clean)
             raw = coal_detector.detect_from_candidates(img, candidates)
         else:
             candidates = find_candidates(mask, color_clean, ore=ore)
             if ore == "diamond":
-                from minecraft_ore_detector.detection.candidate_detection import DiamondCandidateExpander
+                from minecraft_ore_detector.detection.ores.diamond_expander import DiamondCandidateExpander
                 candidates = DiamondCandidateExpander().expand_candidates(candidates, img.shape)
 
             bank = templates.get_templates_for_ore(ore)

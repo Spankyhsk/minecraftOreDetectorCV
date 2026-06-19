@@ -6,12 +6,12 @@ from typing import Callable, Dict, List
 import numpy as np
 
 from minecraft_ore_detector.app.config import OreDetectorConfig
-from minecraft_ore_detector.detection.candidate_detection import CoalPrimaryDetector
 from minecraft_ore_detector.detection import non_max_suppression
 from minecraft_ore_detector.detection.ores.coal.components import ComponentCoalStrategy
 from minecraft_ore_detector.detection.ores.coal.copper_anchors import CopperAnchorCoalStrategy
 from minecraft_ore_detector.detection.ores.coal.neighbors import NeighborCoalStrategy
 from minecraft_ore_detector.detection.ores.coal.underwater import UnderwaterCoalStrategy
+from minecraft_ore_detector.detection.ores.coal.primary import CoalPrimaryDetector
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.repositories.template_repository import TemplateRepository
 
