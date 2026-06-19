@@ -177,7 +177,7 @@ def build_stage_data(
             )
 
     nms = non_max_suppression(raw, detector.config.nms_iou_threshold)
-    filtered = detector.processor.filter_plausible_detections(nms, img)
+    filtered = detector.processor.plausibility_filter.filter(nms, img)
 
     return {
         "preprocessed": preprocessed,
@@ -280,7 +280,10 @@ def explain_case(
 
     print("  nearest raw detections:")
     for iou, partial, detection in rank_detections(data["raw"], gt_box, top):
-        passes = detector.processor.is_detection_plausible(detection, img)
+        passes = detector.processor.plausibility_filter.is_plausible(
+            detection,
+            img,
+        )
         print(
             f"    iou={iou:.3f} partial={partial:.3f} "
             f"score={detection.get('score', 0.0):.3f} "
