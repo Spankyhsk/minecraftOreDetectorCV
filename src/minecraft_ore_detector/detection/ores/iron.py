@@ -26,8 +26,8 @@ from minecraft_ore_detector.detection.mask_statistics import (
 )
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.segmentation import color_mask
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 
 class IronDetector:

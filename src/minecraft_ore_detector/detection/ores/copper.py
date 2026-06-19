@@ -22,8 +22,8 @@ from minecraft_ore_detector.imaging.preprocessing import convert_bgr_to_hsv
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
 from minecraft_ore_detector.imaging.segmentation import color_mask
 from minecraft_ore_detector.repositories.template_repository import TemplateRepository
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 
 class CopperDetector:

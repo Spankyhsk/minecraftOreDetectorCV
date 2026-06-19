@@ -14,8 +14,8 @@ from typing import Dict, List, Optional, Tuple
 from minecraft_ore_detector.app.config import DATA_DIR, OreDetectorConfig
 from minecraft_ore_detector.app.pipeline import OreDetector
 from minecraft_ore_detector.imaging.preprocessing import load_image
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 
 def parse_args() -> argparse.Namespace:

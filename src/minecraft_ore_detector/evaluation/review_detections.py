@@ -24,8 +24,8 @@ from minecraft_ore_detector.evaluation.evaluate import (
 )
 from minecraft_ore_detector.app.pipeline import OreDetector
 from minecraft_ore_detector.imaging.preprocessing import load_image
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 LABEL_COLORS = {
     "coal": (70, 70, 70),

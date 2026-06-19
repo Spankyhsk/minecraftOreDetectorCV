@@ -46,8 +46,8 @@ from minecraft_ore_detector.imaging.segmentation import (
     use_edges_for_ore,
 )
 from minecraft_ore_detector.repositories.template_repository import TemplateRepository
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 
 def parse_args() -> argparse.Namespace:

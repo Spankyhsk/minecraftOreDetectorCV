@@ -42,9 +42,7 @@ from minecraft_ore_detector.imaging.segmentation import (
     use_edges_for_ore,
 )
 from minecraft_ore_detector.repositories.template_repository import TemplateRepository
-
-Box = Tuple[int, int, int, int]
-
+from minecraft_ore_detector.models import Box, Detection
 
 @dataclass
 class OreDetectionResult:
@@ -53,7 +51,7 @@ class OreDetectionResult:
     """
 
     image: np.ndarray
-    detections: List[Dict]
+    detections: List[Detection]
     candidates: List[Box]
 
 

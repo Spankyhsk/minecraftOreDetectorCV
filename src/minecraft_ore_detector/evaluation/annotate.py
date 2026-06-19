@@ -12,8 +12,8 @@ import cv2
 
 from minecraft_ore_detector.app.config import DATA_DIR
 from minecraft_ore_detector.imaging.preprocessing import load_image
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 LABELS = [
     "Coal",

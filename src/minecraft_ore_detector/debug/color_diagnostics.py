@@ -18,8 +18,8 @@ from minecraft_ore_detector.app.config import DATA_DIR
 from minecraft_ore_detector.evaluation.evaluate import load_annotations, normalize_label
 from minecraft_ore_detector.detection.rules import ORE_RULES, supported_ores
 from minecraft_ore_detector.imaging.preprocessing import load_image, normalize_scene_brightness
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 
 def parse_args() -> argparse.Namespace:

@@ -2,7 +2,7 @@
 
 from typing import Iterable, Tuple
 
-Box = Tuple[int, int, int, int]
+from minecraft_ore_detector.models import Box
 
 
 def clip_box(box: Box, image_shape: Tuple[int, ...]) -> Box:

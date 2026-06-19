@@ -10,8 +10,8 @@ import numpy as np
 
 from minecraft_ore_detector.detection import match_template_multiscale
 from minecraft_ore_detector.imaging.runtime_mask_filter import RuntimeMaskFilter
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 
 class DiamondCandidateExpander:

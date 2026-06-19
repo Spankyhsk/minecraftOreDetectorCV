@@ -30,8 +30,8 @@ from minecraft_ore_detector.imaging.segmentation import (
 )
 from minecraft_ore_detector.repositories.template_repository import TemplateRepository
 from minecraft_ore_detector.presentation.visualization import draw_candidate_boxes
+from minecraft_ore_detector.models import Box
 
-Box = Tuple[int, int, int, int]
 
 LABEL_COLORS = {
     "coal": (70, 70, 70),
